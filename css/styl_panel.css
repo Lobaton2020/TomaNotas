@@ -1,0 +1,49 @@
+body{
+margin: 0px;
+ font-family:arial;
+
+}
+.div_prin{ 
+	 background-color:#dfe3ee; 
+     margin: 0px auto;
+     width: 100%;
+     height: 50px;
+
+}
+.titulo{
+
+	margin:5px 5px;
+	float: left;
+	padding: 10px ; 
+	width: 250px;
+	height: 30px;
+	color:#000;
+
+}
+
+.menu{
+	border-radius: 0px;
+	text-align: center;
+	padding: 15px 10px ; 
+	width: 140px;
+	height: 20px;
+	color:#000;
+	float: left;
+}
+.menu:hover{
+	background-color: #8b9dc3;
+}
+
+.cierre_sesion{ 
+	padding: 15px 15px 15px 25px;
+	float: right;
+	width: 60px;
+	height: 20px;
+}
+.cierre_sesion:hover{
+		background-color: #FF5500;
+}
+.a{
+    text-decoration: none;
+	color: #000;
+}

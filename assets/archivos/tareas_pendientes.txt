@@ -1,3 +1,0 @@
-- buscar un alojamiento web bueno
-- agregar paginacion
-- poner a funcionar ajax

@@ -1,0 +1,118 @@
+
+ body{
+  background-color:#eee ;
+  background-image:url('../img/f_compu.jpg'); 
+  background-repeat: no-repeat;
+  background-position: center ;
+  background-attachment:fixed;
+  background-size:100% 100% ;
+}
+
+
+@media (max-width: 720px){
+body{
+    background-image:url('../img/f_celu.jpg');
+
+}
+}
+.recuperar_contra{
+margin:1%;
+}
+#primero{
+   background-color:rgba(250,250,250,0.92);
+   
+   padding:3% 5.5% 3% 5.5%; 
+   margin: 3%;
+   margin-top: 11%;
+   border-radius: 3%;
+    box-shadow: 0px 0px 10px black;
+ }
+@media (max-width: 720px){
+   #primero{
+    margin: -2%;
+    padding: 5%;
+    padding-bottom: 3%;
+    padding-top: 4%;
+    margin-top: 11%;
+   }
+
+}
+.img{
+  background-color: #bbb;
+  width: 120px;
+  height:120px;
+  border-radius:50%;
+}
+
+.bton{
+  background-color: #28a745;
+  color: #fff;
+  border:none;
+  border-radius:5px;
+  outline:0;
+  margin-bottom:1%;
+  font-weight: bold;
+
+}
+.bton:hover{
+  background-color: #009432;
+  color: #fff;
+}
+.bton:active{
+    background-color: #20bf6b;
+    box-shadow:0px 0px 5px gray;
+}
+.input{
+  display: block;
+  padding-left: 4%;
+  color: #000;
+  border-bottom: 5px solid ;
+  border-color: rgba(0,0,250,0.5);
+ /*background-color:rgba(250,250,253,0.3);*/
+}
+ .login{
+  width: -100px;
+}
+ .login:invalid{
+  width: 100%;
+  transition: 1s;
+  border-bottom: 4px solid ;
+
+}
+ .login:valid{
+  width: 100%;
+  transition: 1s;
+  border-bottom: 4px solid ;
+  border-color: rgba(0,250,0,0.5) !important;
+}
+
+  .login:empty{
+  border-bottom: 4px solid ;
+  border-color: rgba(0,0,250,0.5);
+}
+.input-group-text{
+  background-color: #FFF;
+  border-top-right-radius: 20px;
+}
+.checkbox{
+  width: 15.5px ;
+  height: 15.5px;
+  border: 5px solid red;
+
+}
+.titulo{
+  font-size: 150%; 
+  margin-bottom: 1%;
+}
+.alertas{
+  font-size: 15px;
+  }
+.close{
+    margin: -5px -5px auto auto;
+}
+.close:active,.close:focus{
+
+  outline: transparent;
+  border:none;
+  margin: -5px -5px auto auto;
+}
