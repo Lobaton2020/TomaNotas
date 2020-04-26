@@ -1,0 +1,75 @@
+body{
+    padding-bottom: 0px; 
+    padding-top:0px;
+}
+.header{
+ margin-bottom:20px;
+}
+.h2{
+margin-left:100px;
+}
+
+
+@media (max-width: 720px){
+          .parrafo{
+         	font-size: 14px;
+         	margin: 0px auto 6px auto;
+         }
+         .titulo{
+         margin-left:0px;
+         }
+}
+@media(min-width:700px){
+   .edit{
+       margin-bottom:19.7%;
+   }
+
+}
+@media(max-width:700px){
+    .edit{
+        margin-bottom:75%;
+    }
+
+ }
+ .boton{
+     margin-top:20px;
+ }
+
+ @media(min-width:700px){
+ .action{
+    width:113px; 
+    font-size: 12px;
+ }
+ .links{
+     width: 90px;
+ }
+ .descripcion{
+    max-width: 400px;
+ }
+ .num{
+     width: 20px;
+ }
+ .fecha{
+     width:180px;
+ }
+}
+
+@media screen and (max-width:500px){
+    .action{
+       width:113px; 
+       font-size: 12px;
+    }
+    .links{
+        width: 90px;
+    }
+    .descripcion{
+       width: 400px;
+    }
+    .num{
+        width: 10px;
+    }
+    .fecha{
+        width:100px;
+       }
+
+   }
