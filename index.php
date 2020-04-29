@@ -1,44 +1,46 @@
 <?php
 // controlador de errores
-function a($param){
-  exit(var_dump($param));
+function a($param)
+{
+    echo "<pre>";
+    echo var_dump($param);
+    echo "/<pre>";
+    exit();
 }
 // FrontController
 session_start();
 require_once "models/Database.php";
 date_default_timezone_set("America/Bogota");
 
- $controller = "Auth"."Controller";
+$controller = "Auth" . "Controller";
 
-  if(!isset($_REQUEST["c"])){
-                 
-       $controller = ucwords($controller);
-       require_once "controllers/{$controller}.php";
-       $controller = new $controller();
-       $controller->index();
+if (!isset($_REQUEST["c"])) {
 
-   }else{
-       $controller = ucwords($_REQUEST["c"])."Controller";
-       $method = isset($_REQUEST["m"]) ? $_REQUEST["m"] : "index"; 
-       
-       if(file_exists("controllers/{$controller}.php")){
-             require_once "controllers/{$controller}.php";
+    $controller = ucwords($controller);
+    require_once "controllers/{$controller}.php";
+    $controller = new $controller();
+    $controller->index();
 
-               if(class_exists($controller)){
-                     $controller = new $controller();
+} else {
+    $controller = ucwords($_REQUEST["c"]) . "Controller";
+    $method = isset($_REQUEST["m"]) ? $_REQUEST["m"] : "index";
 
-                      if(method_exists($controller,$method)){
-                         call_user_func(array($controller,$method));
+    if (file_exists("controllers/{$controller}.php")) {
+        require_once "controllers/{$controller}.php";
 
-                      }else{
-                        header("location:?method_not_found");
-                     }
-               }else{
-                 header("location:?class_not_found");        
-               }
-       }else{
-           header("location:?file_not_found");
-       }
+        if (class_exists($controller)) {
+            $controller = new $controller();
+
+            if (method_exists($controller, $method)) {
+                call_user_func(array($controller, $method));
+
+            } else {
+                header("location:?method_not_found");
+            }
+        } else {
+            header("location:?class_not_found");
+        }
+    } else {
+        header("location:?file_not_found");
     }
-
-?>
+}

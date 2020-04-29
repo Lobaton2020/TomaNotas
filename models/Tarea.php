@@ -79,7 +79,7 @@ class Tarea
 
    public function insert($data){
      try{
-        $fecha = date('Y-m-d"');
+        $fecha = date("Y-m-d H:m:i");
         $hora = date("H:m:i");
         // echo $hora;
         $stmt = $this->dbh->prepare("INSERT INTO Tarea VALUES(null,?,?,?,?,?)");

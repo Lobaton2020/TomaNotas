@@ -18,7 +18,7 @@ nickname varchar(50) not null,
 clave varchar(200) not null,
 estado boolean not null,
 fecha_nacimiento date not null,
-fecha_ingreso date not null,
+fecha_ingreso datetime not null,
 primary key(id_usuario_PK),
 foreign key (id_Rol_FK) references Rol_Usuario(id_rol_PK)
 );
@@ -32,6 +32,19 @@ fecha_ingreso datetime not null,
 primary key(id_link_PK),
 foreign key (id_usuario_FK) references Usuario(id_usuario_PK)
 );
+
+create table Link_Compartido(
+id_link_compartido_PK int not null auto_increment,
+id_usuario_entrega_FK int not null,
+id_usuario_recibe_FK int not null,
+id_link_FK int not null,
+fecha datetime not null,
+primary key(id_link_compartido_PK),
+foreign key (id_usuario_entrega_FK) references Usuario (id_usuario_PK),
+foreign key (id_usuario_recibe_FK) references Usuario (id_usuario_PK),
+foreign key (id_link_FK) references Link (id_link_PK)
+);
+
 -- links que se van eliminando
 create table Backup_Link (
 id_link_PK int not null,
@@ -49,7 +62,7 @@ id_usuario_FK int not null,
 titulo varchar(1000) null,
 descripcion mediumtext not null,
 estado boolean not null,
-fecha_ingreso date not null,
+fecha_ingreso datetime not null,
 primary key(id_nota_PK),
 foreign key (id_usuario_FK) references Usuario(id_usuario_PK)
 );
@@ -62,7 +75,7 @@ ruta varchar(1000) not null,
 tamano float not null,
 tipo varchar(100) not null,
 estado boolean not null,
-fecha_ingreso date not null,
+fecha_ingreso datetime not null,
 primary key(id_archivo_PK),
 foreign key (id_usuario_FK) references Usuario(id_usuario_PK)
 );
@@ -80,7 +93,7 @@ foreign key (id_usuario_FK) references Usuario(id_usuario_PK)
 id_notificacion_PK int not null auto_increment,
 id_usuario_FK int not null,
 tipo_notificacion varchar(500) not null,
-fecha date not null,
+fecha datetime not null,
 primary key(id_notificacion_PK),
 foreign key (id_usuario_FK) references Usuario (id_usuario_PK)
 );
@@ -90,7 +103,7 @@ id_archivo_compartido_PK int not null auto_increment,
 id_usuario_entrega_FK int not null,
 id_usuario_recibe_FK int not null,
 id_archivo_FK int not null,
-fecha date not null,
+fecha datetime not null,
 primary key(id_archivo_compartido_PK),
 foreign key (id_usuario_entrega_FK) references Usuario (id_usuario_PK),
 foreign key (id_usuario_recibe_FK) references Usuario (id_usuario_PK),
@@ -101,18 +114,47 @@ create table Tarea(
 id_tarea_PK int not null auto_increment,
 id_usuario_FK int not null,
 descripcion varchar(1000) not null,
-fecha date not null,
+fecha datetime not null,
 hora time not null,
 estado boolean not null,
 primary key(id_tarea_PK),
 foreign key (id_usuario_FK) references Usuario(id_usuario_PK)
 );
 
+create table cronograma(
+id_cronograma_PK int not null auto_increment,
+id_usuario_FK int not null,
+titulo varchar(100) null,
+fecha datetime not null,
+primary key(id_cronograma_PK),
+foreign key (id_usuario_FK) references Usuario(id_usuario_PK)
+);
+
+create table tarea_cronograma(
+id_tarea_cronograma_PK int not null auto_increment,
+id_cronograma_FK int not null,
+descripcion varchar(1000) not null,
+hora int not null,
+minuto int not null,
+meridiano varchar(2) not null,
+estado boolean not null,
+primary key(id_tarea_cronograma_PK),
+foreign key (id_cronograma_FK) references cronograma(id_cronograma_PK)
+);
+
 -- compartido con otros..compartido con conmigo
-create view Consulta_Archivo_Compartido as
+create procedure Archivos_Compartidos (IDUSUARIO int)
 select AC.id_archivo_compartido_PK,A.id_usuario_FK,AC.id_usuario_entrega_FK, AC.id_archivo_FK,A.ruta,A.tamano,AC.id_usuario_recibe_FK,U.nombre,U.apellido,AC.fecha
 from Archivo as A  inner join Archivo_Compartido as AC  on id_archivo_FK = id_archivo_PK
-                   inner join Usuario as U on id_usuario_recibe_FK = id_usuario_PK ;
+                   inner join Usuario as U on id_usuario_recibe_FK = id_usuario_PK 
+                   where AC.id_usuario_entrega_FK = IDUSUARIO OR AC.id_usuario_recibe_FK = IDUSUARIO  ORDER BY AC.id_archivo_compartido_PK DESC;
+                   
+-- compartido con otros..compartido con conmigo
+create procedure Links_Compartidos (IDUSUARIO int)
+select LC.id_link_compartido_PK,LC.id_usuario_entrega_FK,LC.id_usuario_recibe_FK,U.nombre,U.apellido,Lc.id_link_FK,L.url_link,L.titulo,LC.fecha
+from Link as L  inner join Link_Compartido as LC  on id_link_FK = id_link_PK
+                   inner join Usuario as U on id_usuario_recibe_FK = id_usuario_PK 
+                   WHERE LC.id_usuario_entrega_FK = IDUSUARIO OR LC.id_usuario_recibe_FK = IDUSUARIO  ORDER BY LC.id_link_compartido_PK DESC ;                   
 
 -- creacion de vistas
 create view Consulta_Notificacion as
@@ -127,29 +169,15 @@ from Registro_Login as hl inner join Usuario as u on id_usuario_PK = id_usuario_
 create trigger Elinimacion_Notas_BD before delete on Link for each row 
 insert into Backup_Link values(old.id_link_PK,old.id_usuario_FK,old.titulo,old.url_link,now());
 
--- insert into Rol_Usuario values (null,"Admimistrador"),
--- 							   (null,"Usuario");
--- insert into Usuario values (null,1,"Andres","Lobaton","andrespipe021028@gmail.com","andres123","$2y$10$2OLsZUnZIeea5rOuU7efz.O.XEGoKH.u8N4XBFPNUPDou8Z/3tggm",1,"2002-10-28",now());
-
-
-create view Consulta_Link as
-select u.nickname,u.id_usuario_PK,count(l.id_link_PK) as L
+create view Reporte_Modulos as
+select u.nickname,u.id_usuario_PK,count(distinct l.id_link_PK) as L,count( distinct n.id_nota_PK) as N,
+                                 count( distinct a.id_archivo_PK) as A,count( distinct t.id_tarea_PK) as T,
+                                 count( distinct c.id_cronograma_PK) as C
           from Usuario as u left join Link as l on u.id_usuario_PK = l.id_usuario_FK
-group by u.id_usuario_PK;
+                            left join Nota as n on u.id_usuario_PK = n.id_usuario_FK
+                            left join Tarea as t on u.id_usuario_PK = t.id_usuario_FK
+                            left join Archivo as a on u.id_usuario_PK = a.id_usuario_FK
+                            left join Cronograma as c on u.id_usuario_PK = c.id_usuario_FK
+                            GROUP BY u.nickname,u.id_usuario_PK ORDER BY u.id_usuario_PK asc;
 
 
-create view Consulta_Nota as 
-select count(n.id_nota_PK) AS N
-          from Usuario as u left join Nota as n on u.id_usuario_PK = n.id_usuario_FK
-group by u.id_usuario_PK;
-
-
-create view Consulta_Archivo as
-select count(a.id_archivo_PK) as A
-          from Usuario as u left join Archivo as a on u.id_usuario_PK = a.id_usuario_FK
-group by u.id_usuario_PK;
-
-create view Consulta_Tarea as
-select count(t.id_tarea_PK) as T
-          from Usuario as u left join Tarea as t on u.id_usuario_PK = t.id_usuario_FK
-group by u.id_usuario_PK;

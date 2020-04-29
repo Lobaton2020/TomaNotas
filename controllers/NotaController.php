@@ -14,7 +14,8 @@ class NotaController
     $this->admin = new Administrador();
 
     if(!isset($_SESSION["id_user"]) && empty($_SESSION["id_user"])){
-      header("location:?c=auth&cod=A005");
+      echo "<script> window.location.href ='?c=auth&cod=A005';</script>";
+      exit();
   }
     }
 

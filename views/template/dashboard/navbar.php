@@ -1,31 +1,36 @@
-<!-- variable para mostrar o no el footer fijo <?php $a ="as"; $e="as"; ?> -->
-    <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
+<!-- variable para mostrar o no el footer fijo <?php $a = "as";
+$e = "as";?> -->
+    <nav class="navbar navbar-expand-lg  navbar-dark bg-primary py-1">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <!-- se muestra la siguiente seccion cuando esta n modo celular pero solo se peromite 3 por el tamaño -->
-        <a class="nav-item nav-link active_n logo_peque <?php echo $_REQUEST["c"] == "link" ? "text-light" : "" ;?>" href="?c=link"><i class="fas fa-link"></i> Links <span class="sr-only text-light">(current)</span></a>
-        <a class="nav-item nav-link active_n logo_peque <?php echo $_REQUEST["c"] == "archivo" ? "text-light" : "" ;?>" href="?c=archivo"><i class="fas fa-file-upload"></i> Archivos</a>
-        <a class="nav-item nav-link active_n logo_peque <?php echo $_REQUEST["c"] == "nota" ? "text-light" : "" ;?>" href="?c=nota"><i class="fas fa-clipboard"></i> Notas</a>
+        <a class="nav-item  active_n my-n5 logo_peque <?php echo $_REQUEST["c"] == "link" ? "text-light" : ""; ?>" href="?c=link"><i class="fas fa-link"></i> Links <span class="sr-only text-light">(current)</span></a>
+        <a class="nav-item  active_n my-n5 logo_peque <?php echo $_REQUEST["c"] == "archivo" ? "text-light" : ""; ?>" href="?c=archivo"><i class="fas fa-file-upload"></i> Files</a>
+        <a class="nav-item  active_n my-n5 logo_peque <?php echo $_REQUEST["c"] == "nota" ? "text-light" : ""; ?>" href="?c=nota"><i class="fas fa-clipboard"></i> Notas</a>
+        <a class="nav-item  active_n my-n5 logo_peque <?php echo $_REQUEST["c"] == "cronograma" ? "text-light" : ""; ?>" href="?c=cronograma"><i class="fas fa-clock"></i> Cronos</a>
 
-        
+
         <!-- <span class="h3 text-light logo_peque "  >TomaNotas</span> -->
 <!-- se muestra en modo de computador -->
   <div class="collapse navbar-collapse " id="navbarTogglerDemo01">
-    <a class="navbar-brand text-light ml-md-5 my-0 " href="<?php echo "?c=auth";?>"><h4><?php echo "TomaNotas"?></h4></a>
+    <a class="navbar-brand text-light ml-md-5 my-0 " href="<?php echo "?c=auth"; ?>"><h4><?php echo "TomaNotas" ?></h4></a>
     <ul class="navbar-nav text-light logo_peque_min mr-auto mt-2 mt-lg-0">
       <li class="nav-item <?php echo $_REQUEST["c"] == "link" ? "active" : ""; ?>">
         <a class="nav-link" href="?c=link"><i class="fas fa-link"></i> Links <span class="sr-only text-light">(current)</span></a>
       </li>
-      <li class="nav-item <?php echo $_REQUEST["c"] == "archivo" ? "active" : "";?> ">
+      <li class="nav-item <?php echo $_REQUEST["c"] == "archivo" ? "active" : ""; ?> ">
         <a class="nav-link" href="?c=archivo"><i class="fas fa-file-upload"></i> Archivos</a>
       </li>
-      <li class="nav-item <?php echo $_REQUEST["c"] == "nota" ? "active" : "";?> ">
+      <li class="nav-item <?php echo $_REQUEST["c"] == "nota" ? "active" : ""; ?> ">
         <a class="nav-link" href="?c=nota"><i class="fas fa-clipboard"></i> Notas</a>
       </li>
 
-      <li class="nav-item <?php echo $_REQUEST["c"] == "tarea" ? "active" : "";?> ">
+      <li class="nav-item <?php echo $_REQUEST["c"] == "tarea" ? "active" : ""; ?> ">
          <a class="nav-link " href="?c=tarea"><i class="fas fa-bookmark"></i> Tareas</a>
+      </li>
+      <li class="nav-item <?php echo $_REQUEST["c"] == "cronograma" ? "active" : ""; ?> ">
+         <a class="nav-link " href="?c=cronograma"><i class="fas fa-clock"></i> Cronograma</a>
       </li>
 
     </ul>
@@ -34,15 +39,17 @@
             <label for="userDropdown">
              <i class="fas fa-user"></i> &nbsp; <?php echo $_SESSION["nickname_user"]; ?>
              </label>
-             
+
  <!-- modo celular activado con el toggle -->
-          <a class="nav-item nav-link active_n logo_peque " href="?c=tarea"><i class="fas fa-bookmark"></i> Tareas</a>
-             <?php  if($_SESSION["rol_user"] == 1):?>
+          <a class="nav-item nav-link active_n logo_peque active text-light" href="?c=tarea"><i class="fas fa-bookmark"></i> Tareas</a>
+          <a class="nav-item nav-link active_n logo_peque active text-light " href="?c=cronograma"><i class="fas fa-clock"></i> Cronograma</a>
+
+             <?php if ($_SESSION["rol_user"] == 1): ?>
                 <a class="nav-item nav-link active_n logo_peque" href="?c=administrador&m=usuarios"><i class="fas fa-users"></i> Usuarios <span class="badge badge-primary"><?php echo $this->admin->getnumber_user(); ?></span></a>
                 <a class="nav-item nav-link active_n logo_peque" href="?c=administrador&m=historial"><i class="fas fa-history"></i> Historial <span class="badge badge-primary"><?php echo $this->admin->getnumber_historial(); ?></span></a>
                 <a class="nav-item nav-link active_n logo_peque" href="?c=administrador&m=notificacion"><i class="fas fa-bell"></i> Notificaciones <span class="badge badge-primary"><?php echo $this->admin->getnumber_notificacion(); ?></span></a>
                 <a class="nav-item nav-link active_n logo_peque" href="?c=administrador&m=reportesUsuario"><i class="fas fa-bug"></i> Reportes</a>
-          <?php endif; ?>
+          <?php endif;?>
           <a href=""data-toggle="modal" data-target="#enviar_reporte" class="nav-link  nav-item  active_n logo_peque "><i class="fas fa-exclamation-circle"></i> Reportar un problema</a>
 
           </span>
@@ -58,12 +65,12 @@
           <li class="nav-item logo_peque">
             <a class="nav-link" href="#" data-toggle="modal" data-target="#cerrarsesion" ><i class="fas fa-sign-out-alt"> </i> Cerrar Sesion</a>
           </li>
-  </span>  
+  </span>
   <span class="logo_peque_min">
       <a class="nav-link dropdown-toggle text-light" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     </a>
       <div class="dropdown-menu dropdown-menu-right mr-5" aria-labelledby="userDropdown">
-     <?php if($_SESSION["rol_user"] == 1):?>
+     <?php if ($_SESSION["rol_user"] == 1): ?>
       <h6 class="dropdown-header text-danger">Administracion</h6>
       <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="?c=administrador&m=usuarios"><i class="fas fa-users"></i> Usuarios <span class="badge badge-primary"><?php echo $this->admin->getnumber_user(); ?></span></a>
@@ -71,8 +78,8 @@
                 <a class="dropdown-item" href="?c=administrador&m=notificacion"><i class="fas fa-bell"></i> Notificaciones <span class="badge badge-primary"><?php echo $this->admin->getnumber_notificacion(); ?></span></a>
                 <a class="dropdown-item" href="?c=administrador&m=reportesUsuario"><i class="fas fa-bug"></i> Reportes</a>
       <div class="dropdown-divider"></div>
-      <?php endif; ?>
-      
+      <?php endif;?>
+
       <h6 class="dropdown-header text-primary">Mi perfil</h6>
       <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="?c=usuario&m=index"> <i class="fas fa-wrench"></i> Ver mi Perfil</a>

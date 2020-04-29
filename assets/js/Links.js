@@ -1,80 +1,85 @@
-(function() {
+var actualizar = document.getElementsByClassName("actualizacion");
+var eliminar = document.getElementsByClassName("eliminacion");
+var compartir = document.getElementsByClassName("compartir");
+var fecha = document.getElementsByClassName("fecha");
 
-    cargarDatos(true);
+var modal_compartir = document.getElementsByClassName("modal-compartir");
+
+var habilitar_compartir = document.getElementById("habilitar-compartir");
+var habilitar_opciones = document.getElementById("habilitar-opciones");
+var habilitar_fecha = document.getElementById("hab_fecha");
+var inhabilitacion = document.getElementById("inhab");
+
+var txt = document.getElementById("search");
+var response_main = document.getElementById("response-ajax-main");
+var response_keyup = document.getElementById("response-ajax-keyup");
+
+var form_search_user = document.getElementById("search-user-link");
+var result_user = document.getElementById("result-user");
+
+(function() {
     window.onload = function() {
         $(document).ready(function() {
             setTimeout(function() {
                 $("#alert").alert("close");
             }, 5000);
-
         });
-        mensajeCargando(false);
 
-        eliminacion(false);
-        actualizacion(false);
-        acciones(false);
-        verFecha(false);
+        ejecutarAjaxBusquedaUsuario();
+        ejecutarAjaxBusquedaLinks();
+        if (cargarDatos(true)) {
+            opciones(false);
+            acciones(false);
+            verFecha(false);
+        }
+        inhabilitacion.addEventListener("click", function() {
+            opciones(false);
+            acciones(false);
+            verFecha(false);
+            event.preventDefault();
+        });
 
+        habilitar_compartir.addEventListener("click", function() {
+            habilitarCompartir(true);
+            acciones(true);
+            llamadoModalCompartir();
+            event.preventDefault();
+        });
 
+        habilitar_fecha.addEventListener("click", function() {
+            verFecha(true);
+            event.preventDefault();
+        });
 
+        habilitar_opciones.addEventListener("click", function() {
+            opciones(true);
+            acciones(true);
+
+            event.preventDefault();
+        });
+        $(function() {
+            // popovers
+            $('[data-toggle="popover"]').popover({
+                placement: "right",
+                trigger: "hover",
+            });
+
+            //  activacion
+            $('[data-toggle="tool"]').tooltip();
+        });
+    };
+
+    function llamadoModalCompartir() {
+        for (var i = 0; i < modal_compartir.length; i++) {
+            modal_compartir[i].addEventListener("click", function(e) {
+                $("#buscar-usuario")
+                    .modal("show")
+                    .attr("name", this.getAttribute("name"));
+            });
+        }
     }
-    var actualizar = document.getElementsByClassName("actualizacion");
-    var eliminar = document.getElementsByClassName("eliminacion");
-    var fecha = document.getElementsByClassName("fecha");
-
-
-
-    var habilitar_eliminacion = document.getElementById("hab_elim");
-    var habilitar_actualizacion = document.getElementById("hab_actu");
-    var habilitar_fecha = document.getElementById("hab_fecha");
-    var inhabilitacion = document.getElementById("inhab");
-
-
-    inhabilitacion.addEventListener("click", function() {
-        eliminacion(false);
-        actualizacion(false);
-        acciones(false);
-        verFecha(false);
-        event.preventDefault();
-    });
-
-
-
-    habilitar_fecha.addEventListener("click", function() {
-        verFecha(true);
-        event.preventDefault();
-    });
-
-    habilitar_eliminacion.addEventListener("click", function() {
-        eliminacion(true);
-        acciones(true);
-
-        event.preventDefault();
-    });
-
-    habilitar_actualizacion.addEventListener("click", function() {
-        actualizacion(true);
-        acciones(true);
-        event.preventDefault();
-    });
-
-
-    $(function() {
-        // popovers
-        $('[data-toggle="popover"]').popover({
-            placement: "right",
-            trigger: "hover"
-        });
-
-        //  activacion
-        $('[data-toggle="tool"]').tooltip();
-
-
-    });
-
     // fecha
     function verFecha(valor) {
-
         for (let i = 0; i < fecha.length; i++) {
             if (valor) {
                 fecha[i].style.display = "";
@@ -85,25 +90,14 @@
     }
 
     // funciones de uso de nav de notas
-    function eliminacion(valor) {
-
+    function opciones(valor) {
         for (let i = 0; i < eliminar.length; i++) {
             if (valor) {
+                actualizar[i].style.display = "block";
                 eliminar[i].style.display = "block";
             } else {
-                eliminar[i].style.display = "none";
-            }
-        }
-    }
-
-    // actualizacion
-    function actualizacion(valor) {
-
-        for (let i = 0; i < actualizar.length; i++) {
-            if (valor) {
-                actualizar[i].style.display = "block";
-            } else {
                 actualizar[i].style.display = "none";
+                eliminar[i].style.display = "none";
             }
         }
     }
@@ -123,11 +117,19 @@
             for (let i = 0; i < td2.length; i++) {
                 td2[i].style.display = "none";
             }
-
         }
-
     }
 
+    // ---------------------
+    function habilitarCompartir(valor) {
+        for (let i = 0; i < compartir.length; i++) {
+            if (valor) {
+                compartir[i].style.display = "block";
+            } else {
+                compartir[i].style.display = "none";
+            }
+        }
+    }
 
     //el objeto de ajax
     function getXMLHttpRequest() {
@@ -145,29 +147,21 @@
         return ajax;
     }
 
-    var txt = document.getElementById("search");
-    var response_main = document.getElementById("response-ajax-main");
-    var response_keyup = document.getElementById("response-ajax-keyup");
     // carga los datos por defecto del servidor
     function cargarDatos(valor) {
         if (valor == true) {
-
             var ajax = getXMLHttpRequest();
             ajax.open("GET", "index.php?c=link&m=getAll_ax&ver=ok", true);
             ajax.onreadystatechange = function() {
-
                 if (ajax.readyState == 4 && ajax.status == 200) {
                     if (ajax.responseText != "") {
                         response_main.innerHTML = ajax.responseText;
                     } else {
-
                         response_main.innerHTML = "No se han podido cargar los datos";
                     }
                 }
-
-            }
+            };
             ajax.send();
-
         }
         mostrarMensaje(false);
     }
@@ -181,6 +175,7 @@
             msg.style.display = "none";
         }
     }
+
     // mensaje de cargando
     function mensajeCargando(value) {
         var mensaje = document.getElementById("mensajeCargando");
@@ -192,33 +187,112 @@
     }
 
     // proceso de ajax para la consulta del formulario
-
-
-
-    txt.addEventListener("keyup", function() {
-        mensajeCargando(true);
-        var ajax = getXMLHttpRequest();
-        var valor = txt.value;
-        ajax.open("GET", "index.php?c=link&m=search_ax&value=" + valor, true);
-        ajax.onreadystatechange = function() {
-
-                if (ajax.readyState == 4 && ajax.status == 200) {
-                    cargarDatos(false);
-                    mensajeCargando(false);
-                    if (ajax.responseText != "") {
-                        mostrarMensaje(false);
-                        response_keyup.innerHTML = ajax.responseText;
-                        response_main.innerHTML = "";
-                    } else {
-                        mostrarMensaje(true);
-                        response_keyup.innerHTML = "";
+    function ejecutarAjaxBusquedaLinks() {
+        if (document.getElementById("search-user-link")) {
+            txt.addEventListener("keyup", function() {
+                mensajeCargando(true);
+                var ajax = getXMLHttpRequest();
+                var valor = txt.value;
+                ajax.open("GET", "index.php?c=link&m=search_ax&value=" + valor, true);
+                ajax.onreadystatechange = function() {
+                    if (ajax.readyState == 4 && ajax.status == 200) {
+                        cargarDatos(false);
+                        mensajeCargando(false);
+                        if (ajax.responseText != "") {
+                            mostrarMensaje(false);
+                            response_keyup.innerHTML = ajax.responseText;
+                            response_main.innerHTML = "";
+                        } else {
+                            mostrarMensaje(true);
+                            response_keyup.innerHTML = "";
+                        }
                     }
-                }
+                };
+                // ajax.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                ajax.send();
+            });
+        }
+    }
+    // proceso de ajax para la consulta del formulario
+    function ejecutarAjaxBusquedaUsuario() {
+        if (document.getElementById("search-user-link")) {
+            form_search_user.addEventListener("keyup", function() {
+                var ajax = getXMLHttpRequest();
+                var params = "valor=" + this.value;
+                ajax.open("POST", "index.php?c=link&m=searchUserLink_ax", true);
+                ajax.onreadystatechange = procesoHttpBusquedaUsuario;
+                ajax.setRequestHeader(
+                    "Content-type",
+                    "application/x-www-form-urlencoded"
+                );
+                ajax.send(params);
+            });
+        }
+    }
+
+    function procesoHttpBusquedaUsuario() {
+        if (this.readyState == 4 && this.status == 200) {
+            var data;
+            if (typeof this.responseText !== "undefined") {
+                data = JSON.parse(this.responseText);
+            } else {
+                data = this.responseText;
             }
-            // ajax.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-        ajax.send();
-    });
+            console.log(data);
+            var id_link = $("#buscar-usuario").attr("name");
+            var showUser = "";
+            for (let i = 0; i < data.length; i++) {
+                showUser +=
+                    '<div class="simulacion-option py-2 mt-2" idl="' +
+                    id_link +
+                    '" idu="' +
+                    data[i].id_usuario_PK +
+                    '">';
+                showUser += '<a class="text-decoration-none" href="#">';
+                showUser +=
+                    '<span class="h6 ml-2">' +
+                    data[i].nombre +
+                    " " +
+                    data[i].apellido +
+                    "</span>";
+                showUser += "</a>";
+                showUser +=
+                    "<span class='small mr-2 float-right text-muted'>" +
+                    data[i].nickname +
+                    "</span>";
+                showUser += "</div>";
+            }
+            result_user.innerHTML = showUser;
+            habilitarCompartirLink();
+        }
+    }
 
+    function habilitarCompartirLink() {
+        var num = document.getElementsByClassName("simulacion-option");
 
+        for (let i = 0; i < num.length; i++) {
+            num[i].addEventListener("click", function() {
+                var id_usuario = this.getAttribute("idu");
+                var id_link = this.getAttribute("idl");
 
+                window.location.href =
+                    "?c=link&m=newShareLink&idusuario=" +
+                    id_usuario +
+                    "&idlink=" +
+                    id_link;
+            });
+        }
+    }
+
+    if (document.getElementsByClassName("ver-modal-link")) {
+        var numero = document.getElementsByClassName("ver-modal-link");
+        for (let i = 0; i < numero.length; i++) {
+            numero[i].addEventListener("click", function(e) {
+                $("#ver-link").modal("show");
+                $("#modal-a").attr("href", this.href);
+                $("#result-link").html(this.href);
+                e.preventDefault();
+            });
+        }
+    }
 })();
