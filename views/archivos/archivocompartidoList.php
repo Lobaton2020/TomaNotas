@@ -52,15 +52,15 @@ $i = 1;
 
         $tool = getDateTime($row->fecha) . " Propietario: " . $propietario;
         ?>
-		             <tr>
-		                 <input type="hidden" id="extencion<?php echo $row->id_archivo_FK; ?>" value="<?php echo pathinfo($row->ruta, PATHINFO_EXTENSION); ?>">
-		                 <input type="hidden" id="nombre_archivo<?php echo $row->id_archivo_FK; ?>" value="<?php echo pathinfo($row->ruta, PATHINFO_FILENAME); ?>">
-		                 <td> <span  data-toggle="tool" title="<?php echo getDateTime($row->fecha); ?>"><?php echo $i++; ?></span></td>
-		                 <td><a  href="?c=archivo&m=vercompartido&id=<?php echo $row->id_archivo_FK; ?>#iframe"><span data-toggle="tool" title="<?php echo $tool; ?>"></span><span id="basename<?php echo $row->id_archivo_FK; ?>"><?php echo pathinfo($row->ruta, PATHINFO_BASENAME); ?></span></span></a></td>
-		                 <td class="text-left"><small><?php echo $tipo; ?></small></td>
-		                 <td class="eliminar_archivo" class="eliminar_archivo"><a href="?c=archivo&m=deleteCompartido&id=<?php echo $row->id_archivo_compartido_PK; ?> "  onclick="if(!confirm('¿Seguro quieres eliminar este Archivo?')){ return false }" ><span class="text-danger">Quitar</span></a></td>
-		            </tr>
-		             <?php endforeach;?>
+			             <tr>
+			                 <input type="hidden" id="extencion<?php echo $row->id_archivo_FK; ?>" value="<?php echo pathinfo($row->ruta, PATHINFO_EXTENSION); ?>">
+			                 <input type="hidden" id="nombre_archivo<?php echo $row->id_archivo_FK; ?>" value="<?php echo pathinfo($row->ruta, PATHINFO_FILENAME); ?>">
+			                 <td> <span  data-toggle="tool" title="<?php echo getDateTime($row->fecha); ?>"><?php echo $i++; ?></span></td>
+			                 <td><a  href="?c=archivo&m=vercompartido&id=<?php echo $row->id_archivo_FK; ?>#iframe"><span data-toggle="tool" title="<?php echo $tool; ?>"></span><span id="basename<?php echo $row->id_archivo_FK; ?>"><?php echo pathinfo($row->ruta, PATHINFO_BASENAME); ?></span></span></a></td>
+			                 <td class="text-left"><small><?php echo $tipo; ?></small></td>
+			                 <td class="eliminar_archivo" class="eliminar_archivo"><a href="?c=archivo&m=deleteCompartido&id=<?php echo $row->id_archivo_compartido_PK; ?> "  onclick="if(!confirm('¿Seguro quieres eliminar este Archivo?')){ return false }" ><span class="text-danger">Quitar</span></a></td>
+			            </tr>
+			             <?php endforeach;?>
           </tbody>
        </table>
 

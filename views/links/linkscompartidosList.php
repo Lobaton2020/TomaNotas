@@ -24,10 +24,12 @@
    <?php $i = 1;
     foreach ($response["links"] as $row) {
 
-        if ($row->id_usuario_recibe_FK == $_SESSION["id_user"]) {
-            $tipo = $row->nombre . " " . $row->apellido . " te lo ha compartido.";
-        } else {
+        if ($row->id_usuario_recibe_FK !== $_SESSION["id_user"]) {
             $tipo = "Compartido con " . $row->nombre . " " . $row->apellido;
+        }
+        if ($row->id_usuario_entrega_FK !== $_SESSION["id_user"]) {
+            $user = $this->usuario->getone($row->id_usuario_entrega_FK);
+            $tipo = $user->nombre . " " . $user->apellido . " te lo ha compartido.";
         }
 
         ?>     <tr>
