@@ -27,10 +27,11 @@ if (isset($_REQUEST["c"])) {
     <script src="assets/js/Files.js"></script>
   <?php } else if ($_REQUEST["c"] == "tarea") {?>
     <script src="assets/js/Tareas.js"></script>
+    <?php } else if ($_REQUEST["c"] == "cronograma") {?>
+    <script src="assets/js/Cronograma.js"></script>
   <?php } else {?>
     <script src="assets/js/Usuarios.js"></script>
 
   <?php }?>
-  <script src="assets/js/All.js"></script>
   </body>
 </html>

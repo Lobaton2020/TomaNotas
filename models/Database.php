@@ -6,7 +6,7 @@ class Database
         try {
             $dbhost = "localhost";
             $dbuser = "root";
-            $dbpass = '';
+            $dbpass = 'monserrate1010';
             $dbname = "tomanotas";
 
             $dsn = "mysql:host={$dbhost};dbname={$dbname};charset=utf8";

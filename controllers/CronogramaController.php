@@ -35,7 +35,7 @@ class CronogramaController
     public function getTareas()
     {
         if (isset($_GET["id"])) {
-
+            $titulo = $this->cronograma->getTituloCronograma($_GET["id"]);
             $response = $this->cronograma->getAllTareas($_GET["id"]);
             $content = "cronograma/listTareas.php";
             $title = "Cronograma de Tareas";

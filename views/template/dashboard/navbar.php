@@ -5,10 +5,10 @@ $e = "as";?> -->
     <span class="navbar-toggler-icon"></span>
   </button>
   <!-- se muestra la siguiente seccion cuando esta n modo celular pero solo se peromite 3 por el tamaño -->
-        <a class="nav-item  active_n my-n5 logo_peque <?php echo $_REQUEST["c"] == "link" ? "text-light" : ""; ?>" href="?c=link"><i class="fas fa-link"></i> Links <span class="sr-only text-light">(current)</span></a>
-        <a class="nav-item  active_n my-n5 logo_peque <?php echo $_REQUEST["c"] == "archivo" ? "text-light" : ""; ?>" href="?c=archivo"><i class="fas fa-file-upload"></i> Files</a>
-        <a class="nav-item  active_n my-n5 logo_peque <?php echo $_REQUEST["c"] == "nota" ? "text-light" : ""; ?>" href="?c=nota"><i class="fas fa-clipboard"></i> Notas</a>
-        <a class="nav-item  active_n my-n5 logo_peque <?php echo $_REQUEST["c"] == "cronograma" ? "text-light" : ""; ?>" href="?c=cronograma"><i class="fas fa-clock"></i> Cronos</a>
+        <a class="nav-item text-decoration-none  active_n my-n5 logo_peque <?php echo $_REQUEST["c"] == "link" ? "text-light" : ""; ?>" href="?c=link"><i class="fas fa-link"></i> Links <span class="sr-only text-light">(current)</span></a>
+        <a class="nav-item text-decoration-none active_n my-n5 logo_peque <?php echo $_REQUEST["c"] == "archivo" ? "text-light" : ""; ?>" href="?c=archivo"><i class="fas fa-file-upload"></i> Files</a>
+        <a class="nav-item text-decoration-none active_n my-n5 logo_peque <?php echo $_REQUEST["c"] == "nota" ? "text-light" : ""; ?>" href="?c=nota"><i class="fas fa-clipboard"></i> Notas</a>
+        <a class="nav-item text-decoration-none active_n my-n5 logo_peque <?php echo $_REQUEST["c"] == "cronograma" ? "text-light" : ""; ?>" href="?c=cronograma"><i class="fas fa-clock"></i> Cronos</a>
 
 
         <!-- <span class="h3 text-light logo_peque "  >TomaNotas</span> -->

@@ -49,7 +49,7 @@ foreach ($res as $row) {
                  class="eliminar btn btn-outline-danger " title="Eliminar Link" href="?c=link&m=delete&id=<?php echo $row->id_link_PK; ?>" name="eliminar_nota"><i class="fas fa-trash-alt"></i></a>
                 </span >
                 <span style="display:none" class="compartir float-right ml-n6">
-                <a href=""  class=" btn btn-outline-primary modal-compartir" id="update-title-<?php echo $i++; ?>"  type="button" data-toggle="modal" " title="Compartir Link"  name="<?php echo $row->id_link_PK; ?>"><i class="fas fa-share"></i></a>
+                <a href=""  class=" btn btn-outline-primary modal-compartir" id="update-title-<?php echo $i; ?>"  type="button" data-toggle="modal" " title="Compartir Link"  name="<?php echo $row->id_link_PK; ?>"><i class="fas fa-share"></i></a>
                 </span >
               </td>
               <?php }?>

@@ -162,4 +162,17 @@ class Cronograma
             exit($e->getMessage());
         }
     }
+
+    public function getTituloCronograma($idcronograma)
+    {
+        try {
+            $sql = "SELECT titulo FROM cronograma WHERE id_cronograma_PK = ?";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->execute(array($idcronograma));
+            return $stmt->fetch();
+
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }
+    }
 }

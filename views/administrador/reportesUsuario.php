@@ -25,6 +25,7 @@
      <?php $total += $row->N;?>
      <?php $total += $row->A;?>
      <?php $total += $row->T;?>
+	 <?php $total += $row->C; ?>
     <tr>
       <th><?php echo $row->id_usuario_PK ?></th>
       <td><?php echo $row->nickname ?></td>

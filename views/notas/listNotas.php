@@ -6,8 +6,7 @@
 <!-- Modal -->
 <?php include_once "views/notas/modals/notaCreate.php";?>
 <?php if (count($response) != 0) {?>
-  <div class="form-group">
-    </div>
+
     <div class="card-columns">
       <?php $i = 1;foreach ($response as $row): ?>
         <div class="card">
