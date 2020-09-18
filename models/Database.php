@@ -6,7 +6,7 @@ class Database
         try {
             $dbhost = "localhost";
             $dbuser = "root";
-            $dbpass = 'monserrate1010';
+            $dbpass = '';
             $dbname = "tomanotas";
 
             $dsn = "mysql:host={$dbhost};dbname={$dbname};charset=utf8";
@@ -18,6 +18,5 @@ class Database
         } catch (PDOException $e) {
             exit($e->getMessage());
         }
-
     }
 }

@@ -151,7 +151,12 @@ var result_user = document.getElementById("result-user");
     function cargarDatos(valor) {
         if (valor == true) {
             var ajax = getXMLHttpRequest();
-            ajax.open("GET", "index.php?c=link&m=getAll_ax&ver=ok", true);
+            let querySearch = new URLSearchParams(location.search),
+                page = 1;
+            if (querySearch.has("page")) {
+                page = querySearch.get("page");
+            }
+            ajax.open("GET", "index.php?c=link&m=getAll_ax&ver=ok&page=" + page, true);
             ajax.onreadystatechange = function() {
                 if (ajax.readyState == 4 && ajax.status == 200) {
                     if (ajax.responseText != "") {

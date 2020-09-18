@@ -10,13 +10,12 @@ class Link
 
         $this->dbh = Database::Connect();
         $this->session = $_SESSION["id_user"];
-
     }
 
-    public function getAll()
+    public function getAll($init)
     {
         try {
-            $sql = "SELECT * FROM Link WHERE id_usuario_FK = ? ORDER BY id_link_PK DESC";
+            $sql = "SELECT * FROM Link WHERE id_usuario_FK = ? ORDER BY id_link_PK DESC LIMIT {$init}";
             $stmt = $this->dbh->prepare($sql);
             $stmt->execute(array($this->session));
             $res = $stmt->fetchAll();
@@ -27,7 +26,6 @@ class Link
             $reslink = $stmt->fetchAll();
 
             return array($res, $reslink);
-
         } catch (Exception $e) {
             exit($e->getMessage());
         }
@@ -41,7 +39,6 @@ class Link
             $stmt->execute(array($this->session));
 
             return $stmt->fetchAll();
-
         } catch (Exception $e) {
             exit($e->getMessage());
         }
@@ -50,13 +47,12 @@ class Link
     public function search($link)
     {
         try {
-            $sql = "SELECT * FROM Link WHERE id_usuario_FK  = ? AND (url_link LIKE '%' ? '%' OR titulo LIKE '%' ? '%') ORDER BY id_link_PK DESC";
+            $sql = "SELECT * FROM Link WHERE id_usuario_FK  = ? AND (url_link LIKE '%' ? '%' OR titulo LIKE '%' ? '%') ORDER BY id_link_PK DESC limit 20";
             $stmt = $this->dbh->prepare($sql);
             $stmt->execute(array($this->session, $link, $link));
 
             $res = $stmt->fetchAll();
             return $res;
-
         } catch (Exception $e) {
             exit($e->getMessage());
         }
@@ -70,7 +66,6 @@ class Link
             $stmt->execute(array($id, $this->session));
 
             return $stmt->fetch();
-
         } catch (Exception $e) {
             exit("Error: " . $e->getMessage());
         }
@@ -85,10 +80,10 @@ class Link
                 $data["titulo"],
                 $data["url"],
                 $data["id"],
-                $this->session));
+                $this->session
+            ));
 
             return true;
-
         } catch (Exception $e) {
             exit("Error: " . $e->getMessage());
         }
@@ -108,7 +103,8 @@ class Link
                     $this->session,
                     $data["titulo"],
                     $data["url"],
-                    $fecha));
+                    $fecha
+                ));
 
                 return true;
             } else {
@@ -158,7 +154,6 @@ class Link
             $stmt->execute(array($this->session));
 
             return $stmt->fetchAll();
-
         } catch (Exception $e) {
             exit("Error: " . $e->getMessage());
         }
@@ -176,5 +171,4 @@ class Link
             exit($e->getMessage());
         }
     }
-
 }

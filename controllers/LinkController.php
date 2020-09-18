@@ -25,7 +25,6 @@ class LinkController
         // en este metodo se hace el uso de ajax
         $title = "Link";
         require_once "views/template/link/content.php";
-
     }
 
     public function compartidos()
@@ -56,7 +55,6 @@ class LinkController
         } else {
             header("location:?c=link&m=compartidos&cod=E005");
         }
-
     }
     public function deleteCompartido()
     {
@@ -65,14 +63,13 @@ class LinkController
         } else {
             header("location:?c=link&m=compartidos&cod=E003");
         }
-
     }
     // consulta de datos por meio de ajax
     public function search_ax()
     {
         if (isset($_REQUEST["value"])) {
             $res = $this->model->search($_REQUEST["value"]);
-            $link = $this->model->getAll();
+            $link = $this->model->getAll("1,1");
             $link = $link[1];
 
             if (count($res) != 0) {
@@ -102,7 +99,7 @@ class LinkController
     public function getAll_ax()
     {
         if (isset($_REQUEST["ver"])) {
-            $array = $this->model->getAll();
+            $array = $this->model->getAll($this->getPages($_REQUEST["page"], 50));
 
             if (count($array) != 0) {
 
@@ -116,7 +113,12 @@ class LinkController
             header("location:?c=auth");
         }
     }
-
+    private function getPages($init, $size)
+    {
+        $init = intval($init) - 1;
+        $page = ($init * $size) > 1 ? ($init * $size) - 1 : 0;
+        return "{$page},{$size}";
+    }
     public function create()
     {
         if (!empty($_POST["url"])) {
@@ -126,11 +128,9 @@ class LinkController
                 $this->admin->insert_notificacion($_SESSION["id_user"], "ha agregado un nuevo link");
 
                 header("location:?c=link&cod=A001");
-
             } else {
                 header("location:?c=link&cod=E006");
             }
-
         } else {
             header("location:?c=link&cod=E004");
         }
@@ -147,7 +147,6 @@ class LinkController
         } else {
             header("location:?c=auth&cod=E005");
         }
-
     }
 
     public function update()
@@ -157,7 +156,6 @@ class LinkController
             header("location:?c=link&cod=A002");
         } else {
             header("location:?c=link&cod=E002");
-
         }
     }
 
@@ -170,8 +168,6 @@ class LinkController
             header("location:?c=link&cod=A003");
         } else {
             header("location:?c=link&cod=E003");
-
         }
     }
-
 }
