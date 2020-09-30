@@ -2,7 +2,7 @@ import NoteService from "../../services/note.service.js";
 (function(window, document) {
     "use strict"
     document.addEventListener("DOMContentLoaded", (e) => {
-        window.laurel.controller('note', {
+        window.laurel.component('note', {
             create: async function(form) {
                 try {
                     laurel.renderLoader(true);
@@ -39,7 +39,7 @@ import NoteService from "../../services/note.service.js";
                     console.error(err)
                 }
             },
-            delete: async function(id) {
+            disable: async function(id) {
                 try {
                     laurel.renderLoader(true);
                     // 

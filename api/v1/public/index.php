@@ -7,6 +7,7 @@ require_once SYS_PATH . 'helpers' . SEPARATOR . 'json.php';
 require_once SYS_PATH . 'helpers' . SEPARATOR . 'encrypt.php';
 require_once SYS_PATH . 'helpers' . SEPARATOR . 'http_response.php';
 require_once SYS_PATH . 'helpers' . SEPARATOR . 'validator.php';
+require_once SYS_PATH . 'helpers' . SEPARATOR . 'dates.php';
 
 spl_autoload_register(function ($class) {
     autoloader(SYS_PATH, $class);

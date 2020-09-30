@@ -16,8 +16,11 @@ lastname varchar(50) not null,
 email varchar(50) not null,
 nickname varchar(50) not null,
 password varchar(200) not null,
-status boolean not null,
 image date null,
+email_verify_date date null,
+remember_token varchar(200) null,
+recovery_pass_token varchar(200) null,
+status boolean not null,
 born_date date null,
 create_date datetime not null,
 primary key(iduser),
@@ -41,7 +44,8 @@ create table categories(
 create table links (
 idlink int not null auto_increment,
 iduser int not null,
-idcategory int null,
+idcategory int not null,
+important boolean null,
 title varchar(500) null,
 url varchar(5000),
 create_datetime datetime not null,
@@ -203,6 +207,7 @@ from links as l  inner join sharedlinks as sl  on l.idlink = sl.idlink
                    WHERE sl.iduser_deliver = iduser OR sl.iduser_receive = iduser  ORDER BY sl.idsharedlink DESC ;                   
 
 -- creacion de vistas
+
 create view get_notifications as
   select n.idnotification, u.iduser,u.name, u.lastname, n.idtypenotification, n.create_date 
       from notifications as n inner join users as u on u.iduser = n.iduser
@@ -227,3 +232,17 @@ select u.nickname,u.iduser,count(distinct l.idlink) as L,count( distinct n.idnot
                             left join files as a on u.iduser = a.iduser
                             left join schedules as c on u.iduser = c.iduser
                             GROUP BY u.nickname,u.iduser ORDER BY u.iduser asc;
+
+-- Attribute importarnt : null = normal, 1 = very important, 0 = not is important
+insert into rols values(1,"Administrador"),(2,"Usuario");
+insert into typecategories values (1,"General"),
+                                  (2,"Links"),
+                                  (3,"Archivos");
+
+insert into categories values(1,1,"General"),(8,2,"Plataformas"),
+                             (2,1,"Educacion"),(9,1,"Inteligencia Artificial"),
+                             (3,1,"Programacion"),(10,1,"Librerias ó Frameworks"),
+                             (4,2,"Java"),(11,2,"Series y peliculas"),
+                             (5,2,"Php"),(12,1,"SENA"),
+                             (6,2,"Cursos"),(13,1,"Herramientas"),
+                             (7,1,"Plantillas"),(14,1,"Ingles"),(15,2,"Mis sitios");

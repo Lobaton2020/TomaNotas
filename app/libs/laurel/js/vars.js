@@ -26,20 +26,33 @@ export default {
                 <div id="text"></div>
             </div>`,
     // son los componentes predefinidos para mostrar al usuario
+    js_template: [
+        "/js/app.min.js",
+        "/bundles/jquery-ui/jquery-ui.min.js",
+        "/bundles/apexcharts/apexcharts.min.js",
+        "/js/page/index.js",
+        "/js/custom.js",
+        "/js/scripts.js"
+    ],
     defaultComponents: [{
             element: "navbar",
-            route: "app/components/layouts/navbar/navbar.component.html"
+            route: "navbar"
         },
         {
-            element: "slidebar",
-            route: "app/components/layouts/sidebar/sidebar.component.html"
+            element: "sidebar",
+            route: "sidebar"
+        },
+        {
+            element: "footer",
+            route: "footer"
+        },
+        {
+            element: "setting",
+            route: "setting"
         }
-        // ,
-        // {
-        //     element: "footer",
-        //     route: "app/components/layouts/footer.html"
-        // }
     ],
+    folderTemplate: "layouts/",
+    mainView: "main",
     urlLaurel: location.origin.concat(location.pathname),
     urlApi: "http://localhost/TomaNotas/api/v1/public/",
     tagDefault: "app",
@@ -50,6 +63,8 @@ export default {
     credentialsUrl: "auth/see",
     controllerInitCredentials: "user",
     redirectBadCredentials: "#/auth/logiaan",
-    redirectRouteNotFound: "#/auth/lo9888gin"
+    redirectRouteNotFound: "#/error404",
+    prefixHtmlComponent: "app/components/",
+    finalHtmlComponent: ".component.html"
 
 };

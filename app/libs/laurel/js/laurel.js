@@ -19,6 +19,7 @@ import vars from "./vars.js";
                 urlApi: vars.urlApi,
                 urlLaurel: vars.urlLaurel,
                 validateStatusResponse: vars.validateStatusResponse,
+                mainView: vars.mainView,
                 loader: '',
                 defaultComponents: vars.defaultComponents,
                 currentController: '',
@@ -32,29 +33,45 @@ import vars from "./vars.js";
                     return document.getElementById(id);
                 },
 
-                renderComponent: (route, element) => {
+                renderComponent: async(route, element) => {
                     let elem = document.getElementById(element);
+
                     return fetch(route)
                         .then((response) => response.text())
                         .then((text) => {
                             elem.innerHTML = text
+                            setTimeout(() => {
 
+                                // let scripts = [
+                                //     "/bundles/apexcharts/apexcharts.min.js",
+                                //     "/js/page/index.js",
+                                //     "/js/custom.js",
+                                //     "/js/scripts.js"
+                                // ];
+                                // scripts.forEach((elem) => {
+
+                                //     let scr = document.createElement("script");
+                                //     scr.src = "assets/template" + elem;
+                                //     document.body.appendChild(scr);
+                                //     console.log(scr)
+                                // })
+                            }, 1000);
                         });
                 },
-
-                getController: () => {
+                getComponent: () => {
                     return window.laurel.currentController;
                 },
 
-                controller: (name, objController) => {
+                component: (name, objController) => {
                     controllers[name] = objController;
                 },
 
-                route: (route, template, controller, action) => {
+                route: (route, template, controller, action, componentLayout = false) => {
                     routes[route] = {
                         'templates': template,
                         'controller': controller,
-                        'action': action
+                        'action': action,
+                        'layout': componentLayout
                     };
                     return window.laurel;
                 },
@@ -64,29 +81,47 @@ import vars from "./vars.js";
                     return window.laurel;
                 },
                 renderLoader: (type = false, elem = null) => {
-                    if (elem == null) {
-                        elem = vars.tagLoader;
-                    }
-                    let load = document.querySelector("#" + elem);
-                    if (load.innerHTML == "") {
-                        load.innerHTML = laurel.loader;
-                    }
-                    if (type) {
-                        load.classList.add("loading");
-                        document.body.classList.add("hide-overflow");
-                        load.classList.remove("loadingOut");
+                    if (type) { //Iuck  Jquery por aqui :p
+                        $(".loader").fadeIn(400);
                     } else {
-                        document.body.classList.remove("hide-overflow");
-                        load.classList.remove("loading");
-                        load.classList.add("loadingOut");
-
+                        $(".loader").fadeOut(400);
                     }
+                    // if (elem == null) {
+                    //     elem = vars.tagLoader;
+                    // }
+                    // let load = document.querySelector("#" + elem);
+                    // if (load.innerHTML == "") {
+                    //     load.innerHTML = laurel.loader;
+                    // }
+                    // if (type) {
+                    //     load.classList.add("loading");
+                    //     document.body.classList.add("hide-overflow");
+                    //     load.classList.remove("loadingOut");
+                    // } else {
+                    //     document.body.classList.remove("hide-overflow");
+                    //     load.classList.remove("loading");
+                    //     load.classList.add("loadingOut");
+
+                    // }
                 },
-                callDefaultComponents: () => {
+                getNameComponent: function(name, extra = "") {
+                    return vars.prefixHtmlComponent + extra + name + "/" + name + vars.finalHtmlComponent;
+                },
+                callDefaultComponents: async() => {
+                    let elem, result, view;
                     try {
-                        window.laurel.defaultComponents.forEach((view, i) => {
-                            window.laurel.renderComponent(view.route, view.element);
-                        });
+                        for (view of window.laurel.defaultComponents) {
+                            elem = document.getElementById(view.element);
+                            result = await fetch(laurel.getNameComponent(view.element, vars.folderTemplate));
+                            elem.innerHTML = await result.text();
+                        }
+
+                        vars.js_template.forEach((elem) => {
+                            let scr = document.createElement("script");
+                            scr.src = "assets/template" + elem;
+                            document.body.appendChild(scr);
+                        })
+
                     } catch (err) {
                         console.error(err)
                     }
@@ -132,11 +167,13 @@ import vars from "./vars.js";
                 },
                 initLibraries: () => {
                     // init Toastr
-                    toastr.options.progressBar = true;
-                    toastr.options.positionClass = "toast-bottom-left";
+                    // toastr.options.progressBar = true;
+                    // toastr.options.positionClass = "toast-bottom-left";
                 },
                 handlerRoute: async() => {
-                    let hash = window.location.hash.substring(1) || "/";
+                    // laurel.renderLoader(true);
+                    let hash = window.location.hash.substring(1) || "/",
+                        extra = "";
                     var uri_obj = routes[hash];
                     if (uri_obj && uri_obj.templates) {
                         if (typeof(uri_obj.action) === "function") {
@@ -149,7 +186,10 @@ import vars from "./vars.js";
                         try {
                             frame.innerHTML = "";
                             for (let uri_template of uri_obj.templates) {
-                                let response = await fetch(vars.urlLaurel + uri_template);
+                                if (uri_obj.layout) {
+                                    extra = vars.folderTemplate;
+                                }
+                                let response = await fetch(vars.urlLaurel + laurel.getNameComponent(uri_template, extra));
                                 response = await response.text();
                                 frame.insertAdjacentHTML("beforeend", response)
                             };

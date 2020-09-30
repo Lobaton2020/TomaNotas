@@ -2,7 +2,7 @@ import :nameimport:Service from "../../services/:namesingle:.service.js";
 (function(window, document) {
     "use strict"
     document.addEventListener("DOMContentLoaded", (e) => {
-        window.laurel.controller(':namesingle:', {
+        window.laurel.component(':namesingle:', {
             create: async function(form) {
                 try {
                     laurel.renderLoader(true);
@@ -12,7 +12,7 @@ import :nameimport:Service from "../../services/:namesingle:.service.js";
                     console.error(err)
                 }
             },
-            list: async function() {
+            list: async function(page = 1) {
                 try {
                     laurel.renderLoader(true);
                     // 

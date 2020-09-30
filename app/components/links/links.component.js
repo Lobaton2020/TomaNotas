@@ -4,7 +4,7 @@ import LinkService from "../../services/link.service.js";
     "use strict"
     document.addEventListener("DOMContentLoaded", (e) => {
         let contador = 0;
-        window.laurel.controller('link', {
+        window.laurel.component('link', {
             create: async function(form) {
                 try {
                     form.button.disabled = true;

@@ -1,27 +1,188 @@
-<div class="container">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Nombre</th>
-                <th>Correo</th>
-                <th>Nickname</th>
-                <th>Rol</th>
-                <th>Estado</th>
-                <th>Creacion</th>
-            </tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-        <template id="template">
-            <tr>
-                <td class="id"></td>
-                <td class="name"></td>
-                <td class="email"></td>
-                <td class="nickname"></td>
-                <td class="rol"></td>
-                <td class="status"></td>
-                <td class="create_date"></td>
-            </tr>
-        </template>
-    </table>
+<nav aria-label="breadcrumb" class="mt-n4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#/">Inicio</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Usuarios</li>
+    </ol>
+</nav>
+<section class="section animated mb-n5 fadeIn">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Listado de usuarios</h4>
+                        <div class="card-header-form d-flex">
+
+
+                            <a href="#" class="btn btn-info btn-icon text-small icon-right add-user text-white mr-3"><i
+                                    data-feather="plus" class="text-small"></i><span>Nuevo usuario</span> </a>
+                            <form>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-primary"><svg class="svg-inline--fa fa-search fa-w-16"
+                                                aria-hidden="true" focusable="false" data-prefix="fas"
+                                                data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512" data-fa-i2svg="">
+                                                <path fill="currentColor"
+                                                    d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z">
+                                                </path>
+                                            </svg><!-- <i class="fas fa-search"></i> --></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nombre</th>
+                                        <th>Correo</th>
+                                        <th>Nickname</th>
+                                        <th>Rol</th>
+                                        <th>Creacion</th>
+                                        <th>Estado</th>
+                                        <th>Accion</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                </tbody>
+                                <template id="template">
+                                    <tr>
+                                        <td class="id"></td>
+                                        <td class="name"></td>
+                                        <td class="email"></td>
+                                        <td class="nickname"></td>
+                                        <td class="rol"></td>
+                                        <td class="create_date"></td>
+                                        <td>
+                                            <div class="status badge"></div>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown d-inline">
+                                                <a href="#" class="btn btn-primary dropdown-toggle detail" type="button"
+                                                    id="dropdownMenuButton4" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false" class="detail btn btn-primary"></a>
+                                                <div class="dropdown-menu " x-placement="bottom-start"
+                                                    style="position: absolute; transform: translate3d(0px, 28px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                    <a class="dropdown-item edit" href="#">Editar</a>
+                                                    <a class="dropdown-item disable" href="#">Inactivar</a>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </template>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer text-left">
+                        <div id="render-pagination"></div>
+                        <template id="template-pagination">
+                            <nav class="d-inline-block">
+                                <ul class="pagination mb-0">
+                                    <li class="page-item disabled">
+                                        <a class="page-link prev-page" href="#" tabindex="-1"><i
+                                                class="fas fa-chevron-left"></i></a>
+                                    </li>
+                                    <div id="prepend-paginate"></div>
+                                    <li class="page-item active">
+                                        <a class="page-link current-page" href="#">...</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link next-page" href="#"><i class="fas fa-chevron-right"></i></a>
+                                    </li>
+                                </ul>
+                                <div id="content-paginate" class="text-small text-muted text-center mt-2">1 - 10 de 20
+                                    registros</div>
+                            </nav>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Modal user-->
+<div id="add-user" class=" modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <div class="mx-auto">
+                    <div class="title-modal-center">
+                        <h5 class="modal-title title-modal-user" id="exampleModalLabel">
+                            Registrar usuario
+                        </h5>
+                    </div>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="save-user" class="needs-validation " novalidate="">
+                    <div class="form-group">
+                        <div>Rol</div>
+                        <div id="render-rols"></div>
+                        <template id="user-rol">
+                            <div class="pretty p-icon p-curve p-tada">
+                                <input type="radio" name="idrol" class="idrol" required>
+                                <div class="state p-primary-o">
+                                    <i class="icon material-icons">done</i>
+                                    <label class="name"></label>
+                                </div>
+                            </div>
+                        </template>
+                        <div id="validate-rol" class="border border-danger text-danger small p-1 px-2 my-1 rounded d-none">
+                            Que rol vas a poner?
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" name="name" class="form-control modal-name" required="">
+                        <div class="invalid-feedback">
+                            Cual es el nombre?
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Apellido</label>
+                        <input type="text" name="lastname" class="form-control" required="">
+                        <div class="invalid-feedback">
+                            Cual es el apellido?
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Correo</label>
+                        <input type="email" name="email" class="form-control" required="">
+                        <div class="invalid-feedback">
+                            Oh no! El correo es invalido.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nickname</label>
+                        <input type="text" name="nickname" class="form-control" required>
+                        <div class="invalid-feedback">
+                            Escribe un nickname.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" required>
+                        <div class="invalid-feedback">
+                            Escribe un nickname.
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-success" form="save-user">Guardar usuario</button>
+            </div>
+        </div>
+    </div>
 </div>

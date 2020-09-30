@@ -5,9 +5,9 @@ class User extends Model
     protected $table = "users";
     protected $primaryKey = "iduser";
 
-    public function users($request)
+    public function users($request, $paginate = 10)
     {
-        $users = User::paginate($request, 10);
+        $users = User::paginate($request, $paginate);
         foreach ($users as $user) {
             $user->rol = Rol::find($user->idrol);
             unset($user->idrol);

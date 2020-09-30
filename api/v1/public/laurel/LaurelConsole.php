@@ -2,6 +2,7 @@
 
 require_once "../../app/config/config.php";
 require_once "../../core/DB.php";
+require_once "./Tables.php";
 class Console
 {
     public function print_m($type, $mensaje)
@@ -122,5 +123,49 @@ class LaurelConsole extends Console
         } else {
             $this->print_m("error", "Error, file or database '{$name}' not found.");
         }
+    }
+    public function createMigrations($name)
+    {
+
+        $result = false;
+        $oldTable = explode(":", $name)[0];
+        $newTable = explode(":", $name)[1];
+        try {
+            $oldData = DB::selectAlternative("SELECT * FROM {$oldTable}");
+        } catch (PDOException $e) {
+            $this->print_m("error", $e->getMessage());
+        }
+        switch ($newTable) {
+            case "users":
+                foreach ($oldData as $data) {
+                    $result =  $this->migrateData($newTable, "getDataNewTableUser", $data);
+                };
+
+                break;
+            case "links":
+                foreach ($oldData as $data) {
+                    $result =  $this->migrateData($newTable, "getDataNewTableLink", $data);
+                };
+                break;
+        }
+        $msg = "Migration data";
+        if ($result) {
+            $this->print_m("success", "{$msg} inserted successfully. \n");
+        } else {
+            $this->print_m("error", "Error, {$msg} not completed. ");
+        }
+    }
+    public  function migrateData($newTable, $method, $old)
+    {
+        $tables = new Tables();
+        $dataInsert = $tables->{$method}($old);
+        $columns = implode(",", array_keys($dataInsert));
+        $values = "";
+        foreach (array_keys($dataInsert) as $column) {
+            $values .= ":" . $column . ",";
+        }
+        $values = substr($values, 0, strlen($values) - 1);
+        DB::query("INSERT INTO {$newTable} ({$columns}) VALUES ($values)", $dataInsert);
+        return  true;
     }
 }

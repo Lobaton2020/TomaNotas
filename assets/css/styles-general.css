@@ -1,0 +1,7 @@
+.title-modal-center {
+    position: relative;
+    left: 50%;
+    right: 50%;
+    bottom: 50%;
+    top: 50%;
+}

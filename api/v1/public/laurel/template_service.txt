@@ -7,7 +7,7 @@ class :class: extends Service
         // $this->authentication();
     }
 
-    public function index()
+    public function index($request = null)
     {
 
     }

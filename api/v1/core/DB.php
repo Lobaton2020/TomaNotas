@@ -40,4 +40,21 @@ class DB
             exit($e->getMessage());
         }
     }
+    private static function conAlternative()
+    {
+        try {
+            $dbh = new PDO(DBDRIVER . ":host=" . DBHOST . ";dbname=" . DBNAMEALTERNATIVE . ";charset=" . DBCHARSET, DBUSER, DBPASWORD);
+            $dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
+            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $dbh;
+        } catch (PDOException $e) {
+            exit($e->getMessage());
+        }
+    }
+    public static function selectAlternative($sql, $params = [])
+    {
+        $stmt = self::conAlternative()->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
 }

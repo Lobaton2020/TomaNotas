@@ -67,14 +67,14 @@ class Router
     {
         if (self::$routes[$routeAux]["methodData"] === $method) {
             if ($method !== "GET") {
+                if (!empty($_POST) && isset($_POST["id"])) {
+                    self::$params[] = $_POST["id"];
+                }
                 if (!empty($_POST)) {
                     self::$params[] = (object)$_POST;
                 }
                 if (!empty($_FILES)) {
                     self::$params[] = (object)$_FILES;
-                }
-                if (!empty($_POST) && isset($_POST["id"])) {
-                    self::$params[] = $_POST["id"];
                 }
             } else {
                 if (!empty($_GET)) {

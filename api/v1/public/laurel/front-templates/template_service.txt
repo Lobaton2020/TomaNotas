@@ -17,9 +17,9 @@ export default {
             console.error(err)
         }
     },
-    list: async function() {
+    list: async function(page) {
         try {
-            const response = await fetch(this.url + ":nameplural:");
+            const response = await fetch(this.url + `:nameplural:${page}`);
             const result = await response.json();
             return result;
         } catch (err) {

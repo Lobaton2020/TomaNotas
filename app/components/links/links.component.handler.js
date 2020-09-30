@@ -1,21 +1,21 @@
 const handlerLink = (e) => {
     e.preventDefault();
     if (e.target.idform.value != "") {
-        laurel.getController().update(e.currentTarget);
+        laurel.getComponent().update(e.currentTarget);
     } else {
-        laurel.getController().create(e.currentTarget);
+        laurel.getComponent().create(e.currentTarget);
     }
 };
 // render list
 const handlerListEditLink = (e) => {
     e.preventDefault();
     e.currentTarget.disabled = true;
-    laurel.getController().edit(e.currentTarget.dataset.id);
+    laurel.getComponent().edit(e.currentTarget.dataset.id);
 
 }
 const handlerListDeleteLink = (e) => {
     e.preventDefault();
-    laurel.getController().delete(e.currentTarget.dataset.id);
+    laurel.getComponent().delete(e.currentTarget.dataset.id);
 };
 
 

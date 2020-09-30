@@ -82,6 +82,20 @@ class Model
         $params = [":id" => $id];
         return DB::query($sql, $params);
     }
+    public static function disable($id = null, $limit = 1)
+    {
+        $model = new static();
+        $sql = "UPDATE {$model->table} SET status = 0 WHERE {$model->primaryKey} = :id limit {$limit}";
+        $params = [":id" => $id];
+        return DB::query($sql, $params);
+    }
+    public static function enable($id = null, $limit = 1)
+    {
+        $model = new static();
+        $sql = "UPDATE {$model->table} SET status = 1 WHERE {$model->primaryKey} = :id limit {$limit}";
+        $params = [":id" => $id];
+        return DB::query($sql, $params);
+    }
     public static function count()
     {
         $model = new static();

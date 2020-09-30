@@ -6,5 +6,5 @@ interface ICrud
     public function store($request = null, $files = null);
     public function edit($id = null);
     public function update($request = null, $files = null);
-    public function delete($id = null);
+    public function disable($id = null);
 }

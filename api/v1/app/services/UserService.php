@@ -10,7 +10,7 @@ class UserService extends Service implements ICrud
     public function index($request = null)
     {
         return httpResponse(
-            $this->model->users($request),
+            $this->model->users($request, 5),
             User::infoPaginate("users")
         )->json();
     }
@@ -18,11 +18,15 @@ class UserService extends Service implements ICrud
     public function store($request = null, $files =  null)
     {
         $user = User::create();
-        $user->nombrecompleto = $request->name;
-        $user->correo = $request->correo;
-        $user->contrasena = encrypt($request->clave);
-        $user->imagen = $request->avatar;
-        $user->telefono = $request->tel;
+        $user->idrol = $request->idrol;
+        $user->name = $request->name;
+        $user->lastname = $request->lastname;
+        $user->email = $request->email;
+        $user->nickname = $request->nickname;
+        $user->password = encrypt($request->password);
+        $user->status = 1;
+        $user->create_date = dateTime();
+
         if ($user->save()) {
             return httpResponse(200, "success", "User created successfully.")->json();
         } else {
@@ -37,12 +41,20 @@ class UserService extends Service implements ICrud
     public function update($request = null, $files = null)
     {
     }
-    public function delete($id = null)
+    public function disable($id = null)
     {
-        if (User::delete($id)) {
-            return httpResponse(200, "success", "User deleted successfully.")->json();
+        if (User::disable($id)) {
+            return httpResponse(200, "success", "User disabled successfully.")->json();
         } else {
-            return httpResponse(500, "error", "Error user not deleted")->json();
+            return httpResponse(500, "error", "Error user not disabled")->json();
+        }
+    }
+    public function enable($id = null)
+    {
+        if (User::enable($id)) {
+            return httpResponse(200, "success", "User enabled successfully.")->json();
+        } else {
+            return httpResponse(500, "error", "Error user not enabled")->json();
         }
     }
 }

@@ -28,6 +28,9 @@ if (php_sapi_name() == "cli") {
                 case "migration":
                     $laurel->createMigration($name);
                     break;
+                case "migrations":
+                    $laurel->createMigrations($name);
+                    break;
                 case "destroy":
                     $laurel->dropTables($name);
                     break;
@@ -66,3 +69,17 @@ if (php_sapi_name() == "cli") {
 } else {
     echo "Error de entorno de ejecución.";
 }
+/**
+ * COMANDS FOR THE APP
+ * php laurel.php make:model User
+ * php laurel.php make:service UserService
+ * php laurel.php make:contract IUser
+ * 
+ * php alurel.php make:migration tomanotas
+ * php alurel.php make:destroy all
+ *
+ * php laurel.php make:servicejs user
+ * php laurel.php make:component users (in plural)
+ * 
+ * php laurel.php make:migrations link:links (old-table:ew-table)
+ */
