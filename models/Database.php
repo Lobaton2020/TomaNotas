@@ -6,8 +6,8 @@ class Database
         try {
             $dbhost = "localhost";
             $dbuser = "root";
-            $dbpass = '';
-            $dbname = "tomanotas";
+            $dbpass = '12345';
+            $dbname = "tomanotas_old";
 
             $dsn = "mysql:host={$dbhost};dbname={$dbname};charset=utf8";
             $dbh = new PDO($dsn, $dbuser, $dbpass);

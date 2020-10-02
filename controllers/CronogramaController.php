@@ -20,7 +20,6 @@ class CronogramaController
             echo "<script> window.location.href ='?c=auth&cod=A005';</script>";
             exit();
         }
-
     }
 
     public function index()
@@ -29,7 +28,6 @@ class CronogramaController
         $content = "cronograma/listCronograma.php";
         $title = "Cronogramas";
         require_once "views/template/dashboard/content.php";
-
     }
 
     public function getTareas()
@@ -40,9 +38,22 @@ class CronogramaController
             $content = "cronograma/listTareas.php";
             $title = "Cronograma de Tareas";
             require_once "views/template/dashboard/content.php";
-
         } else {
             header("location:?c=cronograma");
+        }
+    }
+    public function getTareasJSON()
+    {
+        if (isset($_GET["id"])) {
+            $titulo = $this->cronograma->getTituloCronograma($_GET["id"]);
+            $data = $this->cronograma->getAllTareas($_GET["id"]);
+            $response =  [];
+            $response["data"] =  $data;
+            $response["titulo"] = $titulo;
+            http_response_code(200);
+            echo json_encode($response);
+        } else {
+            http_response_code(404);
         }
     }
 
@@ -62,7 +73,6 @@ class CronogramaController
         } else {
             header("location:?c=cronograma&cod=E001");
         }
-
     }
 
     public function createTareaCronograma()
@@ -85,7 +95,6 @@ class CronogramaController
             $_SESSION["error-insert-tarea"] = "Hubo un error, no se agregó la tarea.";
             header("location:?c=cronograma&m=getTareas&id=" . $datos["idcronograma"]);
         }
-
     }
 
     public function cambiarEstado()
@@ -101,7 +110,6 @@ class CronogramaController
         } else {
             header("location:?c=cronograma&m=getTareas&id=" . $datos["idcronograma"]);
         }
-
     }
     public function eliminarTareasCronograma()
     {
@@ -113,7 +121,6 @@ class CronogramaController
                 header("location:?c=cronograma&m=getTareas&id=" . $idcronograma);
             }
         }
-
     }
 
     public function reiniciarTareasCronograma()
@@ -126,7 +133,6 @@ class CronogramaController
                 header("location:?c=cronograma&m=getTareas&id=" . $idcronograma);
             }
         }
-
     }
 
     public function eliminarTareaCronograma()
@@ -140,7 +146,6 @@ class CronogramaController
                 header("location:?c=cronograma&m=getTareas&id=" . $idcronograma);
             }
         }
-
     }
 
     public function updateTareaCronograma()
@@ -161,7 +166,6 @@ class CronogramaController
             $_SESSION["error-insert-tarea"] = "Hubo un error, no se actualizó la tarea.";
             header("location:?c=cronograma&m=getTareas&id=" . $datos["idcronograma"]);
         }
-
     }
 
     public function eliminarCronograma()
@@ -176,10 +180,8 @@ class CronogramaController
                 }
             } else {
                 header("location:?c=cronograma&cod=E003");
-
             }
         }
-
     }
 
     public function updateTitleCronograma()
@@ -196,7 +198,5 @@ class CronogramaController
             $_SESSION["error-insert-tarea"] = "Hubo un error, no se cambió el titulo.";
             header("location:?c=cronograma");
         }
-
     }
-
 }
