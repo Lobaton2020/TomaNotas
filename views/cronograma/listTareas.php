@@ -165,7 +165,7 @@
 
     function renderNotificationSound(title, description) {
         window.audio = document.createElement("audio")
-        audio.src = "assets/audio/rington-mario-bros.mp3";
+        window.audio.src = "assets/audio/rington-mario-bros.mp3";
         let notification;
         let options = {
             "body": description,
@@ -173,14 +173,14 @@
         };
         if (Notification.permission === "granted") {
             notification = new Notification(title, options)
-            audio.play();
+            window.audio.play();
             notification.addEventListener("click", closeNotification);
             notification.addEventListener("close", closeNotification);
         } else {
             Notification.requestPermission((permiso) => {
                 if (permiso === "granted") {
                     notification = new Notification(title, options);
-                    audio.play();
+                    window.audio.play();
                     notification.addEventListener("click", closeNotification);
                     notification.addEventListener("close", closeNotification);
                 }
