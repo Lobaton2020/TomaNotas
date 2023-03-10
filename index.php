@@ -9,6 +9,7 @@ function a($param)
 }
 // FrontController
 session_start();
+require_once "config/config.php";
 require_once "models/Database.php";
 date_default_timezone_set("America/Bogota");
 
