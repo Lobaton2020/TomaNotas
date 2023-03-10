@@ -88,7 +88,7 @@ foreign key (id_usuario_FK) references Usuario(id_usuario_PK)
  primary key(id_registro_login_PK),
  foreign key (id_usuario_FK) references Usuario(id_usuario_PK)
  );
- 
+
  create table Notificacion(
 id_notificacion_PK int not null auto_increment,
 id_usuario_FK int not null,
@@ -146,27 +146,27 @@ foreign key (id_cronograma_FK) references cronograma(id_cronograma_PK)
 create procedure Archivos_Compartidos (IDUSUARIO int)
 select AC.id_archivo_compartido_PK,A.id_usuario_FK,AC.id_usuario_entrega_FK, AC.id_archivo_FK,A.ruta,A.tamano,AC.id_usuario_recibe_FK,U.nombre,U.apellido,AC.fecha
 from Archivo as A  inner join Archivo_Compartido as AC  on id_archivo_FK = id_archivo_PK
-                   inner join Usuario as U on id_usuario_recibe_FK = id_usuario_PK 
+                   inner join Usuario as U on id_usuario_recibe_FK = id_usuario_PK
                    where AC.id_usuario_entrega_FK = IDUSUARIO OR AC.id_usuario_recibe_FK = IDUSUARIO  ORDER BY AC.id_archivo_compartido_PK DESC;
-                   
+
 -- compartido con otros..compartido con conmigo
 create procedure Links_Compartidos (IDUSUARIO int)
 select LC.id_link_compartido_PK,LC.id_usuario_entrega_FK,LC.id_usuario_recibe_FK,U.nombre,U.apellido,Lc.id_link_FK,L.url_link,L.titulo,LC.fecha
 from Link as L  inner join Link_Compartido as LC  on id_link_FK = id_link_PK
-                   inner join Usuario as U on id_usuario_recibe_FK = id_usuario_PK 
-                   WHERE LC.id_usuario_entrega_FK = IDUSUARIO OR LC.id_usuario_recibe_FK = IDUSUARIO  ORDER BY LC.id_link_compartido_PK DESC ;                   
+                   inner join Usuario as U on id_usuario_recibe_FK = id_usuario_PK
+                   WHERE LC.id_usuario_entrega_FK = IDUSUARIO OR LC.id_usuario_recibe_FK = IDUSUARIO  ORDER BY LC.id_link_compartido_PK DESC ;
 
 -- creacion de vistas
 create view Consulta_Notificacion as
-select n.id_notificacion_PK, u.id_usuario_PK,u.nombre, u.apellido, n.tipo_notificacion , n.fecha 
+select n.id_notificacion_PK, u.id_usuario_PK,u.nombre, u.apellido, n.tipo_notificacion , n.fecha
 from Notificacion as n inner join Usuario as u on id_usuario_PK = id_usuario_FK ORDER BY n.id_notificacion_PK DESC;
 
 create view Consulta_Registro_Login as
-select hl.id_registro_login_PK,u.id_usuario_PK, u.nombre, u.apellido, hl.fecha,hl.hora 
+select hl.id_registro_login_PK,u.id_usuario_PK, u.nombre, u.apellido, hl.fecha,hl.hora
 from Registro_Login as hl inner join Usuario as u on id_usuario_PK = id_usuario_FK ORDER BY id_registro_login_PK DESC;
 
 -- uso de un trigger para las notas eliminadas
-create trigger Elinimacion_Notas_BD before delete on Link for each row 
+create trigger Elinimacion_Notas_BD before delete on Link for each row
 insert into Backup_Link values(old.id_link_PK,old.id_usuario_FK,old.titulo,old.url_link,now());
 
 create view Reporte_Modulos as
@@ -177,7 +177,7 @@ select u.nickname,u.id_usuario_PK,count(distinct l.id_link_PK) as L,count( disti
                             left join Nota as n on u.id_usuario_PK = n.id_usuario_FK
                             left join Tarea as t on u.id_usuario_PK = t.id_usuario_FK
                             left join Archivo as a on u.id_usuario_PK = a.id_usuario_FK
-                            left join Cronograma as c on u.id_usuario_PK = c.id_usuario_FK
+                            left join cronograma as c on u.id_usuario_PK = c.id_usuario_FK
                             GROUP BY u.nickname,u.id_usuario_PK ORDER BY u.id_usuario_PK asc;
 
 
