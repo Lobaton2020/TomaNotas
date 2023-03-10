@@ -170,14 +170,14 @@ create trigger Elinimacion_Notas_BD before delete on Link for each row
 insert into Backup_Link values(old.id_link_PK,old.id_usuario_FK,old.titulo,old.url_link,now());
 
 create view Reporte_Modulos as
-select u.nickname,u.id_usuario_PK,count(distinct l.id_link_PK) as L,count( distinct n.id_nota_PK) as N,
-                                 count( distinct a.id_archivo_PK) as A,count( distinct t.id_tarea_PK) as T,
-                                 count( distinct c.id_cronograma_PK) as C
-          from Usuario as u left join Link as l on u.id_usuario_PK = l.id_usuario_FK
-                            left join Nota as n on u.id_usuario_PK = n.id_usuario_FK
-                            left join Tarea as t on u.id_usuario_PK = t.id_usuario_FK
-                            left join Archivo as a on u.id_usuario_PK = a.id_usuario_FK
-                            left join cronograma as c on u.id_usuario_PK = c.id_usuario_FK
-                            GROUP BY u.nickname,u.id_usuario_PK ORDER BY u.id_usuario_PK asc;
+    SELECT u.nickname, u.id_usuario_PK,
+    (SELECT COUNT(*) FROM Link WHERE id_usuario_FK = u.id_usuario_PK) as L,
+    (SELECT COUNT(*) FROM Nota WHERE id_usuario_FK = u.id_usuario_PK) as N,
+    (SELECT COUNT(*) FROM Archivo WHERE id_usuario_FK = u.id_usuario_PK) as A,
+    (SELECT COUNT(*) FROM Tarea WHERE id_usuario_FK = u.id_usuario_PK) as T,
+    (SELECT COUNT(*) FROM cronograma WHERE id_usuario_FK = u.id_usuario_PK) as C
+    FROM Usuario as u
+    ORDER BY u.id_usuario_PK asc;
+
 
 
