@@ -4,10 +4,10 @@ class Database
     public static function Connect()
     {
         try {
-            $dbhost = "localhost";
-            $dbuser = "root";
-            $dbpass = '12345';
-            $dbname = "tomanotas_old";
+            $dbhost = DBHOST;
+            $dbname = DBNAME;
+            $dbuser = DBUSER;
+            $dbpass = DBPASWORD;
 
             $dsn = "mysql:host={$dbhost};dbname={$dbname};charset=utf8";
             $dbh = new PDO($dsn, $dbuser, $dbpass);
