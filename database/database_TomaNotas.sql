@@ -151,7 +151,7 @@ from Archivo as A  inner join Archivo_Compartido as AC  on id_archivo_FK = id_ar
 
 -- compartido con otros..compartido con conmigo
 create procedure Links_Compartidos (IDUSUARIO int)
-select LC.id_link_compartido_PK,LC.id_usuario_entrega_FK,LC.id_usuario_recibe_FK,U.nombre,U.apellido,Lc.id_link_FK,L.url_link,L.titulo,LC.fecha
+select LC.id_link_compartido_PK,LC.id_usuario_entrega_FK,LC.id_usuario_recibe_FK,U.nombre,U.apellido,LC.id_link_FK,L.url_link,L.titulo,LC.fecha
 from Link as L  inner join Link_Compartido as LC  on id_link_FK = id_link_PK
                    inner join Usuario as U on id_usuario_recibe_FK = id_usuario_PK
                    WHERE LC.id_usuario_entrega_FK = IDUSUARIO OR LC.id_usuario_recibe_FK = IDUSUARIO  ORDER BY LC.id_link_compartido_PK DESC ;
