@@ -9,19 +9,23 @@
         </button>
       </div>
       <div class="modal-body">
-          <form method="post" id="form_nota">
-              <input type="hidden" name="c" value="nota">
-              <input type="hidden" name="m" value="create">
+        <form method="post" id="form_nota">
+          <input type="hidden" name="c" value="nota">
+          <input type="hidden" name="m" value="create">
           <div class="form-group">
             <small>Agrega un titulo</small>
             <textarea rows=1 class="form-control text-peque " name='titulo' placeholder="Titulo"></textarea>
           </div>
           <div class="form-group">
             <small>Agrega una descripcion (*) <span class="text-danger"> campo obligatorio</span></small>
-            <textarea  class="form-control text-peque size_content" name='descripcion' placeholder="Descripcion"></textarea>
+            <textarea class="form-control text-peque size_content" name='descripcion' placeholder="Descripcion"></textarea>
+          </div>
+          <div class="form-group">
+            <small>Agrega un color</small>
+            <input type="color" rows=1 class="form-control text-peque " name='color' value="#ffffff" placeholder="Titulo"></textarea>
           </div>
         </form>
-          
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

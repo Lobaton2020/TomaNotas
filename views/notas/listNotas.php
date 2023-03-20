@@ -9,11 +9,12 @@
   <div class="card-columns mt-4">
     <?php $i = 1;
     foreach ($response as $row) : ?>
-      <div class="card">
+      <div class="card" style="background-color: <?= $row->color ? $row->color : '#ffffff' ?>">
         <div class="card-body ">
           <!-- <p class="d-none" id="descripcion<?php echo $row->id_nota_PK; ?>"><?php echo $row->descripcion; ?></p> -->
           <input type="hidden" value="<?php echo $row->descripcion; ?>" id="descripcion<?php echo $row->id_nota_PK; ?>">
           <input type="hidden" value="<?php echo $row->titulo; ?>" id="titulo<?php echo $row->id_nota_PK; ?>">
+          <input type="hidden" value="<?php echo $row->color; ?>" id="color<?php echo $row->id_nota_PK; ?>">
           <input type="hidden" value="<?php echo getDatenota($row->fecha_ingreso); ?>" id="fecha<?php echo $row->id_nota_PK; ?>">
           <h5 class="card-title"><?php echo $row->titulo; ?> &nbsp;</h5>
           <textarea class="card-text form-control p-0 text-peque muestra_nota size_js " id="size_js<?php echo $i++; ?>" data-resizable="true" disabled><?php echo $row->descripcion; ?></textarea>

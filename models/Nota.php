@@ -44,11 +44,12 @@ class Nota
     {
         try {
 
-            $sql = "UPDATE Nota SET titulo = ?, descripcion = ? where id_nota_PK = ? and id_usuario_FK = ?";
+            $sql = "UPDATE Nota SET titulo = ?, descripcion = ?, color = ? where id_nota_PK = ? and id_usuario_FK = ?";
             $stmt = $this->dbh->prepare($sql);
             $stmt->execute(array(
                 $data["new_titulo"],
                 $data["nueva_descripcion"],
+                $data["color"],
                 $data["id"],
                 $this->session));
 
@@ -63,13 +64,15 @@ class Nota
     {
         try {
             $fecha = date("Y-m-d H:m:i");
-            $stmt = $this->dbh->prepare("INSERT INTO Nota VALUES(?,?,?,?,?,?)");
+            $stmt = $this->dbh->prepare("INSERT INTO Nota VALUES(?,?,?,?,?,?,?)");
             $stmt->execute(array(null,
                 $this->session,
                 $data["titulo"],
                 $data["descripcion"],
                 1,
-                $fecha));
+                $fecha,
+                $data["color"]
+            ));
 
             return true;
 

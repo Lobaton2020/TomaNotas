@@ -56,6 +56,7 @@ function getNota(id) {
         // var descripcion = document.getElementById("descripcion" + id).textContent;
         var descripcion = $("#descripcion" + id).val();
         var fecha = $("#fecha" + id).val();
+        var color = $("#color" + id).val()
         $("#id_nota").attr("value", id);
         $("#titulo_nota").html(titulo);
         $("#descripcion").html("<textarea class='form-control  text-peque border_none modal_nota' disabled >" + descripcion + "</textarea>");
@@ -63,9 +64,11 @@ function getNota(id) {
         $("#fecha").html(fecha);
 
         $("#form_titulo").html("");
+        $("#form_color").html("");
         $("#titulo_n").attr("value", titulo);
         $("#descripcion_n").attr("value", descripcion);
         $("#fecha_n").attr("value", fecha);
+        $("#color_n").attr("value", color);
 
         $("#editar_nota").css("display", "block");
         $("#eliminar_nota").css("display", "block");
@@ -85,13 +88,21 @@ $("#editar_nota").click(function() {
 
         var titulo = $("#titulo_n").val();
         var descripcion = $("#descripcion_n").val();
+        let color = $("#color_n").val();
         var form_title = "<small class='text-muted'>Actualiza el titulo<small>";
         form_title += "<textarea rows=1 class='form-control text-peque size_title' name='new_titulo'>" + titulo + "</textarea>";
 
         var form_descripcion = "<small class='text-muted'>Actualiza la descripcion<small>";
         form_descripcion += "<textarea class='form-control text-peque size_content ' name='nueva_descripcion'>" + descripcion + "</textarea>";
+        let form_color = `
+                <div class="form-group">
+                <small>Establece un color</small>
+                <input type="color" rows=1 class="form-control text-peque " name='color' value="${color ? color : "#ffffff"}" placeholder="Color"></textarea>
+            </div>
+        `
         $("#titulo_nota").html("Editar Nota");
         $("#form_titulo").html(form_title);
+        $("#form_color").html(form_color);
         $("#descripcion").html(form_descripcion);
 
         $("#editar_nota").css("display", "none");

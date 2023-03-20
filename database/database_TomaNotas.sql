@@ -142,6 +142,9 @@ primary key(id_tarea_cronograma_PK),
 foreign key (id_cronograma_FK) references cronograma(id_cronograma_PK)
 );
 
+ALTER TABLE Nota
+ADD color varchar(50) not null default "#ffffff";
+
 -- compartido con otros..compartido con conmigo
 create procedure Archivos_Compartidos (IDUSUARIO int)
 select AC.id_archivo_compartido_PK,A.id_usuario_FK,AC.id_usuario_entrega_FK, AC.id_archivo_FK,A.ruta,A.tamano,AC.id_usuario_recibe_FK,U.nombre,U.apellido,AC.fecha
