@@ -2,7 +2,7 @@
 require_once "models/Cronograma.php";
 require_once "helpers/verAlerta.php";
 require_once "models/Administrador.php";
-
+require_once "helpers/order_tarea_cronograma.php";
 class CronogramaController
 {
     private $admin;
@@ -35,6 +35,7 @@ class CronogramaController
         if (isset($_GET["id"])) {
             $titulo = $this->cronograma->getTituloCronograma($_GET["id"]);
             $response = $this->cronograma->getAllTareas($_GET["id"]);
+            usort($response, 'compararPorHoraMinuto');
             $content = "cronograma/listTareas.php";
             $title = "Cronograma de Tareas";
             require_once "views/template/dashboard/content.php";
