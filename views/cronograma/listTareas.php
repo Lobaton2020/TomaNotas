@@ -63,7 +63,7 @@
             <span class="h6 float-right logo_peque mr-3 mt-2"><?php echo $titulo->titulo ?></span>
         </div>
         <div class="col-sm-12 col-md-10 d-inline margen">
-            <input id="descripcion" type="text" class="form-control d-inline  width-form-add-task" name="contenido-tarea" placeholder="Escribe tu tarea?">
+            <input id="descripcion" type="text" required class="form-control d-inline  width-form-add-task" name="contenido-tarea" placeholder="Escribe tu tarea?">
             <button id="btn-update-task" type="submit" class="btn btn-success float-right "><i class="fas fa-plus"></i></button>
         </div>
     </div>
