@@ -175,4 +175,55 @@ class Cronograma
             exit($e->getMessage());
         }
     }
+
+    public function getOne($idcronograma)
+    {
+        try {
+            $sql = "SELECT * FROM cronograma WHERE id_cronograma_PK = ?";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->execute(array($idcronograma));
+            return $stmt->fetch();
+
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }
+    }
+
+
+    function copy(Int $cronogramaId){
+        try {
+            $this->dbh->beginTransaction();
+            $cronograma = $this->getOne($cronogramaId);
+
+            $sql = "INSERT INTO cronograma values(?,?,?,?)";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->execute([
+                null,
+                $cronograma->id_usuario_FK,
+                "{$cronograma->titulo} Copy",
+                date("Y-m-d H:m:i")
+            ]);
+            $newCronogramaId = $this->dbh->lastInsertId();
+            $tareas = $this->getAllTareas($cronogramaId);
+            foreach ($tareas as $tarea) {
+                $tarea_cronograma = (array) $tarea;
+                $sql = "INSERT INTO tarea_cronograma values(?,?,?,?,?,?,?)";
+                $stmt = $this->dbh->prepare($sql);
+                $stmt->execute(array(
+                    null,
+                    $newCronogramaId,
+                    $tarea_cronograma["descripcion"],
+                    $tarea_cronograma["hora"],
+                    $tarea_cronograma["minuto"],
+                    $tarea_cronograma["meridiano"],
+                    0));
+            }
+            $this->dbh->commit();
+            return true;
+        } catch(PDOException $e) {
+            $this->dbh->rollback();
+            exit($e->getMessage());
+        }
+
+    }
 }

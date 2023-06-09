@@ -89,6 +89,9 @@
                     <div class="col-md-10">
                         <?php if (count($response) == 0) { ?><div class=text-center>No hay contenido por mostrar</div><?php } ?>
                         <?php for ($i = 0; $i < count($response); $i++) : ?>
+                            <?php if ($i != 0): ?>
+                                <hr class="my-0 mx-5 ">
+                            <?php endif; ?>
                             <?php $minuto = ($response[$i]->minuto == 0) ? "00" : $response[$i]->minuto; ?>
                             <?php $time = $response[$i]->hora . " : " . $minuto; ?>
 
