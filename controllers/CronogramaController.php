@@ -200,4 +200,14 @@ class CronogramaController
             header("location:?c=cronograma");
         }
     }
+    public function copiar()
+    {
+        if(!isset($_GET["idcronograma"])){
+            echo json_encode(["message"=>"ID requerido"]);
+            return;
+        }
+        $cronomgramaId = intval(trim($_GET["idcronograma"]));
+       $this->cronograma->copy( $cronomgramaId);
+       header("location:?c=cronograma&cod=A010");
+    }
 }

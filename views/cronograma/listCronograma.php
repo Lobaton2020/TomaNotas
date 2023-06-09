@@ -18,8 +18,9 @@
             <a class="float-right text-right" id="options_cronograma" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >&nbsp;&nbsp;<i class="fas fa-ellipsis-v"> </i>&nbsp;&nbsp;</a>
             <div class="dropdown-menu dropdown-menu-right " aria-labelledby="#options_cronograma">
               <h6 class="dropdown-header">Opcion</h6>
-              <a class="dropdown-item small"  onclick="javascript:return confirm('¿Estas seguro de eliminar este cronograma?')" href="?c=cronograma&m=eliminarCronograma&idcronograma=<?php echo $row->id_cronograma_PK ?>"><i class="fas fa-trash"></i> Eliminar </a>
+              <a class="dropdown-item small"  onclick="javascript:return confirm('¿Estas seguro de copíar este cronograma?')" href="?c=cronograma&m=copiar&idcronograma=<?php echo $row->id_cronograma_PK ?>"><i class="fa fa-copy"></i> Crear copia </a>
               <a class="dropdown-item small update-title" id="update-title-<?php echo $i++; ?>"  type="button" data-toggle="modal" data-target="#agregar_cronograma" ide="<?php echo $row->id_cronograma_PK ?>" title="<?php echo $row->titulo; ?>"><i class="fas fa-heading"></i></i> Cambiar titulo </a>
+              <a class="dropdown-item small"  onclick="javascript:return confirm('¿Estas seguro de eliminar este cronograma?')" href="?c=cronograma&m=eliminarCronograma&idcronograma=<?php echo $row->id_cronograma_PK ?>"><i class="fas fa-trash"></i> Eliminar </a>
             </div>
           </div>
          </div>
