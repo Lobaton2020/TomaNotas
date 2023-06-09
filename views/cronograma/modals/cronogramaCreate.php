@@ -15,7 +15,7 @@
               <input type="hidden" id="idcronograma"  name="idcronograma" >
           <div class="form-group">
             <small>Agrega un titulo</small>
-            <textarea rows=1 id="titulo" class="form-control text-peque " name='titulo' placeholder="Dale un titulo a este nuevo cronograma"></textarea>
+            <input id="titulo" class="form-control text-peque " name='titulo' placeholder="Dale un titulo a este nuevo cronograma" />
           </div>
         </form>
 
