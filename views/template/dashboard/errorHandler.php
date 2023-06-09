@@ -79,6 +79,12 @@ if (isset($_REQUEST["c"]) && !empty($_REQUEST["cod"])) {
             $type = "success";
             break;
 
+        case "A010":
+            $msg = " se ha copiado exitosamente.";
+            $type = "success";
+            break;
+
+
         case "E001":
             $msg = "no se ha guardado.";
             $type = "danger";
