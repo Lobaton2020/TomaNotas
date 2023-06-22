@@ -75,8 +75,8 @@ if (document.getElementsByClassName("update-title")) {
 
 const initialize = () => {
     $.get('?c=project&format=json&status=1', (data) => {
-        const string = data.reduce((acc, act) => `<option value="${act.id}">${act.name}</option>` + acc, '')
-        $("#project_id").html(`<option value="">Personal</option>${string}`)
+        const string = data.reduce((acc, act) => `<option ${act.name.toLowerCase().includes("default") ? "selected":""} value="${act.id}">${act.name}</option>` + acc, '')
+        $("#project_id").html(`<option value="">None</option>${string}`)
     })
 }
 document.addEventListener("DOMContentLoaded", initialize)
