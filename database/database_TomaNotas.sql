@@ -190,6 +190,7 @@ FROM
           WHERE
             tp2.id_tarea_cronograma_PK = (x.id_tarea_cronograma_PK + 1)
             AND id_cronograma_FK = x.id_cronograma_FK
+            and tp2.estado = 1
         ),
         TIME_FORMAT(
           DATE_ADD(
