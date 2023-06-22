@@ -69,7 +69,6 @@ class Cronograma
                     $datos["order"]
                 )
             );
-            $this->autoOrganizeOrder($datos["idcronograma"]);
             return true;
         } catch (Exception $e) {
             exit($e->getMessage());
@@ -154,7 +153,6 @@ class Cronograma
                     $datos["idtarea"]
                 )
             );
-            $this->autoOrganizeOrder($datos["idcronograma"]);
             return true;
 
         } catch (Exception $e) {

@@ -98,6 +98,10 @@ class CronogramaController
             $_SESSION["error-insert-tarea"] = "Hubo un error, no se agregó la tarea.";
             header("location:?c=cronograma&m=getTareas&id=" . $datos["idcronograma"]);
         }
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        }
+        $this->cronograma->autoOrganizeOrder($datos["idcronograma"]);
     }
 
     public function cambiarEstado()
@@ -170,6 +174,10 @@ class CronogramaController
             $_SESSION["error-insert-tarea"] = "Hubo un error, no se actualizó la tarea.";
             header("location:?c=cronograma&m=getTareas&id=" . $datos["idcronograma"]);
         }
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        }
+        $this->cronograma->autoOrganizeOrder($datos["idcronograma"]);
     }
 
     public function eliminarCronograma()
