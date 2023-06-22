@@ -170,16 +170,50 @@ ADD
   COLUMN `order` int not null default 0;
 create
 or replace view time_project_spent as
-select
-t.project_id,
+SELECT
+  t.project_id,
+FORMAT(
   SUM(
-    TIME_TO_SEC(
-      TIMEDIFF(
-        STR_TO_DATE(next_time, '%H:%i'),
-        STR_TO_DATE(actual_time, '%H:%i')
-      )
-    ) / 3600
-  ) AS time_difference
+    CASE
+      WHEN t.estado = 0 THEN TIME_TO_SEC(
+        TIMEDIFF(
+          STR_TO_DATE(t.next_time, '%H:%i'),
+          STR_TO_DATE(t.actual_time, '%H:%i')
+        )
+      ) / 3600
+      ELSE 0
+    END
+  ),
+  1
+) AS time_difference_planned,
+FORMAT(
+  SUM(
+    CASE
+      WHEN t.estado = 1 THEN TIME_TO_SEC(
+        TIMEDIFF(
+          STR_TO_DATE(t.next_time, '%H:%i'),
+          STR_TO_DATE(t.actual_time, '%H:%i')
+        )
+      ) / 3600
+      ELSE 0
+    END
+  ),
+  1
+) AS time_difference_done,
+FORMAT(
+  SUM(
+    CASE
+      WHEN t.estado IN (0, 1) THEN TIME_TO_SEC(
+        TIMEDIFF(
+STR_TO_DATE(t.next_time, '%H:%i'),
+STR_TO_DATE(t.actual_time, '%H:%i')
+)
+) / 3600
+ELSE 0
+END
+),
+1
+) AS total_time_difference
 FROM
   (
     SELECT
@@ -192,8 +226,8 @@ SELECT
 FROM
   tarea_cronograma AS tp2
 WHERE
-tp2.order = (x.order + 1)
-AND id_cronograma_FK = x.id_cronograma_FK
+  tp2.order = (x.order + 1)
+  AND id_cronograma_FK = x.id_cronograma_FK
 ),
 TIME_FORMAT(
   DATE_ADD(
@@ -206,13 +240,14 @@ TIME_FORMAT(
 FROM
   tarea_cronograma x
 WHERE
-  estado = 1
+estado IN (0, 1)
 ORDER BY
   x.id_tarea_cronograma_PK ASC,
   x.id_cronograma_FK
 ) AS t
 GROUP BY
   t.project_id;
+
 -- compartido con otros..compartido con conmigo
 create procedure Archivos_Compartidos (IDUSUARIO int)
 select AC.id_archivo_compartido_PK,A.id_usuario_FK,AC.id_usuario_entrega_FK, AC.id_archivo_FK,A.ruta,A.tamano,AC.id_usuario_recibe_FK,U.nombre,U.apellido,AC.fecha

@@ -27,7 +27,7 @@ class Project
     public function findAll()
     {
         try {
-            $sql = "SELECT p.*, FORMAT(tps.time_difference,2) as hours_spent from projects p
+            $sql = "SELECT p.*, tps.* from projects p
                     left join time_project_spent tps on p.id = tps.project_id WHERE user_id = ? ORDER BY id DESC";
             $stmt = $this->dbh->prepare($sql);
             $stmt->execute([$this->userId]);

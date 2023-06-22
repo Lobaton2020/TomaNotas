@@ -1,3 +1,4 @@
+<?php require_once "helpers/if_null_then_0.php"; ?>
 <div class="container tipo-letra">
   <div class="row">
     <div class="col-md-2 col-sm-12"></div>
@@ -20,7 +21,9 @@
               <td>#</td>
               <td style="min-width:150px">Nombre</td>
               <td>Estado</td>
-              <td>Horas gastadas</td>
+              <td>Horas planeadas</td>
+              <td>Horas completadas</td>
+              <td>Total horas</td>
               <?php if (isset($_SESSION["id_user"]) || !empty($_SESSION["id_user"])): ?>
                 <td class="eliminar_archivo">Accion</td>
                 <?php endif; ?>
@@ -46,7 +49,17 @@
                 </td>
                 <td>
                   <span class="text-muted">
-                    <?= $row->hours_spent ? $row->hours_spent : 0 ?> h
+                    <?= if_null_then_0($row->time_difference_planned) ?> h
+                    </span>
+                    </td>
+                    <td>
+                      <span class="text-muted">
+                        <?= if_null_then_0($row->time_difference_done) ?> h
+                      </span>
+                    </td>
+                    <td>
+                      <span class="text-muted">
+                        <?= if_null_then_0($row->total_time_difference) ?> h
                   </span>
                 </td>
                 <td class="text-left">
