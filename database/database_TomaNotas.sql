@@ -145,6 +145,68 @@ foreign key (id_cronograma_FK) references cronograma(id_cronograma_PK)
 ALTER TABLE Nota
 ADD color varchar(50) not null default "#ffffff";
 
+-- proyectos de tareas
+create table projects(
+  id int not null auto_increment,
+  user_id int not null,
+  name varchar(255) not null,
+  status boolean not null default 1,
+  descripcion varchar(1000) null,
+  created_at datetime not null default now(),
+  primary key(id),
+  foreign key (user_id) references Usuario(id_usuario_PK)
+);
+
+ALTER TABLE
+  tarea_cronograma
+ADD
+  COLUMN project_id INT NULL,
+ADD
+  FOREIGN KEY (project_id) REFERENCES projects(id);
+
+create
+or replace view time_project_spent as
+select
+  t.project_id,
+  SUM(
+    TIME_TO_SEC(
+      TIMEDIFF(
+        STR_TO_DATE(next_time, '%H:%i'),
+        STR_TO_DATE(actual_time, '%H:%i')
+      )
+    ) / 3600
+  ) AS time_difference
+FROM
+  (
+    SELECT
+      x.*,
+      CONCAT(x.hora, ':', x.minuto) AS actual_time,
+      COALESCE(
+        (
+          SELECT
+            CONCAT(tp2.hora, ':', tp2.minuto)
+          FROM
+            tarea_cronograma AS tp2
+          WHERE
+            tp2.id_tarea_cronograma_PK = (x.id_tarea_cronograma_PK + 1)
+            AND id_cronograma_FK = x.id_cronograma_FK
+        ),
+        TIME_FORMAT(
+          DATE_ADD(
+            STR_TO_DATE(CONCAT(x.hora, ':', x.minuto), '%H:%i'),
+            INTERVAL 30 MINUTE
+          ),
+          '%H:%i'
+        )
+      ) AS next_time
+    FROM
+      tarea_cronograma x
+    ORDER BY
+      x.id_tarea_cronograma_PK ASC,
+      x.id_cronograma_FK
+  ) AS t
+GROUP BY
+  t.project_id;
 -- compartido con otros..compartido con conmigo
 create procedure Archivos_Compartidos (IDUSUARIO int)
 select AC.id_archivo_compartido_PK,A.id_usuario_FK,AC.id_usuario_entrega_FK, AC.id_archivo_FK,A.ruta,A.tamano,AC.id_usuario_recibe_FK,U.nombre,U.apellido,AC.fecha

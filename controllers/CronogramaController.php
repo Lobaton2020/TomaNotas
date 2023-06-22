@@ -85,6 +85,7 @@ class CronogramaController
             "hora" => trim($_POST["hora"]),
             "minuto" => trim($_POST["minuto"]),
             "meridiano" => trim($_POST["meridiano"]),
+            "project_id" => isset($_POST["project_id"]) && $_POST["project_id"] != "" ? trim($_POST["project_id"]) : null,
             "estado" => 0,
         ];
 
@@ -158,6 +159,7 @@ class CronogramaController
             "hora" => trim($_POST["hora"]),
             "minuto" => trim($_POST["minuto"]),
             "meridiano" => trim($_POST["meridiano"]),
+            "project_id" => isset($_POST["project_id"]) && $_POST["project_id"] != "" ? trim($_POST["project_id"]) : null,
         ];
 
         if ($this->cronograma->updateTareaCronograma($datos)) {

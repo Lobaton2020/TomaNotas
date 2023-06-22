@@ -27,6 +27,9 @@ if (isset($_REQUEST["c"]) && !empty($_REQUEST["cod"])) {
         case "cronograma":
             $object = "El Cronograma";
             break;
+        case "project":
+            $object = "El Proyecto";
+            break;
 
         default;
             $object = "";

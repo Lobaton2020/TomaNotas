@@ -35,6 +35,7 @@ if (document.getElementsByClassName("checkbox")) {
                 var minuto = $("#" + indice + "minuto").val();
                 var meridiano = $("#" + indice + "meridiano").val();
                 var descripcion = $("#" + indice + "descripcion").val();
+                var project_id = $("#" + indice + "project_id").val();
                 minuto = minuto == 0 ? "00" : minuto;
                 $("#update-tarea-cronograma").val("updateTareaCronograma");
                 $("#idtarea").val(idtarea);
@@ -42,6 +43,7 @@ if (document.getElementsByClassName("checkbox")) {
                 $("#minuto").val(minuto);
                 $("#meridiano").val(meridiano);
                 $("#descripcion").val(descripcion);
+                $("#project_id").val(project_id);
 
                 $("#btn-update-task")
                     .removeClass("btn-success")
@@ -70,3 +72,11 @@ if (document.getElementsByClassName("update-title")) {
             });
     }
 }
+
+const initialize = () => {
+    $.get('?c=project&format=json&status=1', (data) => {
+        const string = data.reduce((acc, act) => `<option value="${act.id}">${act.name}</option>` + acc, '')
+        $("#project_id").html(`<option value="">Personal</option>${string}`)
+    })
+}
+document.addEventListener("DOMContentLoaded", initialize)

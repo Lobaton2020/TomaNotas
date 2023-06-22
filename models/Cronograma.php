@@ -40,7 +40,10 @@ class Cronograma
     public function getAllTareas($idcronograma)
     {
         try {
-            $sql = "SELECT * FROM tarea_cronograma WHERE id_cronograma_FK = ? ORDER BY id_cronograma_FK ASC";
+            $sql = "SELECT tarea_cronograma.*, p.name FROM tarea_cronograma
+            left join projects p on p.id = tarea_cronograma.project_id and p.status  = 1
+            WHERE id_cronograma_FK = ?
+            ORDER BY id_cronograma_FK ASC";
             $stmt = $this->dbh->prepare($sql);
             $stmt->execute(array($idcronograma));
             return $stmt->fetchAll();
@@ -53,7 +56,7 @@ class Cronograma
     public function insertTareaCronograma($datos)
     {
         try {
-            $sql = "INSERT INTO tarea_cronograma values(?,?,?,?,?,?,?)";
+            $sql = "INSERT INTO tarea_cronograma values(?,?,?,?,?,?,?,?)";
             $stmt = $this->dbh->prepare($sql);
             $stmt->execute(array($datos["idtareacronograma"],
                 $datos["idcronograma"],
@@ -61,7 +64,10 @@ class Cronograma
                 $datos["hora"],
                 $datos["minuto"],
                 $datos["meridiano"],
-                $datos["estado"]));
+                    $datos["estado"],
+                    $datos["project_id"]
+                )
+            );
             return true;
         } catch (Exception $e) {
             exit($e->getMessage());
@@ -136,13 +142,16 @@ class Cronograma
     public function updateTareaCronograma($datos)
     {
         try {
-            $sql = "UPDATE tarea_cronograma SET hora = ?,minuto = ?, meridiano = ?, descripcion = ? WHERE id_tarea_cronograma_PK = ?";
+            $sql = "UPDATE tarea_cronograma SET hora = ?,minuto = ?, meridiano = ?, descripcion = ?, project_id = ? WHERE id_tarea_cronograma_PK = ?";
             $stmt = $this->dbh->prepare($sql);
             $stmt->execute(array($datos["hora"],
-                $datos["minuto"],
-                $datos["meridiano"],
-                $datos["descripcion"],
-                $datos["idtarea"]));
+                    $datos["minuto"],
+                    $datos["meridiano"],
+                    $datos["descripcion"],
+                    $datos["project_id"],
+                    $datos["idtarea"]
+                )
+            );
             return true;
 
         } catch (Exception $e) {

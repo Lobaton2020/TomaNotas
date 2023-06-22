@@ -5,7 +5,16 @@
 <?php showMessage("success-insert-tarea", "success");?>
 <?php showMessage("error-insert-tarea", "danger");?>
 
-<button type="button" data-toggle="modal" data-target="#agregar_cronograma" class="btn btn-secondary  form-control mt-n2 mb-2">Nuevo cronograma</button>
+
+<div class="row">
+  <div class="col-md-6">
+    <a href="?c=project" type="button" class="btn btn-success  form-control mt-n2 mb-3 ">Proyectos</a>
+    </div>
+    <div class="col-md-6">
+    <button type="button" data-toggle="modal" data-target="#agregar_cronograma" class="btn btn-info  form-control mt-n2 mb-2">Nuevo cronograma</button>
+
+  </div>
+</div>
 <!-- Modal -->
 <?php include_once "views/cronograma/modals/cronogramaCreate.php";?>
 <?php if (count($response) > 0) {?>

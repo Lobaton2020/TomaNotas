@@ -42,9 +42,8 @@
     <input type="hidden" name="meridiano" value="pm">
     <div class="row">
         <div class="col-sm-12 col-md-2 ">
-            <select id="hora" class="section-option   d-inline " name="hora">
-
-            </select>
+        <a href="?c=project" class="btn float-right " style="width: 4rem;"><i class="fas fa-meteor"></i></a>
+            <select id="hora" class="section-option   d-inline " name="hora"></select>
             <select id="minuto" class="section-option d-inline" name="minuto">
                 <option value="00">00</option>
                 <option value="05">05</option>
@@ -63,8 +62,10 @@
             <span class="h6 float-right logo_peque mr-3 mt-2"><?php echo $titulo->titulo ?></span>
         </div>
         <div class="col-sm-12 col-md-10 d-inline margen">
-            <input id="descripcion" type="text" required class="form-control d-inline  width-form-add-task" name="contenido-tarea" placeholder="Escribe tu tarea?">
-            <button id="btn-update-task" type="submit" class="btn btn-success float-right "><i class="fas fa-plus"></i></button>
+            <input id="descripcion" type="text" required class="form-control float-left d-inline  mr-1" style="width: 59%;" name="contenido-tarea" placeholder="Escribe tu tarea?">
+            <select id="project_id" name="project_id" class="form-control d-inline w-25  mr-0 float-left">
+            </select>
+            <button id="btn-update-task" type="submit" class="btn btn-success float-right " style="width: 3rem;"><i class="fas fa-plus"></i></button>
         </div>
     </div>
 
@@ -104,28 +105,47 @@
                                     </span>
                                     <?php if ($check === "checked") : ?>
                                         <s><i>
-                                                <span class="text-muted"> <?php echo $time; ?> </span>&bull; <span><?php echo $response[$i]->descripcion; ?></span>
-                                            </i></s>
-                                    <?php else : ?>
-                                        <span class="text-muted"> <?php echo $time; ?> </span>&bull; <span><?php echo $response[$i]->descripcion; ?></span>
+                                                <span class="text-muted"> <?php echo $time; ?>
+                                                        </span>&bull; <span>
+                                                            <?php echo $response[$i]->descripcion; ?>
+                                                        </span>
+                                                        </i></s>
+                                                                                                                                                                                                                                                                                                                                    <small class="text-muted">
+                                                        <?= $response[$i]->name ?>
+                                                                                                                                                                                                                                                                                                                                    </small>
+                                                                                                                                                                                                                                                                                                                                <?php else: ?>
+                                                                                                                                                                                                                                                                                                                                    <span class="text-muted">
+                                                                                                                                                                                                                                                                                                                                        <?php echo $time; ?>
+                                                                                                                                                                                                                                                                                                                                    </span>&bull; <span>
+                                                                                                                                                                                                                                                                                                                                        <?php echo $response[$i]->descripcion; ?>
+                                                                                                                                                                                                                                                                                                                                        <small class="text-muted">
+                                                                                                                                                                                                                                                                                                                                            <?= $response[$i]->name ?>
+                                                                                                                                                                                                                                                                                                                                        </small>
+                                                                                                                                                                                                                                                                                                                                    </span>
 
-                                    <?php endif; ?>
-                                </div>
-                                <div class="col-2 align-self-center mx-auto mr-n3 align-right">
-                                    <a href="" class="float-right  text-dark" id="settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-right " aria-labelledby="#settings">
-                                        <h6 class="dropdown-header">Opciones</h6>
-                                        <input type="hidden" id="<?php echo $i; ?>id-cronograma" value="<?php echo $_GET["id"] ?>">
-                                        <input type="hidden" id="<?php echo $i; ?>id-tarea-cronograma" value="<?php echo $response[$i]->id_tarea_cronograma_PK ?>">
-                                        <input type="hidden" id="<?php echo $i; ?>hora" value="<?php echo $response[$i]->hora ?>">
-                                        <input type="hidden" id="<?php echo $i; ?>minuto" value="<?php echo $response[$i]->minuto ?>">
-                                        <input type="hidden" id="<?php echo $i; ?>meridiano" value="<?php echo $response[$i]->meridiano ?>">
-                                        <input type="hidden" id="<?php echo $i; ?>descripcion" value="<?php echo $response[$i]->descripcion ?>">
-                                        <a class="dropdown-item small update-task" id="update-task-<?php echo $i; ?>" ide="<?php echo $i; ?>" href=""><i class="fas fa-edit"></i> Editar </a>
-                                        <a class="dropdown-item small" onclick="javascript:return confirm('¿Estas seguro de eliminar esta tarea?')" href="?c=cronograma&m=eliminarTareaCronograma&idtarea=<?php echo $response[$i]->id_tarea_cronograma_PK; ?>&idcronograma=<?php echo $_GET["id"] ?>"><i class="fas fa-redo-alt"></i> Eliminar </a>
-                                    </div>
-                                </div>
-                            </div>
+                                        <?php endif; ?>
+                                            </div>
+                                            <div class="col-2 align-self-center mx-auto mr-n3 align-right">
+                                                                                                                                                                                        <a href="" class="float-right  text-dark" id="settings" data-toggle="dropdown" aria-haspopup="true"
+                                                                                                                                                                                            aria-expanded="false"><i class="fas fa-cog"></i></a>
+                                                                                                                                                                                        <div class="dropdown-menu dropdown-menu-right " aria-labelledby="#settings">
+                                                                                                                                                                                            <h6 class="dropdown-header">Opciones</h6>
+                                                                                                                                                                                            <input type="hidden" id="<?php echo $i; ?>id-cronograma" value="<?php echo $_GET["id"] ?>">
+                                                                                                                                                                                            <input type="hidden" id="<?php echo $i; ?>id-tarea-cronograma"
+                                                                                                                                                                                                value="<?php echo $response[$i]->id_tarea_cronograma_PK ?>">
+                                                                                                                                                                                            <input type="hidden" id="<?php echo $i; ?>hora" value="<?php echo $response[$i]->hora ?>">
+                                                                                                                                                                                            <input type="hidden" id="<?php echo $i; ?>minuto" value="<?php echo $response[$i]->minuto ?>">
+                                                                                                                                                                                            <input type="hidden" id="<?php echo $i; ?>meridiano" value="<?php echo $response[$i]->meridiano ?>">
+                                                                                                                                                                                            <input type="hidden" id="<?php echo $i; ?>descripcion" value="<?php echo $response[$i]->descripcion ?>">
+                                                                                                                                                                <input type="hidden" id="<?php echo $i; ?>project_id" value="<?php echo $response[$i]->project_id ?>">
+                                                                                                                                                                <a class="dropdown-item small update-task" id="update-task-<?php echo $i; ?>" ide="<?php echo $i; ?>" href=""><i
+                                                                                                                                                                        class="fas fa-edit"></i> Editar </a>
+                                                                                                                                                                <a class="dropdown-item small" onclick="javascript:return confirm('¿Estas seguro de eliminar esta tarea?')"
+                                                                                                                                                                    href="?c=cronograma&m=eliminarTareaCronograma&idtarea=<?php echo $response[$i]->id_tarea_cronograma_PK; ?>&idcronograma=<?php echo $_GET["id"] ?>"><i
+                                                                                                                                                                        class="fas fa-redo-alt"></i> Eliminar </a>
+                                                                                                                                                                </div>
+                                                                                                                                                                </div>
+                                                                                                                                                                </div>
                         <?php endfor; ?>
                     </div>
                     <div class="col-md-1"></div>
