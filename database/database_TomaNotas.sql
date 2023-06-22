@@ -175,16 +175,17 @@ SELECT
 FORMAT(
   SUM(
     CASE
-      WHEN t.estado = 0 THEN TIME_TO_SEC(
+WHEN t.estado = 0
+AND s.fecha >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) THEN TIME_TO_SEC(
         TIMEDIFF(
           STR_TO_DATE(t.next_time, '%H:%i'),
           STR_TO_DATE(t.actual_time, '%H:%i')
         )
       ) / 3600
-      ELSE 0
-    END
-  ),
-  1
+ELSE 0
+END
+),
+1
 ) AS time_difference_planned,
 FORMAT(
   SUM(
@@ -195,15 +196,19 @@ FORMAT(
           STR_TO_DATE(t.actual_time, '%H:%i')
         )
       ) / 3600
-      ELSE 0
-    END
-  ),
-  1
+ELSE 0
+END
+),
+1
 ) AS time_difference_done,
 FORMAT(
   SUM(
     CASE
-      WHEN t.estado IN (0, 1) THEN TIME_TO_SEC(
+WHEN t.estado = 0
+or (
+  t.estado = 0
+  AND s.fecha >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+) THEN TIME_TO_SEC(
         TIMEDIFF(
 STR_TO_DATE(t.next_time, '%H:%i'),
 STR_TO_DATE(t.actual_time, '%H:%i')
@@ -245,6 +250,7 @@ ORDER BY
   x.id_tarea_cronograma_PK ASC,
   x.id_cronograma_FK
 ) AS t
+LEFT JOIN cronograma s ON t.id_cronograma_FK = s.id_cronograma_PK
 GROUP BY
   t.project_id;
 
