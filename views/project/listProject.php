@@ -12,8 +12,10 @@
         </div>
       <?php endif; ?>
       <?php if (count($response) > 0): ?>
-        <table class="table table-hover">
-          <thead>
+        <div class="table-responsive">
+
+          <table class="table table-hover">
+            <thead>
             <tr>
               <td>#</td>
               <td style="min-width:150px">Nombre</td>
@@ -21,7 +23,7 @@
               <td>Horas gastadas</td>
               <?php if (isset($_SESSION["id_user"]) || !empty($_SESSION["id_user"])): ?>
                 <td class="eliminar_archivo">Accion</td>
-              <?php endif; ?>
+                <?php endif; ?>
             </tr>
           </thead>
           <tbody class="table table-hover">
@@ -38,9 +40,9 @@
                 <td>
                   <?php if ($row->status == "1"): ?>
                     <span class="badge badge-pill badge-success">Active</span>
-                  <?php else: ?>
-                    <span class="badge badge-pill badge-danger">Inactive</span>
-                  <?php endif; ?>
+                    <?php else: ?>
+                      <span class="badge badge-pill badge-danger">Inactive</span>
+                    <?php endif; ?>
                 </td>
                 <td>
                   <span class="text-muted">
@@ -50,12 +52,13 @@
                 <td class="text-left">
                   <?php $row->descripcion = base64_encode($row->descripcion) ?>
                   <a href="#" onclick='updateProjectParser(`<?= json_encode($row); ?>`)' data-toggle="modal"
-                    data-target="#add_project" class="text-dark"><i s class="far fa-edit"></i></a>
+                  data-target="#add_project" class="text-dark"><i s class="far fa-edit"></i></a>
                 </td>
               </tr>
             <?php endforeach; ?>
           </tbody>
         </table>
+      </div>
       <?php endif; ?>
     </div>
     <div class="col-md-2 col-sm-12"></div>
