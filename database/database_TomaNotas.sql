@@ -192,7 +192,7 @@ SELECT
 FROM
   tarea_cronograma AS tp2
 WHERE
-tp2.id_tarea_cronograma_PK = (x.order + 1)
+tp2.order = (x.order + 1)
 AND id_cronograma_FK = x.id_cronograma_FK
 ),
 TIME_FORMAT(
