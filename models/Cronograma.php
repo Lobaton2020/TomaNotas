@@ -219,16 +219,20 @@ class Cronograma
             $tareas = $this->getAllTareas($cronogramaId);
             foreach ($tareas as $tarea) {
                 $tarea_cronograma = (array) $tarea;
-                $sql = "INSERT INTO tarea_cronograma values(?,?,?,?,?,?,?)";
+                $sql = "INSERT INTO tarea_cronograma values(?,?,?,?,?,?,?,?,?)";
                 $stmt = $this->dbh->prepare($sql);
                 $stmt->execute(array(
-                    null,
-                    $newCronogramaId,
-                    $tarea_cronograma["descripcion"],
-                    $tarea_cronograma["hora"],
-                    $tarea_cronograma["minuto"],
-                    $tarea_cronograma["meridiano"],
-                    0));
+                        null,
+                        $newCronogramaId,
+                        $tarea_cronograma["descripcion"],
+                        $tarea_cronograma["hora"],
+                        $tarea_cronograma["minuto"],
+                        $tarea_cronograma["meridiano"],
+                        0,
+                        $tarea_cronograma["project_id"],
+                        0
+                    )
+                );
             }
             $this->dbh->commit();
             return true;
