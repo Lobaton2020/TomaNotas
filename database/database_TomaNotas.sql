@@ -164,10 +164,14 @@ ADD
 ADD
   FOREIGN KEY (project_id) REFERENCES projects(id);
 
+ALTER TABLE
+  tarea_cronograma
+ADD
+  COLUMN `order` int not null default 0;
 create
 or replace view time_project_spent as
 select
-  t.project_id,
+t.project_id,
   SUM(
     TIME_TO_SEC(
       TIMEDIFF(
@@ -183,29 +187,30 @@ FROM
       CONCAT(x.hora, ':', x.minuto) AS actual_time,
       COALESCE(
         (
-          SELECT
-            CONCAT(tp2.hora, ':', tp2.minuto)
-          FROM
-            tarea_cronograma AS tp2
-          WHERE
-            tp2.id_tarea_cronograma_PK = (x.id_tarea_cronograma_PK + 1)
-            AND id_cronograma_FK = x.id_cronograma_FK
-            and tp2.estado = 1
-        ),
-        TIME_FORMAT(
-          DATE_ADD(
-            STR_TO_DATE(CONCAT(x.hora, ':', x.minuto), '%H:%i'),
-            INTERVAL 30 MINUTE
-          ),
-          '%H:%i'
-        )
-      ) AS next_time
-    FROM
-      tarea_cronograma x
-    ORDER BY
-      x.id_tarea_cronograma_PK ASC,
-      x.id_cronograma_FK
-  ) AS t
+SELECT
+  CONCAT(tp2.hora, ':', tp2.minuto)
+FROM
+  tarea_cronograma AS tp2
+WHERE
+tp2.id_tarea_cronograma_PK = (x.order + 1)
+AND id_cronograma_FK = x.id_cronograma_FK
+),
+TIME_FORMAT(
+  DATE_ADD(
+    STR_TO_DATE(CONCAT(x.hora, ':', x.minuto), '%H:%i'),
+    INTERVAL 30 MINUTE
+  ),
+  '%H:%i'
+)
+) AS next_time
+FROM
+  tarea_cronograma x
+WHERE
+  estado = 1
+ORDER BY
+  x.id_tarea_cronograma_PK ASC,
+  x.id_cronograma_FK
+) AS t
 GROUP BY
   t.project_id;
 -- compartido con otros..compartido con conmigo

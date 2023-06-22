@@ -56,7 +56,7 @@ class Cronograma
     public function insertTareaCronograma($datos)
     {
         try {
-            $sql = "INSERT INTO tarea_cronograma values(?,?,?,?,?,?,?,?)";
+            $sql = "INSERT INTO tarea_cronograma values(?,?,?,?,?,?,?,?,?)";
             $stmt = $this->dbh->prepare($sql);
             $stmt->execute(array($datos["idtareacronograma"],
                 $datos["idcronograma"],
@@ -65,9 +65,11 @@ class Cronograma
                 $datos["minuto"],
                 $datos["meridiano"],
                     $datos["estado"],
-                    $datos["project_id"]
+                    $datos["project_id"],
+                    $datos["order"]
                 )
             );
+            $this->autoOrganizeOrder($datos["idcronograma"]);
             return true;
         } catch (Exception $e) {
             exit($e->getMessage());
@@ -152,6 +154,7 @@ class Cronograma
                     $datos["idtarea"]
                 )
             );
+            $this->autoOrganizeOrder($datos["idcronograma"]);
             return true;
 
         } catch (Exception $e) {
@@ -235,4 +238,25 @@ class Cronograma
         }
 
     }
+
+
+    public function autoOrganizeOrder($idcronograma)
+    {
+        try {
+            $listTasks = $this->getAllTareas($idcronograma);
+            usort($listTasks, 'compararPorHoraMinuto');
+            $counter = 1;
+            foreach ($listTasks as $task) {
+                $sql = "UPDATE  tarea_cronograma SET `order` = ? WHERE id_cronograma_FK = ? AND id_tarea_cronograma_PK = ?";
+                $stmt = $this->dbh->prepare($sql);
+                $stmt->execute(array($counter, $idcronograma, $task->id_tarea_cronograma_PK));
+                $counter++;
+            }
+            return true;
+
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }
+    }
+
 }

@@ -87,6 +87,7 @@ class CronogramaController
             "meridiano" => trim($_POST["meridiano"]),
             "project_id" => isset($_POST["project_id"]) && $_POST["project_id"] != "" ? trim($_POST["project_id"]) : null,
             "estado" => 0,
+            "order" => 0,
         ];
 
         if ($this->cronograma->insertTareaCronograma($datos)) {
