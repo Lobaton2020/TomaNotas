@@ -14,11 +14,10 @@ class Cronograma
 
     public function insertCronograma($datos)
     {
-        $fecha = date("Y-m-d H:m:i");
         try {
             $sql = "INSERT INTO cronograma values(?,?,?,?)";
             $stmt = $this->dbh->prepare($sql);
-            $stmt->execute(array(null, $datos["idusuario"], $datos["titulo"], $fecha));
+            $stmt->execute(array(null, $datos["idusuario"], $datos["titulo"], $datos["date"]));
             return true;
         } catch (Exception $e) {
             exit($e->getMessage());
@@ -163,9 +162,9 @@ class Cronograma
     public function updateTituloCronograma($datos)
     {
         try {
-            $sql = "UPDATE cronograma SET titulo = ? WHERE id_cronograma_PK = ?";
+            $sql = "UPDATE cronograma SET titulo = ?, fecha = ? WHERE id_cronograma_PK = ?";
             $stmt = $this->dbh->prepare($sql);
-            $stmt->execute(array($datos["titulo"], $datos["idcronograma"]));
+            $stmt->execute(array($datos["titulo"], $datos["date"], $datos["idcronograma"]));
             return true;
 
         } catch (Exception $e) {

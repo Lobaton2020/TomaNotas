@@ -63,6 +63,7 @@ class CronogramaController
         $datos = [
             "idusuario" => $this->idsesion,
             "titulo" => trim($_POST["titulo"]),
+            "date" => date(trim($_POST["date"]) . " " . date('00:00:00'))
         ];
         if ($datos["titulo"] != "") {
             if ($this->cronograma->insertCronograma($datos)) {
@@ -201,6 +202,7 @@ class CronogramaController
         $datos = [
             "idcronograma" => trim($_POST["idcronograma"]),
             "titulo" => trim($_POST["titulo"]),
+            "date" => date(trim($_POST["date"]) . " " . "00:00:00")
         ];
 
         if ($this->cronograma->updateTituloCronograma($datos)) {

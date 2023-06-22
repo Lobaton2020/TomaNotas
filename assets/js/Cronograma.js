@@ -62,12 +62,13 @@ if (document.getElementsByClassName("update-title")) {
             .addEventListener("click", function(e) {
                 var idcronograma = this.getAttribute("ide");
                 var titulo = this.getAttribute("title");
-                console.log("title");
+                let date = this.getAttribute("date")
 
                 $("#titulo-modal").html("Actualiza el titulo");
                 $("#update-title-cronograma").val("updateTitleCronograma");
                 $("#idcronograma").val(idcronograma);
                 $("#titulo").val(titulo);
+                $("#date").val(date.split(" ").at(0));
                 e.preventDefault();
             });
     }

@@ -17,6 +17,10 @@
             <small>Agrega un titulo</small>
             <input id="titulo" class="form-control text-peque " name='titulo' placeholder="Dale un titulo a este nuevo cronograma" />
           </div>
+          <div class="form-group">
+            <small>Fecha</small>
+            <input id="date" class="form-control text-peque " name='date' type="date" value="<?= date('Y-m-d', strtotime(date('Y-m-d') . ' +1 day')) ?>" />
+          </div>
         </form>
 
       </div>
