@@ -1,7 +1,7 @@
 <div class="mt-1 mb-3">
     <div class="border mb-2 pr-0 pl-0 pt-3 pb-0 ">
         <div class="text-center   ">
-            <h5>Tareas
+            <h5>Tareas de: <?= $project->name ?>
             </h5>
         </div>
         <div class="card-body">

@@ -38,7 +38,7 @@
                   <?= $row->id ?>
                 </td>
                 <td>
-                  <a href="?c=project&m=tasks&project_id=<?= $row->id ?>" class="under-line">
+                  <a href="?c=project&m=tasks&project_id=<?= $row->id ?>&name=<?= $row->name ?>" class="under-line">
                   <span data-toggle="tool" title="<?= $row->descripcion ?>"><?= $row->name ?></span>
                 </a>
                 </td>

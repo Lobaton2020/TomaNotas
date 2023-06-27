@@ -65,6 +65,8 @@ class ProjectController extends BaseController
             if (isset($_GET["status"]) && $_GET["status"] == "completed") {
                 $status = true;
             }
+            $project = new stdClass();
+            $project->name = $_GET["name"];
             $response = $this->model->get_tasks_by_project($_GET["project_id"], $status);
             $title = "Tareas";
             $content = "project/listProjectTasks.php";
