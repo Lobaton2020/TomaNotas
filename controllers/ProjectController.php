@@ -58,4 +58,21 @@ class ProjectController extends BaseController
             exit($e);
         }
     }
+    public function tasks()
+    {
+        try {
+            $status = "none";
+            if (isset($_GET["status"]) && $_GET["status"] == "completed") {
+                $status = true;
+            }
+            $response = $this->model->get_tasks_by_project($_GET["project_id"], $status);
+            $title = "Tareas";
+            $content = "project/listProjectTasks.php";
+            require_once "views/template/dashboard/content.php";
+
+        } catch (Exception $e) {
+            exit($e);
+        }
+    }
+
 }

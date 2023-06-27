@@ -38,7 +38,9 @@
                   <?= $row->id ?>
                 </td>
                 <td>
+                  <a href="?c=project&m=tasks&project_id=<?= $row->id ?>" class="under-line">
                   <span data-toggle="tool" title="<?= $row->descripcion ?>"><?= $row->name ?></span>
+                </a>
                 </td>
                 <td>
                   <?php if ($row->status == "1"): ?>
@@ -62,17 +64,17 @@
                     <span class="text-mued text-danger">
                       <?= if_null_then_0($row->time_difference_planned) ?> h
                     </span>
-                  <? endif; ?>
+                    <? endif; ?>
                   <? if (!$row->time_difference_planned || $row->time_difference_planned <= 0): ?>
                     <span class="text-muted ">
                       <?= if_null_then_0($row->time_difference_planned) ?> h
                       </span>
                   <? endif; ?>
-                    </td>
-                    <td>
-                      <span class="text-muted">
-                        <?= if_null_then_0($row->time_difference_done) ?> h
-                      </span>
+                </td>
+                <td>
+                  <span class="text-muted">
+                    <?= if_null_then_0($row->time_difference_done) ?> h
+                  </span>
                     </td>
                     <td>
                       <span class="text-muted">

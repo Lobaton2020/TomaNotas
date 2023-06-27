@@ -72,4 +72,22 @@ class Project
             exit($e->getMessage());
         }
     }
+
+    public function get_tasks_by_project($project_id, $status)
+    {
+        try {
+            $status_added = "AND tc.estado = {$status}";
+            if ($status == "none") {
+                $status_added = "";
+            }
+            $sql = "SELECT tc.*, c.titulo FROM tarea_cronograma tc
+            inner join cronograma c on c.id_cronograma_PK  = tc.id_cronograma_FK
+            WHERE c.id_usuario_FK = ? AND tc .project_id = ? {$status_added} ORDER BY estado ASC";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->execute(array($this->userId, $project_id));
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }
+    }
 }
