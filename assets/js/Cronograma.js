@@ -73,8 +73,32 @@ if (document.getElementsByClassName("update-title")) {
             });
     }
 }
+function getWeekNumber(date) {
+    const target = new Date(date);
+    target.setHours(0, 0, 0);
+    target.setDate(target.getDate() + 4 - (target.getDay() || 7));
+
+    const yearStart = new Date(target.getFullYear(), 0, 1);
+    const diff = (target - yearStart) / 86400000;
+    const weekNumber = 1 + Math.floor(diff / 7);
+
+    return weekNumber;
+}
+
+function setWeekNumber() {
+    try {
+        const today = new Date();
+        const weekNumber = getWeekNumber(today);
+        const t = document.querySelector("#week-number");
+        t.textContent = " - Semana " + weekNumber;
+    } catch (err) {
+        console.log("[ERROR_SET_WEEK_NUMBER]", err)
+    }
+
+}
 
 const initialize = () => {
+    setWeekNumber();
     $.get('?c=project&format=json&status=1', (data) => {
         const string = data.reduce((acc, act) => `<option ${act.name.toLowerCase().includes("default") ? "selected":""} value="${act.id}">${act.name}</option>` + acc, '')
         $("#project_id").html(`<option value="">None</option>${string}`)

@@ -74,7 +74,7 @@
 <div class="mt-1 mb-3">
     <div class="border mb-2 pr-0 pl-0 pt-3 pb-0 ">
         <div class="text-center   ">
-            <h5>Tus Tareas de hoy
+            <h5>Tus Tareas de hoy <span id="week-number"></span>
                 <a class="float-right mr-4" id="actions_publication" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-ellipsis-v small"></i></a>
                 <div class="dropdown-menu dropdown-menu-right " aria-labelledby="#actions_publication">
                     <h6 class="dropdown-header">Opciones</h6>
