@@ -90,7 +90,7 @@ function setWeekNumber() {
         const today = new Date();
         const weekNumber = getWeekNumber(today);
         const t = document.querySelector("#week-number");
-        t.textContent = " - Semana " + weekNumber;
+        t.innerHTML = " - Semana " + weekNumber+" - <small>"+ parseInt(weekNumber * 100 / 52) + "%</small>";
     } catch (err) {
         console.log("[ERROR_SET_WEEK_NUMBER]", err)
     }
