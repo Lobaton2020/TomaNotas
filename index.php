@@ -7,6 +7,7 @@ function a($param)
     echo "/<pre>";
     exit();
 }
+session_name("PHP_SESSION_CUSTOM_1");
 // FrontController
 session_start();
 require_once "config/config.php";
