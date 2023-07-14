@@ -160,7 +160,11 @@ function renderNotificationSound(title, description) {
 }
 
 function closeNotification(event) {
-    event?.currentTarget?.close()
+    try {
+        event?.currentTarget?.close()
+    } catch (err) {
+        console.error("ERROR_EVENTO_DESENCADENADO", err)
+    }
     audio.pause();
     elemTaskId.classList.remove("active-action")
 
