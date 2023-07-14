@@ -199,6 +199,14 @@ async function activeAlarms(data, title, username) {
         }
     }
 }
+async function simularActividad(url) {
+    try {
+        await fetch(url);
+        console.log("ALIVE_WEB_FOR_NOTIFICATIONS")
+    } catch (error) {
+        console.error('Error en la solicitud:', error);
+    }
+}
 
 const initialize = async () => {
     window.audio = document.createElement("audio")
@@ -208,16 +216,16 @@ const initialize = async () => {
     setWeekNumber();
     renderTimeSelect();
     textToSpeech("");
-
-    $.get('?c=project&format=json&status=1', (data) => {
+    const url_backend = '?c=project&format=json&status=1';
+    $.get(url_backend, (data) => {
         const string = data.reduce((acc, act) => `<option ${act.name.toLowerCase().includes("default") ? "selected":""} value="${act.id}">${act.name}</option>` + acc, '')
         $("#project_id").html(`<option value="">None</option>${string}`)
     })
 
     const url = new URLSearchParams(location.search)
     let { username, data, titulo } = await requestHttp("GET", `?c=cronograma&m=getTareasJSON&id=${url.get("id")}`)
-
     setInterval(() => activeAlarms(data, titulo.titulo, username), 1000);
+    setInterval(() => simularActividad(url_backend), 120_000);
 
 }
 document.addEventListener("DOMContentLoaded", initialize)
