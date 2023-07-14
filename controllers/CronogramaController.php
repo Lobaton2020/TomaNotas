@@ -51,6 +51,7 @@ class CronogramaController
             $response =  [];
             $response["data"] =  $data;
             $response["titulo"] = $titulo;
+            $response["username"] = $_SESSION["name"];
             http_response_code(200);
             echo json_encode($response);
         } else {

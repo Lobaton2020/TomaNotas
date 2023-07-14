@@ -155,19 +155,23 @@
     </div>
 </div>
 <script>
-    window.addEventListener("DOMContentLoaded", () => {
+     function requestHttp(method, url){
+        return new Promise(resolve=>{
+
+            let http = new XMLHttpRequest();
+            http.addEventListener("load", async (event) => {
+                return resolve(JSON.parse(event.currentTarget.responseText));
+            });
+            http.open(method, url)
+            http.send(null);
+        })
+    }
+    window.addEventListener("DOMContentLoaded", async () => {
         renderTimeSelect();
-        let http = new XMLHttpRequest(),
-            url = new URLSearchParams(location.search);
-        http.addEventListener("load", (event) => {
-            let {
-                data,
-                titulo
-            } = JSON.parse(event.currentTarget.responseText);
-            activeAlarms(data, titulo.titulo);
-        });
-        http.open("GET", `?c=cronograma&m=getTareasJSON&id=${url.get("id")}`)
-        http.send(null);
+        const url = new URLSearchParams(location.search)
+        let { username , data, titulo } = await requestHttp("GET", `?c=cronograma&m=getTareasJSON&id=${url.get("id")}`)
+        activeAlarms(data, titulo.titulo, username);
+
 
     });
 
@@ -185,7 +189,17 @@
             element.appendChild(option);
         }
     }
+    function textToSpeech(text){
+        return new Promise((resolve)=>{
+            const voices = window.speechSynthesis.getVoices();
+            const voice = voices.find(voice => voice.lang === 'es-AR');
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.voice = voice;
+            utterance.addEventListener('end',()=> resolve(true))
+            window.speechSynthesis.speak(utterance);
+        })
 
+    }
     function renderNotificationSound(title, description) {
         window.audio = document.createElement("audio")
         window.audio.src = "assets/audio/rington-mario-bros.mp3";
@@ -199,6 +213,7 @@
             window.audio.play();
             notification.addEventListener("click", closeNotification);
             notification.addEventListener("close", closeNotification);
+            setTimeout(closeNotification, 60*1000)
         } else {
             Notification.requestPermission((permiso) => {
                 if (permiso === "granted") {
@@ -206,36 +221,40 @@
                     window.audio.play();
                     notification.addEventListener("click", closeNotification);
                     notification.addEventListener("close", closeNotification);
+                    setTimeout(closeNotification, 60*1000)
                 }
             });
         }
     }
 
     function closeNotification(event) {
-        event.currentTarget.close()
+        event?.currentTarget?.close()
         audio.pause();
         elemTaskId.classList.remove("active-action")
 
     }
 
-    function activeAlarms(data, title) {
+    function activeAlarms(data, title, username) {
         setInterval(() => {
-            let currentDate = new Date();
-            let dateTask = new Date();
-            data.forEach((elem) => {
-                let {
-                    id_tarea_cronograma_PK,
-                    descripcion,
-                    hora,
-                    minuto
-                } = elem;
-                dateTask.setHours(hora, minuto, 0);
-                if (dateTask.getTime() == currentDate.getTime()) {
-                    renderNotificationSound(descripcion, "Tienes un deber!");
-                    window.elemTaskId = document.querySelector(`#task-id-${id_tarea_cronograma_PK}`);
-                    elemTaskId.classList.add("active-action")
-                }
-            });
-        }, 1000)
+        let currentDate = new Date();
+        let dateTask = new Date();
+        data.forEach( async (elem) => {
+            let {
+                id_tarea_cronograma_PK,
+                descripcion,
+                hora,
+                minuto
+            } = elem;
+            dateTask.setHours(hora, minuto, 0);
+            if (dateTask.getTime() == currentDate.getTime()) {
+                await textToSpeech(`
+                Hola ${username}.
+                Tienes una tarea: ${descripcion}`)
+                renderNotificationSound(descripcion, "Tienes un deber!");
+                window.elemTaskId = document.querySelector(`#task-id-${id_tarea_cronograma_PK}`);
+                elemTaskId.classList.add("active-action")
+            }
+        });
+    }, 1000)
     }
 </script>
