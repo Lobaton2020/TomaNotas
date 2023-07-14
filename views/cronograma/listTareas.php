@@ -168,6 +168,7 @@
     }
     window.addEventListener("DOMContentLoaded", async () => {
         renderTimeSelect();
+        textToSpeech("");
         const url = new URLSearchParams(location.search)
         let { username , data, titulo } = await requestHttp("GET", `?c=cronograma&m=getTareasJSON&id=${url.get("id")}`)
         activeAlarms(data, titulo.titulo, username);
@@ -192,9 +193,9 @@
     function textToSpeech(text){
         return new Promise((resolve)=>{
             const voices = window.speechSynthesis.getVoices();
-            const voice = voices.find(voice => voice.lang === 'en-HK');
+            const voice = voices.findIndex(voice => voice.lang === 'en-HK');
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.voice = voice;
+            utterance.voice = voices[voice+1];
             utterance.addEventListener('end',()=> resolve(true))
             window.speechSynthesis.speak(utterance);
         })
