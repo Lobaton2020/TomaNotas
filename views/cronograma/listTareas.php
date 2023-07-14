@@ -192,7 +192,7 @@
     function textToSpeech(text){
         return new Promise((resolve)=>{
             const voices = window.speechSynthesis.getVoices();
-            const voice = voices.find(voice => voice.lang === 'en-IE');
+            const voice = voices.find(voice => voice.lang === 'en-HK');
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.voice = voice;
             utterance.addEventListener('end',()=> resolve(true))
@@ -248,8 +248,8 @@
             dateTask.setHours(hora, minuto, 0);
             if (dateTask.getTime() == currentDate.getTime()) {
                 await textToSpeech(`
-                Hola ${username}.
-                Tienes una tarea: ${descripcion}`)
+                Hi ${username}.
+                You have a task: ${descripcion}`)
                 renderNotificationSound(descripcion, "Tienes un deber!");
                 window.elemTaskId = document.querySelector(`#task-id-${id_tarea_cronograma_PK}`);
                 elemTaskId.classList.add("active-action")
