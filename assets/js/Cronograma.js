@@ -191,6 +191,7 @@ async function activeAlarms(data, title, username) {
             renderNotificationSound(descripcion, "Tienes un deber!");
             window.elemTaskId = document.querySelector(`#task-id-${id_tarea_cronograma_PK}`);
             elemTaskId.classList.add("active-action")
+            elemTaskId.addEventListener("click", closeNotification)
         }
     }
 }
