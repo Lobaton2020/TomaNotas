@@ -192,7 +192,7 @@
     function textToSpeech(text){
         return new Promise((resolve)=>{
             const voices = window.speechSynthesis.getVoices();
-            const voice = voices.find(voice => voice.lang === 'es-AR');
+            const voice = voices.find(voice => voice.lang === 'en-IE');
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.voice = voice;
             utterance.addEventListener('end',()=> resolve(true))
