@@ -166,10 +166,13 @@ function closeNotification(event) {
 
 }
 
-function activeAlarms(data, title, username) {
+async function activeAlarms(data, title, username) {
     let currentDate = new Date();
     let dateTask = new Date();
-    data.forEach(async (elem) => {
+    if (localStorage.getItem("isDebug")) {
+        console.log("+1")
+    }
+    for (const elem of data) {
         let {
             id_tarea_cronograma_PK,
             descripcion,
@@ -182,13 +185,14 @@ function activeAlarms(data, title, username) {
         }
         if (dateTask.getTime() == currentDate.getTime()) {
             await textToSpeech(`
-            Hi ${username}.
-            You have a task: ${descripcion}`)
+                Hi ${username}.
+                You have a task: ${descripcion}`
+            )
             renderNotificationSound(descripcion, "Tienes un deber!");
             window.elemTaskId = document.querySelector(`#task-id-${id_tarea_cronograma_PK}`);
             elemTaskId.classList.add("active-action")
         }
-    });
+    }
 }
 
 const initialize = async () => {
@@ -207,6 +211,7 @@ const initialize = async () => {
 
     const url = new URLSearchParams(location.search)
     let { username, data, titulo } = await requestHttp("GET", `?c=cronograma&m=getTareasJSON&id=${url.get("id")}`)
+
     setInterval(() => activeAlarms(data, titulo.titulo, username), 1000);
 
 }
