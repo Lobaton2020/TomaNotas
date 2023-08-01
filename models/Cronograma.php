@@ -27,7 +27,13 @@ class Cronograma
     public function getAllCronograma($idusuario)
     {
         try {
-            $sql = "SELECT * FROM cronograma WHERE id_usuario_FK = ? ORDER BY id_cronograma_PK DESC";
+            $sql = "SELECT c.*, cast((SUM(CASE WHEN tc.estado = 1 THEN 1 ELSE 0 END) / COUNT(tc.id_tarea_cronograma_PK) * 100) as unsigned) as completed_percent
+            FROM cronograma c
+            INNER JOIN tarea_cronograma tc ON c.id_cronograma_PK = tc.id_cronograma_FK
+            WHERE c.id_usuario_FK = 1
+            GROUP BY c.id_cronograma_PK
+            ORDER BY c.id_cronograma_PK DESC;
+            ";
             $stmt = $this->dbh->prepare($sql);
             $stmt->execute(array($idusuario));
             return $stmt->fetchAll();

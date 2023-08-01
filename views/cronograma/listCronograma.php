@@ -23,9 +23,14 @@
         <div class="card border mb-2 pr-3 pl-3 pt-3 pb-0   ">
           <div class="pb-n5" >
             <h5 class="card-title"><a href="?c=cronograma&m=getTareas&id=<?php echo $row->id_cronograma_PK ?>"><?php echo $row->titulo; ?></a> &nbsp;</h5>
-            <div class="card-text mt-2 pb-4"><small class="text-muted"><?php echo getDatenota($row->fecha); ?></small>
-            <a class="float-right text-right" id="options_cronograma" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >&nbsp;&nbsp;<i class="fas fa-ellipsis-v"> </i>&nbsp;&nbsp;</a>
-            <div class="dropdown-menu dropdown-menu-right " aria-labelledby="#options_cronograma">
+            <div class="card-text mt-2 pb-4"><small class="text-muted"><?php echo getDatenota($row->fecha); ?> &nbsp;
+              </small>
+              <a class="float-right text-right" id="options_cronograma" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">&nbsp;&nbsp;<i class="fas fa-ellipsis-v"> </i>&nbsp;&nbsp;</a>
+              <span class="float-right text-right text-muted">
+                <?= $row->completed_percent ?>%
+              </span>
+              <div class="dropdown-menu dropdown-menu-right " aria-labelledby="#options_cronograma">
               <h6 class="dropdown-header">Opcion</h6>
               <a class="dropdown-item small"  onclick="javascript:return confirm('¿Estas seguro de copíar este cronograma?')" href="?c=cronograma&m=copiar&idcronograma=<?php echo $row->id_cronograma_PK ?>"><i class="fa fa-copy"></i> Crear copia </a>
               <a class="dropdown-item small update-title" id="update-title-<?php echo $i++; ?>" type="button" data-toggle="modal"
