@@ -74,7 +74,14 @@ img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost
     display: none;
 }
 
+/* Modo celular */
 @media (max-width: 721px) {
+    .non-smartphone{
+        display: none;
+    }
+    .non-pc{
+        display: inline;
+    }
     .logo_peque_min {
         display: none;
     }
@@ -146,8 +153,14 @@ img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost
         margin-top: 8px;
     }
 }
-
+/*Tamano de pc*/
 @media (min-width: 720px) {
+    .non-smartphone{
+        display: inline;
+    }
+    .non-pc{
+        display: none;
+    }
     .modal_nota:disabled,
     .modal_nota {
         min-height: 370px;

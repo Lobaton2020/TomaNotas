@@ -26,6 +26,7 @@ class CronogramaController
     {
         $response = $this->cronograma->getAllCronograma($this->idsesion);
         $content = "cronograma/listCronograma.php";
+        $completed_rate = (array) $this->cronograma->getStatisticsCompletedTasks();
         $title = "Cronogramas";
         require_once "views/template/dashboard/content.php";
     }

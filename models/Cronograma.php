@@ -7,7 +7,7 @@ class Cronograma
 
     public function __construct()
     {
-
+        $this->session = $_SESSION["id_user"];
         $this->dbh = Database::Connect();
 
     }
@@ -27,9 +27,9 @@ class Cronograma
     public function getAllCronograma($idusuario)
     {
         try {
-            $sql = "SELECT c.*, cast((SUM(CASE WHEN tc.estado = 1 THEN 1 ELSE 0 END) / COUNT(tc.id_tarea_cronograma_PK) * 100) as unsigned) as completed_percent
+            $sql = "SELECT c.*, COALESCE(ROUND((SUM(CASE WHEN tc.estado = 1 THEN 1 ELSE 0 END) / COUNT(tc.id_tarea_cronograma_PK) * 100) ),0) as completed_percent
             FROM cronograma c
-            INNER JOIN tarea_cronograma tc ON c.id_cronograma_PK = tc.id_cronograma_FK
+            LEFT JOIN tarea_cronograma tc ON c.id_cronograma_PK = tc.id_cronograma_FK
             WHERE c.id_usuario_FK = 1
             GROUP BY c.id_cronograma_PK
             ORDER BY c.id_cronograma_PK DESC;
@@ -63,12 +63,14 @@ class Cronograma
         try {
             $sql = "INSERT INTO tarea_cronograma values(?,?,?,?,?,?,?,?,?)";
             $stmt = $this->dbh->prepare($sql);
-            $stmt->execute(array($datos["idtareacronograma"],
-                $datos["idcronograma"],
-                $datos["descripcion"],
-                $datos["hora"],
-                $datos["minuto"],
-                $datos["meridiano"],
+            $stmt->execute(
+                array(
+                    $datos["idtareacronograma"],
+                    $datos["idcronograma"],
+                    $datos["descripcion"],
+                    $datos["hora"],
+                    $datos["minuto"],
+                    $datos["meridiano"],
                     $datos["estado"],
                     $datos["project_id"],
                     $datos["order"]
@@ -150,7 +152,9 @@ class Cronograma
         try {
             $sql = "UPDATE tarea_cronograma SET hora = ?,minuto = ?, meridiano = ?, descripcion = ?, project_id = ? WHERE id_tarea_cronograma_PK = ?";
             $stmt = $this->dbh->prepare($sql);
-            $stmt->execute(array($datos["hora"],
+            $stmt->execute(
+                array(
+                    $datos["hora"],
                     $datos["minuto"],
                     $datos["meridiano"],
                     $datos["descripcion"],
@@ -205,7 +209,8 @@ class Cronograma
     }
 
 
-    function copy(Int $cronogramaId){
+    function copy(int $cronogramaId)
+    {
         try {
             $this->dbh->beginTransaction();
             $cronograma = $this->getOne($cronogramaId);
@@ -224,7 +229,8 @@ class Cronograma
                 $tarea_cronograma = (array) $tarea;
                 $sql = "INSERT INTO tarea_cronograma values(?,?,?,?,?,?,?,?,?)";
                 $stmt = $this->dbh->prepare($sql);
-                $stmt->execute(array(
+                $stmt->execute(
+                    array(
                         null,
                         $newCronogramaId,
                         $tarea_cronograma["descripcion"],
@@ -239,7 +245,7 @@ class Cronograma
             }
             $this->dbh->commit();
             return true;
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             $this->dbh->rollback();
             exit($e->getMessage());
         }
@@ -260,6 +266,27 @@ class Cronograma
                 $counter++;
             }
             return true;
+
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }
+    }
+
+    public function getStatisticsCompletedTasks()
+    {
+        try {
+            $sql = "SELECT
+            COALESCE(ROUND(SUM(CASE WHEN estado = 1 AND fecha BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 WEEK) AND CURDATE() THEN 1 ELSE 0 END) / COUNT(CASE WHEN fecha BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 WEEK) AND CURDATE() THEN 1 ELSE NULL END) * 100), 0) AS last_week,
+            COALESCE(ROUND(SUM(CASE WHEN estado = 1 AND fecha BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND CURDATE() THEN 1 ELSE 0 END) / COUNT(CASE WHEN fecha BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND CURDATE() THEN 1 ELSE NULL END) * 100), 0) AS last_month,
+            COALESCE(ROUND(SUM(CASE WHEN estado = 1 AND fecha BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE() THEN 1 ELSE 0 END) / COUNT(CASE WHEN fecha BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE() THEN 1 ELSE NULL END) * 100), 0) AS last_year,
+            COALESCE(ROUND(SUM(CASE WHEN estado = 1 THEN 1 ELSE 0 END) / COUNT(*) * 100), 0) AS `all`
+        FROM cronograma c
+        LEFT JOIN tarea_cronograma tc ON c.id_cronograma_PK = tc.id_cronograma_FK
+        WHERE c.id_usuario_FK = ?;;
+            ";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->execute(array($this->session));
+            return $stmt->fetch();
 
         } catch (Exception $e) {
             exit($e->getMessage());
