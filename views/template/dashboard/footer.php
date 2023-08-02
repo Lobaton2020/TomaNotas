@@ -32,8 +32,8 @@ if (isset($_REQUEST["c"])) {
     <?php } else if ($_REQUEST["c"] == "cronograma") {?>
     <script src="assets/js/Cronograma.js"></script>
   <?php } else {?>
-    <script src="assets/js/Usuarios.js"></script>
-
-  <?php }?>
+                <script src="assets/js/Usuarios.js"></script>
+    <?php } ?>
+    <script src="assets/js/main.js"></script>
   </body>
 </html>
