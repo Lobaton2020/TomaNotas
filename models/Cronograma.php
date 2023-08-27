@@ -30,7 +30,7 @@ class Cronograma
             $sql = "SELECT c.*, COALESCE(ROUND((SUM(CASE WHEN tc.estado = 1 THEN 1 ELSE 0 END) / COUNT(tc.id_tarea_cronograma_PK) * 100) ),0) as completed_percent
             FROM cronograma c
             LEFT JOIN tarea_cronograma tc ON c.id_cronograma_PK = tc.id_cronograma_FK
-            WHERE c.id_usuario_FK = 1
+            WHERE c.id_usuario_FK = ?
             GROUP BY c.id_cronograma_PK
             ORDER BY c.id_cronograma_PK DESC;
             ";
