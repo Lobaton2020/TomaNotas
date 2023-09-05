@@ -199,14 +199,6 @@ async function activeAlarms(data, title, username) {
         }
     }
 }
-async function simularActividad(url) {
-    try {
-        await fetch(url);
-        console.log("ALIVE_WEB_FOR_NOTIFICATIONS")
-    } catch (error) {
-        console.error('Error en la solicitud:', error);
-    }
-}
 
 const initialize = async () => {
     window.audio = document.createElement("audio")
@@ -225,7 +217,16 @@ const initialize = async () => {
     const url = new URLSearchParams(location.search)
     let { username, data, titulo } = await requestHttp("GET", `?c=cronograma&m=getTareasJSON&id=${url.get("id")}`)
     setInterval(() => activeAlarms(data, titulo.titulo, username), 1000);
-    setInterval(() => simularActividad(url_backend), 120_000);
 
+
+}
+
+function handleClickInitMoveTask(e) {
+    $('[name="id_cronograma_fuente"]').val(e.target.dataset.id_cronograma_fuente)
+    $('[name="id_tarea"]').val(e.target.dataset.id_tarea)
+    $("#move-task-to-other-cronograma").modal("show")
+}
+function handleChangeCronograma(e) {
+    $('[name="id_cronograma_destino"]').val(e.target.value)
 }
 document.addEventListener("DOMContentLoaded", initialize)

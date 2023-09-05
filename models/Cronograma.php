@@ -198,9 +198,21 @@ class Cronograma
     public function getOne($idcronograma)
     {
         try {
-            $sql = "SELECT * FROM cronograma WHERE id_cronograma_PK = ?";
+            $sql = "SELECT * FROM cronograma WHERE id_cronograma_PK = ? AND id_usuario_FK = ?";
             $stmt = $this->dbh->prepare($sql);
-            $stmt->execute(array($idcronograma));
+            $stmt->execute(array($idcronograma, $this->session));
+            return $stmt->fetch();
+
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }
+    }
+    public function getOneTask($idtask)
+    {
+        try {
+            $sql = "SELECT * FROM tarea_cronograma WHERE id_tarea_cronograma_PK = ?";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->execute(array($idtask));
             return $stmt->fetch();
 
         } catch (Exception $e) {
@@ -288,6 +300,42 @@ class Cronograma
             $stmt->execute(array($this->session));
             return $stmt->fetch();
 
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }
+    }
+    public function lastTenCronogramas($id_user)
+    {
+        try {
+            $sql = "SELECT * from cronograma WHERE id_usuario_FK = ? ORDER BY fecha DESC LIMIT 10";
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->execute([$id_user]);
+            return $stmt->fetchAll();
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }
+    }
+
+    public function move(
+        $id_cronograma_fuente,
+        $id_cronograma_destino,
+        $id_tarea
+    ) {
+        var_dump(
+            $id_cronograma_fuente,
+            $id_cronograma_destino,
+            $id_tarea
+        );
+        try {
+            $is_mine_cronograma_fuente = $this->getOne($id_cronograma_fuente);
+            $is_mine_cronograma_destino = $this->getOne($id_cronograma_destino);
+            if (!$is_mine_cronograma_fuente || !$is_mine_cronograma_destino) {
+                throw new Error("No esta autorizado para esta operacion");
+            }
+            $task = $this->getOneTask($id_tarea);
+            $task->idcronograma = $id_cronograma_destino;
+            $this->insertTareaCronograma((array) $task);
+            $this->eliminarTareaCronograma($id_tarea);
         } catch (Exception $e) {
             exit($e->getMessage());
         }

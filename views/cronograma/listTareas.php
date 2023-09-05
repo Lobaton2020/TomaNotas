@@ -1,6 +1,6 @@
 <?php require_once "helpers/obtener_Fechas.php"; ?>
 <?php require_once "views/template/dashboard/errorHandler.php" ?>
-
+<?php require_once "views/cronograma/modals/moveTask.php" ?>
 <?php showMessage("success-insert-tarea", "success"); ?>
 <?php showMessage("error-insert-tarea", "danger"); ?>
 <style>
@@ -141,12 +141,17 @@
                                                                                                                                                                 <input type="hidden" id="<?php echo $i; ?>project_id" value="<?php echo $response[$i]->project_id ?>">
                                                                                                                                                                 <a class="dropdown-item small update-task" id="update-task-<?php echo $i; ?>" ide="<?php echo $i; ?>" href=""><i
                                                                                                                                                                         class="fas fa-edit"></i> Editar </a>
-                                                                                                                                                                <a class="dropdown-item small" onclick="javascript:return confirm('¿Estas seguro de eliminar esta tarea?')"
-                                                                                                                                                                    href="?c=cronograma&m=eliminarTareaCronograma&idtarea=<?php echo $response[$i]->id_tarea_cronograma_PK; ?>&idcronograma=<?php echo $_GET["id"] ?>"><i
-                                                                                                                                                                        class="fas fa-redo-alt"></i> Eliminar </a>
-                                                                                                                                                                </div>
-                                                                                                                                                                </div>
-                                                                                                                                                                </div>
+<a class="dropdown-item small"
+    data-id_tarea="<?= $response[$i]->id_tarea_cronograma_PK ?>"
+        data-id_cronograma_fuente="<?= $_GET["id"] ?>" onclick="handleClickInitMoveTask(event)">
+        <i class='fa fa-asterisk'></i> Mover
+    </a>
+                                                                                                                                                                            <a class="dropdown-item small" onclick="javascript:return confirm('¿Estas seguro de eliminar esta tarea?')"
+                                                                                                                                                                                href="?c=cronograma&m=eliminarTareaCronograma&idtarea=<?php echo $response[$i]->id_tarea_cronograma_PK; ?>&idcronograma=<?php echo $_GET["id"] ?>"><i
+                                                                                                                                                                                    class="fas fa-redo-alt"></i> Eliminar </a>
+                                                                                                                                                                            </div>
+                                                                                                                                                                            </div>
+                                                                                                                                                                            </div>
                         <?php endfor; ?>
                     </div>
                     <div class="col-md-1"></div>
@@ -155,6 +160,3 @@
         </div>
     </div>
 </div>
-<script>
-
-</script>

@@ -25,7 +25,7 @@ if (isset($_REQUEST["c"]) && !empty($_REQUEST["cod"])) {
             $object = "La tarea";
             break;
         case "cronograma":
-            $object = "El Cronograma";
+            $object = "El Cronograma o la tarea";
             break;
         case "project":
             $object = "El Proyecto";
@@ -84,6 +84,11 @@ if (isset($_REQUEST["c"]) && !empty($_REQUEST["cod"])) {
 
         case "A010":
             $msg = " se ha copiado exitosamente.";
+            $type = "success";
+            break;
+
+        case "A011":
+            $msg = " se ha movido exitosamente.";
             $type = "success";
             break;
 

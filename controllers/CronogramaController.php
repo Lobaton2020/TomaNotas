@@ -37,6 +37,7 @@ class CronogramaController
             $titulo = $this->cronograma->getTituloCronograma($_GET["id"]);
             $response = $this->cronograma->getAllTareas($_GET["id"]);
             usort($response, 'compararPorHoraMinuto');
+            $listCronogramaSelect = $this->cronograma->lastTenCronogramas($this->idsesion);
             $content = "cronograma/listTareas.php";
             $title = "Cronograma de Tareas";
             require_once "views/template/dashboard/content.php";
@@ -224,5 +225,23 @@ class CronogramaController
         $cronomgramaId = intval(trim($_GET["idcronograma"]));
        $this->cronograma->copy( $cronomgramaId);
        header("location:?c=cronograma&cod=A010");
+    }
+
+    public function moveTask()
+    {
+        $is_error = !isset($_POST["id_cronograma_fuente"]) || !isset($_POST["id_cronograma_destino"]) || !isset($_POST["id_tarea"]);
+        if ($is_error) {
+            echo json_encode(["message" => "id_cronograma_fuente,id_cronograma_destino, id_tarea son requeridos"]);
+            return;
+        }
+        $id_cronograma_fuente = intval($_POST["id_cronograma_fuente"]);
+        $id_cronograma_destino = intval($_POST["id_cronograma_destino"]);
+        $id_tarea = intval($_POST["id_tarea"]);
+        $this->cronograma->move(
+            $id_cronograma_fuente,
+            $id_cronograma_destino,
+            $id_tarea
+        );
+        header("location:?c=cronograma&m=getTareas&id={$_POST["id_cronograma_fuente"]}&cod=A011");
     }
 }
