@@ -102,10 +102,6 @@ class CronogramaController
             $_SESSION["error-insert-tarea"] = "Hubo un error, no se agregó la tarea.";
             header("location:?c=cronograma&m=getTareas&id=" . $datos["idcronograma"]);
         }
-        if (function_exists('fastcgi_finish_request')) {
-            fastcgi_finish_request();
-        }
-        $this->cronograma->autoOrganizeOrder($datos["idcronograma"]);
     }
 
     public function cambiarEstado()
@@ -152,6 +148,7 @@ class CronogramaController
             $idcronograma = trim($_GET["idcronograma"]);
             $idtarea = trim($_GET["idtarea"]);
             if ($this->cronograma->eliminarTareaCronograma($idtarea)) {
+                $_SESSION["success-deleted-task"] = "Tarea eliminada con exito.";
                 header("location:?c=cronograma&m=getTareas&id=" . $idcronograma);
             } else {
                 header("location:?c=cronograma&m=getTareas&id=" . $idcronograma);
@@ -178,10 +175,7 @@ class CronogramaController
             $_SESSION["error-insert-tarea"] = "Hubo un error, no se actualizó la tarea.";
             header("location:?c=cronograma&m=getTareas&id=" . $datos["idcronograma"]);
         }
-        if (function_exists('fastcgi_finish_request')) {
-            fastcgi_finish_request();
-        }
-        $this->cronograma->autoOrganizeOrder($datos["idcronograma"]);
+
     }
 
     public function eliminarCronograma()
@@ -243,5 +237,25 @@ class CronogramaController
             $id_tarea
         );
         header("location:?c=cronograma&m=getTareas&id={$_POST["id_cronograma_fuente"]}&cod=A011");
+    }
+    /**
+     * TODO:
+     * This method arise because after create or after update need reorder the tasks of every sigle task
+     * Possible solutions:
+     * 1- Create from DB a trigger that have that logic
+     * 2- Intall throught compose RxPhp and emit an event for this updating
+     * 3- Every call to see the detail of a cronogram from frontent
+     *    ?c=cronograma&m=getTareas&id=136, it request here to update in front background. Currently this works but i need found some thing better.
+     */
+
+    public function front_event__autoOrganizerOrder()
+    {
+        if (!isset($_GET["idcronograma"])) {
+            echo json_encode(["message" => "idcronograma in query is required"]);
+            http_response_code(400);
+            return;
+        }
+        $this->cronograma->autoOrganizeOrder($_GET["idcronograma"]);
+        http_response_code(204);
     }
 }

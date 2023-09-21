@@ -19,6 +19,7 @@ if (isset($_REQUEST["c"])) {
     <script src="libs/fontawesome/js/all.min.js"></script>
     <script src="libs/bootstrap/js/popovers.min.js"></script>
     <script src="libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="libs/toastr/js/latest_toastr.min.js"></script>
     <?php if ($_REQUEST["c"] == "link") {?>
     <script src="assets/js/Links.js"></script>
   <?php } else if ($_REQUEST["c"] == "nota") {?>

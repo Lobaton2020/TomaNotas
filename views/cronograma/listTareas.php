@@ -3,6 +3,8 @@
 <?php require_once "views/cronograma/modals/moveTask.php" ?>
 <?php showMessage("success-insert-tarea", "success"); ?>
 <?php showMessage("error-insert-tarea", "danger"); ?>
+<?php showMessage("success-deleted-task", "info"); ?>
+
 <style>
     .order-task {
         border-radius: 10px;

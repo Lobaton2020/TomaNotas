@@ -12,6 +12,7 @@
 	<link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" >
     <link class="icon" rel=icon sizes="32x32" type="image/png" href='assets/img/logo.png'>
     <link rel="stylesheet" href="libs/plantillas/plantilla_bootstrap.css">
+    <link rel="stylesheet" href="libs/toastr/css/latest_toastr.min.css">
     <link rel="stylesheet" href="assets/css/estilos.css">
 
 

@@ -11,6 +11,7 @@
     <!-- mas contenido del auto y  de posissionamiento -->
 	<link rel="stylesheet" href="libs/fontawesome/css/all.css">
 	<link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" >
+    <link rel="stylesheet" href="libs/toastr/css/latest_toastr.min.css">
     <link rel="stylesheet" href="assets/css/estilos.css">
 
 

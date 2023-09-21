@@ -152,65 +152,36 @@ if (isset($_REQUEST["c"]) && !empty($_REQUEST["cod"])) {
             $msg = "Comando no encontrado..";
     }
     ?>
-<div id="alert" class="alert alert-<?php echo $type; ?> alert-dismissible fade show text-peque" role="alert">
 
-     <?php
-switch ($_REQUEST["cod"]) {
-        case "E006";
-            echo $msg;
-            break;
-        case "E007";
-            echo $msg;
-            break;
-        case "A004";
-            echo $msg;
-            break;
+    <script>
+        // Have in account there is another componenf for legacy code
+         document.addEventListener("DOMContentLoaded",()=>{
+            toastr.options = {
+                "closeButton": true,
+                "debug": true,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-left",
+                "preventDuplicates": true,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              }
+              const dict = {
+                "danger":"error",
+                "primary":"info"
+              }
+              const fromPhpKey = "<?= $type ?>"
+                 toastr[dict[fromPhpKey] ?? fromPhpKey]("<?= $msg ?>");
+             });
+                </script>
 
-        case "E005";
-            echo $msg;
-            break;
-
-        case "A005";
-            echo $msg;
-            break;
-
-        case "E008";
-            echo $msg;
-            break;
-
-        case "E009";
-            echo $msg;
-            break;
-
-        case "E010";
-            echo $msg;
-            break;
-
-        case "A006";
-            echo $msg;
-            break;
-
-        case "A009";
-            echo $msg;
-            break;
-
-        case "E011";
-            echo $msg;
-            break;
-
-        default;
-            echo $object . " " . $msg;
-
-    }
-    ?>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-
-</div>
-
-
-<?php
+    <?php
 }
 
 ?>

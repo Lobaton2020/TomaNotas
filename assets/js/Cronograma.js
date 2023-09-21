@@ -181,13 +181,14 @@ async function activeAlarms(data, title, username) {
             id_tarea_cronograma_PK,
             descripcion,
             hora,
-            minuto
+            minuto,
+            estado
         } = elem;
         dateTask.setHours(hora, minuto, 0);
         if (localStorage.getItem("isDebug")) {
             console.log(dateTask.getTime() == currentDate.getTime(), dateTask.getTime(), currentDate.getTime())
         }
-        if (dateTask.getTime() == currentDate.getTime()) {
+        if (dateTask.getTime() == currentDate.getTime() && estado === "0") {
             await textToSpeech(`
                 Hi ${username}.
                 You have a task: ${descripcion}`
@@ -216,7 +217,7 @@ const initialize = async () => {
 
     const url = new URLSearchParams(location.search)
     let { username, data, titulo } = await requestHttp("GET", `?c=cronograma&m=getTareasJSON&id=${url.get("id")}`)
-    setInterval(() => activeAlarms(data, titulo.titulo, username), 1000);
+    setInterval(() => activeAlarms(data, titulo.titulo, username), 900);
 
 
 }
@@ -229,4 +230,23 @@ function handleClickInitMoveTask(e) {
 function handleChangeCronograma(e) {
     $('[name="id_cronograma_destino"]').val(e.target.value)
 }
-document.addEventListener("DOMContentLoaded", initialize)
+async function eventUpdateOrderFields() {
+    try {
+
+        const search = new URLSearchParams(document.location.search)
+        const e = (x, y) => y ? search.get(x) == y : search.get(x);
+        if (e("c", "cronograma") && e("m", "getTareas") && e('id')) {
+            const URL = `?c=cronograma&m=front_event__autoOrganizerOrder&idcronograma=${e("id")}`;
+            const { ok } = await fetch(URL)
+            if (!ok) {
+                console.error("No se puedo generar evento reorder-tasks")
+            }
+        }
+    } catch (err) {
+        console.error(err)
+    }
+}
+document.addEventListener("DOMContentLoaded", () => {
+    initialize()
+    eventUpdateOrderFields()
+})
