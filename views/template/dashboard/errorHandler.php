@@ -177,9 +177,9 @@ if (isset($_REQUEST["c"]) && !empty($_REQUEST["cod"])) {
                 "primary":"info"
               }
               const fromPhpKey = "<?= $type ?>"
-                 toastr[dict[fromPhpKey] ?? fromPhpKey]("<?= $msg ?>");
-             });
-                </script>
+                 toastr[dict[fromPhpKey] ?? fromPhpKey]("<?= $object . $msg ?>");
+                 });
+                    </script>
 
     <?php
 }
