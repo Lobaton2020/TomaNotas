@@ -177,11 +177,11 @@ FORMAT(
     CASE
 WHEN t.estado = 0
 AND s.fecha >= DATE_SUB(CURDATE(), INTERVAL 1 DAY) THEN TIME_TO_SEC(
-        TIMEDIFF(
-          STR_TO_DATE(t.next_time, '%H:%i'),
-          STR_TO_DATE(t.actual_time, '%H:%i')
-        )
-      ) / 3600
+  TIMEDIFF(
+    STR_TO_DATE(t.next_time, '%H:%i'),
+    STR_TO_DATE(t.actual_time, '%H:%i')
+  )
+) / 3600
 ELSE 0
 END
 ),
@@ -196,10 +196,10 @@ FORMAT(
           STR_TO_DATE(t.actual_time, '%H:%i')
         )
       ) / 3600
-ELSE 0
-END
-),
-1
+      ELSE 0
+    END
+  ),
+  1
 ) AS time_difference_done,
 FORMAT(
   SUM(
@@ -210,29 +210,63 @@ FORMAT(
           STR_TO_DATE(t.actual_time, '%H:%i')
         )
       ) / 3600
-ELSE 0
-END
-),
-1
+      ELSE 0
+    END
+  ),
+  1
 ) AS time_difference_never_done,
 FORMAT(
   SUM(
-    CASE
-WHEN t.estado = 0
-or (
-  t.estado = 0
-  AND s.fecha >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
-) THEN TIME_TO_SEC(
-        TIMEDIFF(
-STR_TO_DATE(t.next_time, '%H:%i'),
-STR_TO_DATE(t.actual_time, '%H:%i')
-)
+TIME_TO_SEC(
+  TIMEDIFF(
+    STR_TO_DATE(t.next_time, '%H:%i'),
+    STR_TO_DATE(t.actual_time, '%H:%i')
+  )
+) / 3600
+),
+1
+) AS total_hours_planned,
+-- Nuevo campo para el porcentaje de time_difference_done con respecto a la suma
+CAST(
+  IFNULL(
+    (
+      SUM(
+        CASE
+          WHEN t.estado = 1 THEN TIME_TO_SEC(
+            TIMEDIFF(
+              STR_TO_DATE(t.next_time, '%H:%i'),
+              STR_TO_DATE(t.actual_time, '%H:%i')
+            )
+          ) / 3600
+          ELSE 0
+        END
+      ) / (
+        SUM(
+CASE
+WHEN t.estado = 0 THEN TIME_TO_SEC(
+  TIMEDIFF(
+    STR_TO_DATE(t.next_time, '%H:%i'),
+    STR_TO_DATE(t.actual_time, '%H:%i')
+  )
 ) / 3600
 ELSE 0
 END
-),
-1
-) AS total_time_difference
+) + SUM(
+  CASE
+    WHEN t.estado = 1 THEN TIME_TO_SEC(
+      TIMEDIFF(
+        STR_TO_DATE(t.next_time, '%H:%i'),
+        STR_TO_DATE(t.actual_time, '%H:%i')
+      )
+    ) / 3600
+    ELSE 0
+  END
+)
+)
+) * 100,
+0
+) AS SIGNED
+) AS percentage_done_of_total
 FROM
   (
     SELECT
@@ -259,7 +293,7 @@ TIME_FORMAT(
 FROM
   tarea_cronograma x
 WHERE
-estado IN (0, 1)
+  estado IN (0, 1)
 ORDER BY
   x.id_tarea_cronograma_PK ASC,
   x.id_cronograma_FK
@@ -267,6 +301,7 @@ ORDER BY
 LEFT JOIN cronograma s ON t.id_cronograma_FK = s.id_cronograma_PK
 GROUP BY
   t.project_id;
+
 
 -- compartido con otros..compartido con conmigo
 create procedure Archivos_Compartidos (IDUSUARIO int)
