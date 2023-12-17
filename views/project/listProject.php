@@ -23,6 +23,7 @@
               <td>Estado</td>
               <td>Horas planeadas</td>
               <td>Horas completadas</td>
+              <td>Horas no completadas</td>
               <td>Total horas</td>
               <?php if (isset($_SESSION["id_user"]) || !empty($_SESSION["id_user"])): ?>
                 <td class="eliminar_archivo">Accion</td>
@@ -75,9 +76,14 @@
                   <span class="text-muted">
                     <?= if_null_then_0($row->time_difference_done) ?> h
                   </span>
-                    </td>
-                    <td>
-                      <span class="text-muted">
+                </td>
+                <td>
+                  <span class="text-muted">
+                    <?= if_null_then_0($row->time_difference_never_done) ?> h
+                      </span>
+                      </td>
+                      <td>
+                          <span class="text-muted">
                         <?= if_null_then_0($row->total_time_difference) ?> h
                   </span>
                 </td>

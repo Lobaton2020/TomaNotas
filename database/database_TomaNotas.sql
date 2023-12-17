@@ -204,6 +204,20 @@ END
 FORMAT(
   SUM(
     CASE
+      WHEN t.estado = 0 THEN TIME_TO_SEC(
+        TIMEDIFF(
+          STR_TO_DATE(t.next_time, '%H:%i'),
+          STR_TO_DATE(t.actual_time, '%H:%i')
+        )
+      ) / 3600
+ELSE 0
+END
+),
+1
+) AS time_difference_never_done,
+FORMAT(
+  SUM(
+    CASE
 WHEN t.estado = 0
 or (
   t.estado = 0
