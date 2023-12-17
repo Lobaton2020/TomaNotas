@@ -1,8 +1,8 @@
 <?php require_once "helpers/if_null_then_0.php"; ?>
 <div class="container tipo-letra">
   <div class="row">
-    <div class="col-md-2 col-sm-12"></div>
-    <div class="col-md-8 col-sm-12 ">
+    <div class="col-md-1 col-sm-12"></div>
+    <div class="col-md-10 col-sm-12 ">
       <?php require_once "views/template/dashboard/errorHandler.php" ?>
       <button type="button" data-toggle="modal" data-target="#add_project"
         class="btn btn-success  form-control mt-n2 mb-2">Nuevo proyecto</button>
@@ -53,49 +53,43 @@
                 <td>
                   <? if ($row->time_difference_planned <= 1 && $row->time_difference_planned > 0): ?>
                     <span class="text-mute text-success">
-                      <?= if_null_then_0($row->time_difference_planned) ?> h <small class="text-muted">
-                              <?= $row->percentage_done_of_total ?>%
-                            </small>
-                          </span>
+                      <?= if_null_then_0($row->time_difference_planned) ?> h
+                            </span>
                   <? endif; ?>
                   <? if ($row->time_difference_planned <= 3 && $row->time_difference_planned > 1): ?>
                     <span class="text-mutd text-warning">
-                      <?= if_null_then_0($row->time_difference_planned) ?> h <small class="text-muted">
-                              <?= $row->percentage_done_of_total ?>%
-                            </small>
-                          </span>
+                      <?= if_null_then_0($row->time_difference_planned) ?> h
+                            </span>
                   <? endif; ?>
                   <? if ($row->time_difference_planned > 3): ?>
                     <span class="text-mued text-danger">
-                      <?= if_null_then_0($row->time_difference_planned) ?> h <small class="text-muted">
-                              <?= $row->percentage_done_of_total ?>%
-                            </small>
-                          </span>
+                      <?= if_null_then_0($row->time_difference_planned) ?> h
+                            </span>
                     <? endif; ?>
                   <? if (!$row->time_difference_planned || $row->time_difference_planned <= 0): ?>
                     <span class="text-muted ">
-                      <?= if_null_then_0($row->time_difference_planned) ?> h <small class="text-muted">
-                              <?= $row->percentage_done_of_total ?>%
-                            </small>
+                      <?= if_null_then_0($row->time_difference_planned) ?> h
                             </span>
                   <? endif; ?>
                 </td>
                 <td>
                   <span class="text-muted">
-                    <?= if_null_then_0($row->time_difference_done) ?> h
-                  </span>
-                </td>
-                <td>
-                  <span class="text-muted">
+                    <?= if_null_then_0($row->time_difference_done) ?> h <small class="text-muted" style="font-size:.6rem">
+                          <?= $row->percentage_done_of_total ?>%
+                        </small>
+                        </span>
+                        </td>
+                        <td>
+                          <span class="text-muted">
                     <?= if_null_then_0($row->time_difference_never_done) ?> h
                       </span>
                       </td>
                       <td>
                           <span class="text-muted">
                         <?= if_null_then_0($row->total_hours_planned) ?> h
-                            </span>
-                            </td>
-                            <td class="text-left">
+                      </span>
+                    </td>
+                    <td class="text-left">
                   <?php $row->descripcion = base64_encode($row->descripcion) ?>
                   <a href="#" onclick='updateProjectParser(`<?= json_encode($row); ?>`)' data-toggle="modal"
                   data-target="#add_project" class="text-dark"><i s class="far fa-edit"></i></a>
@@ -107,7 +101,7 @@
       </div>
       <?php endif; ?>
     </div>
-    <div class="col-md-2 col-sm-12"></div>
+    <div class="col-md-1 col-sm-12"></div>
   </div>
 </div>
 <?php require_once "views/project/modals/projectCreate.php" ?>
