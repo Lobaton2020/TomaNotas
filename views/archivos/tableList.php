@@ -1,4 +1,4 @@
-<table  class="table table-hover">
+<table class="table table-hover table-responsive">
             <thead>
 
              <tr>
@@ -6,10 +6,11 @@
                <td style="max-width:100px">Archivo</td>
                <td>Tamaño</td>
                <td>Rename</td>
+               <td>Descarga</td>
               <?php if(isset($_SESSION["id_user"]) || !empty($_SESSION["id_user"])):?>
                 <td class="eliminar_archivo" >Accion</td>
               <?php endif; ?>
-            </tr>   
+            </tr>
           </thead>
           <tbody class="table table-hover">
              <?php
@@ -22,6 +23,11 @@
                  <td><a href="?c=archivo&m=ver&id=<?php echo $row->id_archivo_PK;?>#iframe"><span data-toggle="tool" title=" <?php echo getDateTime($row->fecha_ingreso); ?>"><span id="basename<?php echo $row->id_archivo_PK; ?>"><?php echo pathinfo($row->ruta,PATHINFO_BASENAME); ?></span></span></a></td>
                  <td> <span class="small"><?php echo number_format($row->tamano, 3, '.', '') ." MB"; ?></span></td>
                  <td class="text-center"><a href="#" onclick="renameFile('<?php echo $row->id_archivo_PK;?>');" data-toggle="modal" data-target="#rename" class="text-dark"><i s class="far fa-edit"></i></a> </td>
+                 <td>
+                 <span><a href="<?php echo $row->ruta ?>" class="" download="<?php echo basename($row->ruta); ?>"><i
+                        class="fas fa-download"></i>
+                    </a>
+                </td>
                  <td class="eliminar_archivo" class="eliminar_archivo"><a href="?c=archivo&m=delete&id=<?php echo $row->id_archivo_PK; ?> "  onclick="if(!confirm('¿Seguro quieres eliminar este Archivo?')){ return false }" ><span class="text-danger">Delete</span></a></td>
             </tr>
              <?php endforeach;?>
