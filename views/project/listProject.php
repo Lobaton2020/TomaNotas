@@ -51,26 +51,26 @@
                     <?php endif; ?>
                 </td>
                 <td>
-                  <? if ($row->time_difference_planned <= 1 && $row->time_difference_planned > 0): ?>
+                  <?php if ($row->time_difference_planned <= 1 && $row->time_difference_planned > 0): ?>
                     <span class="text-mute text-success">
                       <?= if_null_then_0($row->time_difference_planned) ?> h
                             </span>
-                  <? endif; ?>
-                  <? if ($row->time_difference_planned <= 3 && $row->time_difference_planned > 1): ?>
+                  <?php endif; ?>
+                  <?php if ($row->time_difference_planned <= 3 && $row->time_difference_planned > 1): ?>
                     <span class="text-mutd text-warning">
                       <?= if_null_then_0($row->time_difference_planned) ?> h
                             </span>
-                  <? endif; ?>
-                  <? if ($row->time_difference_planned > 3): ?>
+                  <?php endif; ?>
+                  <?php if ($row->time_difference_planned > 3): ?>
                     <span class="text-mued text-danger">
                       <?= if_null_then_0($row->time_difference_planned) ?> h
                             </span>
-                    <? endif; ?>
-                  <? if (!$row->time_difference_planned || $row->time_difference_planned <= 0): ?>
+                    <?php endif; ?>
+                    <?php if (!$row->time_difference_planned || $row->time_difference_planned <= 0): ?>
                     <span class="text-muted ">
                       <?= if_null_then_0($row->time_difference_planned) ?> h
                             </span>
-                  <? endif; ?>
+                  <?php endif; ?>
                 </td>
                 <td>
                   <span class="text-muted">
