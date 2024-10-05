@@ -28,7 +28,7 @@ class Project
     {
         try {
             $sql = "SELECT p.*, tps.* from projects p
-                    left join time_project_spent tps on p.id = tps.project_id WHERE user_id = ? ORDER BY status ASC";
+                    left join time_project_spent tps on p.id = tps.project_id WHERE user_id = ? ORDER BY status DESC";
             $stmt = $this->dbh->prepare($sql);
             $stmt->execute([$this->userId]);
             return $stmt->fetchAll();
