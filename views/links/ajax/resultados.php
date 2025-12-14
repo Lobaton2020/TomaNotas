@@ -29,15 +29,14 @@
       ?> <tr>
           <td class="num"><?php $i++;
                           echo $row->id_link_PK ?></td>
-          <td class="descripcion"><?php echo $row->url_link;
-                                  echo !empty($row->titulo) ? " -- " : ""; ?><small class="font-weight-bold font-italic"><?php echo $row->titulo; ?></small></td>
+          <td class="descripcion"><div><?php echo $row->url_link; ?></div><small class="font-weight-bold font-italic"><?php echo $row->titulo; ?></small></td>
           <td style="display:none" class="fecha"><?php echo getDatelink($row->fecha_ingreso) ?></td>
           <td class="links">
-            <?php foreach ($reslink as $link) {
-              if ($link->id_link_PK == $row->id_link_PK) { ?>
-                <a target="_blank" href="<?php echo $row->url_link; ?>">Ir al Sitio</a>
-            <?php }
-            } ?>
+            <?php
+              $url = $row->url_link;
+              if (preg_match('/^https?:\/\//', $url)) { ?>
+                <a target="_blank" href="<?php echo $url; ?>">Ir al Sitio</a>
+            <?php } ?>
           </td>
           <?php if (isset($_SESSION["id_user"]) && !empty($_SESSION["id_user"])) { ?>
 

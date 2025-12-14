@@ -156,19 +156,22 @@ var result_user = document.getElementById("result-user");
             if (querySearch.has("page")) {
                 page = querySearch.get("page");
             }
-            ajax.open("GET", "index.php?c=link&m=getAll_ax&ver=ok&page=" + page, true);
+            const search = `${querySearch.has("search") ? `&search=${querySearch.get("search")}` : ""}`;
+            ajax.open("GET", "index.php?c=link&m=getAll_ax&ver=ok&page=" + page + search, true);
             ajax.onreadystatechange = function() {
                 if (ajax.readyState == 4 && ajax.status == 200) {
                     if (ajax.responseText != "") {
                         response_main.innerHTML = ajax.responseText;
+                        mostrarMensaje(false);
                     } else {
-                        response_main.innerHTML = "No se han podido cargar los datos";
+                        mostrarMensaje(true);
                     }
                 }
+                mensajeCargando(false)
             };
             ajax.send();
         }
-        mostrarMensaje(false);
+        
     }
     //---------------------------------------------------------------------------------------------------------------------------------
     // muestra el mensaje que no hay links
@@ -191,30 +194,22 @@ var result_user = document.getElementById("result-user");
         }
     }
 
-    // proceso de ajax para la consulta del formulario
+    function handleKeyupLinks() {
+                const url = new URL(window.location.href);
+                url.searchParams.set("search", txt.value);
+                if (txt.value == "") {
+                    url.searchParams.delete("search");
+                }
+                window.history.pushState(null, "", url);
+                mensajeCargando(true);
+                cargarDatos(true);
+            }
     function ejecutarAjaxBusquedaLinks() {
         if (document.getElementById("search-user-link")) {
-            txt.addEventListener("keyup", function() {
-                mensajeCargando(true);
-                var ajax = getXMLHttpRequest();
-                var valor = txt.value;
-                ajax.open("GET", "index.php?c=link&m=search_ax&value=" + valor, true);
-                ajax.onreadystatechange = function() {
-                    if (ajax.readyState == 4 && ajax.status == 200) {
-                        cargarDatos(false);
-                        mensajeCargando(false);
-                        if (ajax.responseText != "") {
-                            mostrarMensaje(false);
-                            response_keyup.innerHTML = ajax.responseText;
-                            response_main.innerHTML = "";
-                        } else {
-                            mostrarMensaje(true);
-                            response_keyup.innerHTML = "";
-                        }
-                    }
-                };
-                // ajax.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-                ajax.send();
+            let idSetTimeout = null;
+            txt.addEventListener("keyup", ()=>{
+                clearTimeout(idSetTimeout);
+                idSetTimeout = setTimeout(handleKeyupLinks, 500);
             });
         }
     }
@@ -301,3 +296,14 @@ var result_user = document.getElementById("result-user");
         }
     }
 })();
+// For global use
+function updateSearchAndRedirect(baseUrl, event) {
+    event.preventDefault();
+    const searchInput = document.querySelector('#search');
+    let finalUrl = baseUrl;
+    if (searchInput && searchInput.value.trim()) {
+        const searchValue = encodeURIComponent(searchInput.value.trim());
+        finalUrl += '&search=' + searchValue;
+    }
+    window.location.href = finalUrl;
+}

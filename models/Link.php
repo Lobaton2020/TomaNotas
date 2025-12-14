@@ -11,21 +11,44 @@ class Link
         $this->dbh = Database::Connect();
         $this->session = $_SESSION["id_user"];
     }
+    private function generateSearchLikeClause($search)
+    {
+        $search = trim($search);
+        if (empty($search)) {
+            return array('', array());
+        }
+        
+        $keywords = array_filter(explode(' ', $search), function($word) {
+            return !empty(trim($word));
+        });
+        $keywords = array_values($keywords);
+        
+        $clauses = array();
+        $params = array();
+        
+        foreach ($keywords as $keyword) {
+            $clauses[] = "(LOWER(url_link) LIKE LOWER('%' ? '%') OR LOWER(titulo) LIKE LOWER('%' ? '%'))";
+            $params[] = $keyword;
+            $params[] = $keyword;
+        }
+        
+        return array(implode(' AND ', $clauses), $params);
+    }
 
-    public function getAll($init)
+
+    public function getAll($init, $search = null)
     {
         try {
-            $sql = "SELECT * FROM Link WHERE id_usuario_FK = ? ORDER BY id_link_PK DESC LIMIT {$init}";
+            $clauses = $this->generateSearchLikeClause($search);
+            $params = array_merge($clauses[1], array($this->session));
+            $andStr = $clauses[0] != '' ? ' AND ' : '';
+            $clauses[0] .= " {$andStr} id_usuario_FK = ?";
+            $sql = "SELECT * FROM Link WHERE {$clauses[0]} ORDER BY id_link_PK DESC LIMIT {$init}";
             $stmt = $this->dbh->prepare($sql);
-            $stmt->execute(array($this->session));
+            $stmt->execute($params);
             $res = $stmt->fetchAll();
 
-            $sql_link_user = "SELECT * FROM Link where id_usuario_FK = ? AND (url_link LIKE 'http://%' OR  url_link LIKE 'https://%') ";
-            $stmt = $this->dbh->prepare($sql_link_user);
-            $stmt->execute(array($this->session));
-            $reslink = $stmt->fetchAll();
-
-            return array($res, $reslink);
+            return $res;
         } catch (Exception $e) {
             exit($e->getMessage());
         }

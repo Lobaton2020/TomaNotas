@@ -2,6 +2,7 @@
 require_once "models/Link.php";
 require_once "models/Administrador.php";
 require_once "models/Usuario.php";
+require_once "helpers/url_helper.php";
 
 class LinkController
 {
@@ -64,23 +65,6 @@ class LinkController
             header("location:?c=link&m=compartidos&cod=E003");
         }
     }
-    // consulta de datos por meio de ajax
-    public function search_ax()
-    {
-        if (isset($_REQUEST["value"])) {
-            $res = $this->model->search($_REQUEST["value"]);
-            $link = $this->model->getAll("1,1");
-            $link = $link[1];
-
-            if (count($res) != 0) {
-                require_once "views/links/ajax/linkList.php";
-            } else {
-                echo null;
-            }
-        } else {
-            header("location:?c=auth");
-        }
-    }
 
     public function searchUserLink_ax()
     {
@@ -99,12 +83,11 @@ class LinkController
     public function getAll_ax()
     {
         if (isset($_REQUEST["ver"])) {
-            $array = $this->model->getAll($this->getPages($_REQUEST["page"], 50));
+            $search = isset($_REQUEST["search"]) ? $_REQUEST["search"] : null;
+            $array = $this->model->getAll($this->getPages($_REQUEST["page"], 50), $search);
 
             if (count($array) != 0) {
-
-                $res = $array[0];
-                $reslink = $array[1];
+                $res = $array;
                 require_once "views/links/ajax/resultados.php";
             } else {
                 echo null;

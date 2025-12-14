@@ -280,3 +280,29 @@ input#input-file+label:active {
 .under-line{
     text-decoration: underline;
 }
+
+#mensajeCargando > img {
+    margin-top: .2rem;
+    width: 1.8rem;
+    height: 1.8rem;
+}
+
+/* Mobile devices - max 50 characters */
+@media (max-width: 768px) {
+    #response-ajax-main > div > table > tbody > tr > td.descripcion div {
+        max-width: 350px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+/* Desktop devices - max 100 characters */
+@media (min-width: 769px) {
+    #response-ajax-main > div > table > tbody > tr > td.descripcion div {
+        max-width: 900px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

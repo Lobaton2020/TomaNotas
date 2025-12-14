@@ -16,9 +16,9 @@
             <a id="habilitar-compartir" href="" class="btn btn-default pull-right" title="Links Compartidos" ><i class="fas fa-share"></i></a>|
             <a href="?c=link&m=compartidos" class="btn btn-default pull-right" title="Links Compartidos" ><i class="fas fa-eye"></i></a>
          </div>
-          <div class="col-md-1 col-sm-12 text-center"><span id="mensajeCargando" ><img style="display:none" src="assets/img/ajax-loader.gif" /></span></div>
+          <div class="col-md-1 col-sm-12 text-center"><span id="mensajeCargando" ><img style="display:block" src="assets/img/ajax-loader.gif" /></span></div>
            <div class="col-md-5 col-sm-12">
-              <input id="search" type="search" class="form-control " placeholder="Search for link..">
+              <input id="search" type="search" class="form-control " placeholder="Search for link.." value="<?= isset($_GET['search']) ? $_GET['search'] : ''; ?>">
            </div>
          </div>
     </div>
