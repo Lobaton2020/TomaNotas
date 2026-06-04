@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: php-config
+data:
+  APP_ENV: "production"
+  PHP_UPLOAD_MAX_FILESIZE: "20M"
+  PHP_POST_MAX_SIZE: "20M"

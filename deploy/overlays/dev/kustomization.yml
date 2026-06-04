@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: dev
+
+resources:
+  - ../../base
+
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: tomanotas
+      spec:
+        replicas: 1
+        template:
+          spec:
+            containers:
+              - name: php-apache
+                resources:
+                  requests:
+                    cpu: "50m"
+                    memory: "128Mi"
+                  limits:
+                    cpu: "250m"
+                    memory: "256Mi"
+    target:
+      kind: Deployment
+
+images:
+  - name: aflobaton/tomanotas
+    newTag: latest

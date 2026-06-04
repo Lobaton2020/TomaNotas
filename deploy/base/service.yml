@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tomanotas
+spec:
+  selector:
+    app: tomanotas
+  ports:
+    - port: 3002
+      targetPort: 80
+      protocol: TCP
+      name: http
+  type: LoadBalancer

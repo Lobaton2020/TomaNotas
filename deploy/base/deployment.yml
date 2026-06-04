@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomanotas
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tomanotas
+  template:
+    metadata:
+      labels:
+        app: tomanotas
+    spec:
+      containers:
+        - name: php-apache
+          image: aflobaton/tomanotas:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: env-file
+              mountPath: /var/www/html/.env
+              subPath: .env
+              readOnly: true
+            - name: php-config
+              mountPath: /usr/local/etc/php/php.ini
+              subPath: php.ini
+              readOnly: true
+            - name: archivos
+              mountPath: /var/www/html/archivos
+              readOnly: false
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+      volumes:
+        - name: env-file
+          secret:
+            secretName: tomanotas-secrets
+        - name: php-config
+          configMap:
+            name: php-config
+        - name: archivos
+          hostPath:
+            path: /home/proyectos/TomaNotas/archivos
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: tomanotas-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: tomanotas
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
