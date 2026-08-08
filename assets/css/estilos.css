@@ -28,6 +28,26 @@
     min-height: 100px;
 }
 
+.modal_nota_body {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.modal_nota_view {
+    max-height: 60vh;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    font-family: Menlo, Consolas, monospace;
+    font-size: 13px;
+    resize: none;
+}
+
+.muestra_nota {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
 .letra {
     font-family: arial;
 }

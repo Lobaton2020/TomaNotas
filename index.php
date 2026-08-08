@@ -10,6 +10,8 @@ function a($param)
 session_name("PHP_SESSION_CUSTOM_1");
 // FrontController
 session_start();
+header("Content-Type: text/html; charset=UTF-8");
+mb_internal_encoding("UTF-8");
 require_once "config/config.php";
 require_once "models/Database.php";
 date_default_timezone_set("America/Bogota");

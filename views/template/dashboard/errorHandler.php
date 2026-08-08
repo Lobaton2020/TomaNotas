@@ -176,8 +176,9 @@ if (isset($_REQUEST["c"]) && !empty($_REQUEST["cod"])) {
                 "danger":"error",
                 "primary":"info"
               }
-              const fromPhpKey = "<?= $type ?>"
-                 toastr[dict[fromPhpKey] ?? fromPhpKey]("<?= $object . $msg ?>");
+              const fromPhpKey = <?= json_encode($type ?? '', JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+              const fromPhpMsg = <?= json_encode(($object ?? '') . ($msg ?? ''), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+                 toastr[dict[fromPhpKey] ?? fromPhpKey](fromPhpMsg);
                  });
                     </script>
 

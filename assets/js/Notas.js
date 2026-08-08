@@ -3,11 +3,10 @@ window.onload = function() {
         var mo = document.getElementsByClassName("muestra_nota");
 
         for (var i = 0; i < mo.length; i++) {
-            if (mo[i].innerHTML.length > 100) {
-
-                var porcen = mo[i].innerHTML.length * 0.5;
-                mo[i].innerHTML = mo[i].innerHTML.substr(0, parseInt(porcen));
-                mo[i].innerHTML = mo[i].innerHTML += "...";
+            var text = mo[i].value !== undefined ? mo[i].value : mo[i].textContent;
+            if (text && text.length > 100) {
+                var porcen = text.length * 0.5;
+                mo[i].value = text.substr(0, parseInt(porcen)) + "...";
             }
         }
 
@@ -49,22 +48,40 @@ function init() {
 }
 
 // --------
+function decodeNotaValue(raw) {
+    if (raw === null || raw === undefined) return "";
+    try {
+        var parsed = JSON.parse(raw);
+        if (typeof parsed === "string") return parsed;
+    } catch (e) { }
+    return String(raw);
+}
+
+function setTextareaHTML(target, value, extraClass) {
+    var $t = $(target);
+    $t.empty();
+    var ta = document.createElement("textarea");
+    ta.className = "form-control text-peque border_none modal_nota" + (extraClass ? " " + extraClass : "");
+    ta.disabled = true;
+    ta.value = value == null ? "" : String(value);
+    $t.append(ta);
+}
+
 function getNota(id) {
     $(document).ready(function() {
 
-        var titulo = $("#titulo" + id).val();
-        // var descripcion = document.getElementById("descripcion" + id).textContent;
-        var descripcion = $("#descripcion" + id).val();
-        var fecha = $("#fecha" + id).val();
-        var color = $("#color" + id).val()
+        var titulo = decodeNotaValue($("#titulo" + id).val());
+        var descripcion = decodeNotaValue($("#descripcion" + id).val());
+        var fecha = decodeNotaValue($("#fecha" + id).val());
+        var color = decodeNotaValue($("#color" + id).val());
         $("#id_nota").attr("value", id);
-        $("#titulo_nota").html(titulo);
-        $("#descripcion").html("<textarea class='form-control  text-peque border_none modal_nota' disabled >" + descripcion + "</textarea>");
+        $("#titulo_nota").text(titulo);
+        setTextareaHTML("#descripcion", descripcion, "modal_nota_view");
 
-        $("#fecha").html(fecha);
+        $("#fecha").text(fecha);
 
-        $("#form_titulo").html("");
-        $("#form_color").html("");
+        $("#form_titulo").empty();
+        $("#form_color").empty();
         $("#titulo_n").attr("value", titulo);
         $("#descripcion_n").attr("value", descripcion);
         $("#fecha_n").attr("value", fecha);
@@ -73,7 +90,6 @@ function getNota(id) {
         $("#editar_nota").css("display", "block");
         $("#eliminar_nota").css("display", "block");
 
-        // $("#cancelar").css("display", "none");
         $("#fecha").css("display", "block");
         $("#actualizar").css("display", "none");
 
@@ -86,24 +102,45 @@ $("#editar_nota").click(function() {
     $(document).ready(function() {
 
 
-        var titulo = $("#titulo_n").val();
-        var descripcion = $("#descripcion_n").val();
-        let color = $("#color_n").val();
-        var form_title = "<small class='text-muted'>Actualiza el titulo<small>";
-        form_title += "<textarea rows=1 class='form-control text-peque size_title' name='new_titulo'>" + titulo + "</textarea>";
+        var titulo = decodeNotaValue($("#titulo_n").val());
+        var descripcion = decodeNotaValue($("#descripcion_n").val());
+        let color = decodeNotaValue($("#color_n").val());
+        $("#form_titulo").empty();
+        var labelTitulo = document.createElement("small");
+        labelTitulo.className = "text-muted";
+        labelTitulo.textContent = "Actualiza el titulo";
+        var taTitulo = document.createElement("textarea");
+        taTitulo.rows = 1;
+        taTitulo.className = "form-control text-peque size_title";
+        taTitulo.name = "new_titulo";
+        taTitulo.value = titulo;
+        $("#form_titulo").append(labelTitulo).append(taTitulo);
 
-        var form_descripcion = "<small class='text-muted'>Actualiza la descripcion<small>";
-        form_descripcion += "<textarea class='form-control text-peque size_content ' name='nueva_descripcion'>" + descripcion + "</textarea>";
-        let form_color = `
-                <div class="form-group">
-                <small>Establece un color</small>
-                <input type="color" rows=1 class="form-control text-peque " name='color' value="${color ? color : "#ffffff"}" placeholder="Color"></textarea>
-            </div>
-        `
-        $("#titulo_nota").html("Editar Nota");
-        $("#form_titulo").html(form_title);
-        $("#form_color").html(form_color);
-        $("#descripcion").html(form_descripcion);
+        $("#descripcion").empty();
+        var labelDesc = document.createElement("small");
+        labelDesc.className = "text-muted";
+        labelDesc.textContent = "Actualiza la descripcion";
+        var taDesc = document.createElement("textarea");
+        taDesc.className = "form-control text-peque size_content";
+        taDesc.name = "nueva_descripcion";
+        taDesc.value = descripcion;
+        $("#descripcion").append(labelDesc).append(taDesc);
+
+        $("#form_color").empty();
+        var colorGroup = document.createElement("div");
+        colorGroup.className = "form-group";
+        var labelColor = document.createElement("small");
+        labelColor.textContent = "Establece un color";
+        var inputColor = document.createElement("input");
+        inputColor.type = "color";
+        inputColor.className = "form-control text-peque";
+        inputColor.name = "color";
+        inputColor.value = color ? color : "#ffffff";
+        colorGroup.appendChild(labelColor);
+        colorGroup.appendChild(inputColor);
+        $("#form_color").append(colorGroup);
+
+        $("#titulo_nota").text("Editar Nota");
 
         $("#editar_nota").css("display", "none");
         $("#eliminar_nota").css("display", "none");

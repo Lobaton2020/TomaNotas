@@ -7,7 +7,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body tall_min">
+      <div class="modal-body tall_min modal_nota_body">
         <form method="post" id="actualizar_nota">
           <input type="hidden" name="c" value="nota">
           <input type="hidden" name="m" value="update">
